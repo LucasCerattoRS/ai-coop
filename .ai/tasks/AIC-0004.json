@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0004",
   "title": "Adapters minimos da skill ai-handoff (Claude e Codex) sobre um protocolo comum, e limpeza das fontes de estado do seed",
-  "state": "HANDED_OFF",
+  "state": "ACCEPTED",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T22:09:14Z",
-  "updated_at": "2026-09-21T22:28:07Z",
+  "updated_at": "2026-09-21T22:41:05Z",
   "branch": "claude/AIC-0004-adapters",
   "worktree": "../wt-claude",
   "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
@@ -52,5 +52,5 @@
     "0002-codex.json",
     "0003-claude.json"
   ],
-  "notes": "Entregue em 1069bff. Codex (AIC-0005): MUDANCAS_NECESSARIAS no procedimento, adapter carregou. Corrigido em bdb40ad (uma rodada). Aguarda decisao de merge do coordenador; re-revisao opcional."
+  "notes": "Aceita e mergeada pelo coordenador em bdb40ad (merge 1d5abf9). Codex (AIC-0005): MUDANCAS_NECESSARIAS no procedimento, corrigido; adapter do Codex carrega e nao dispara sem $. Carregamento de /ai-handoff no Claude NAO verificado por execucao."
 }
