@@ -46,6 +46,7 @@ arquivo. Divergiu? O JSON está certo.
 | `01730e8` | claude/AIC-0001 | correção dos 5 achados do Codex + lock por tarefa (unicidade de sequência entre agentes) |
 | `f01adf6` | claude/AIC-0001 | placeholder = valor inteiro `<...>`; sem falso positivo. **Commit entregue da correção** |
 | `2d2965e` | claude/AIC-0001 | handoffs `0002-codex.json` (revisão, transcrita) e `0003-claude.json` (correção) |
+| `19a7054` | claude/AIC-0001 | handoff `0004-codex.json`: re-revisão de `f01adf6` = **ACEITAR_COM_RESSALVAS** (transcrita) |
 
 Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 
@@ -53,7 +54,7 @@ Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 
 | ID | Dono | Estado | O quê |
 |---|---|---|---|
-| AIC-0001 | claude | **corrigida em `f01adf6`, aguardando re-revisão** | protocolo canônico (trilha A) |
+| AIC-0001 | claude | **`ACEITAR_COM_RESSALVAS` em `f01adf6`; aceite e merge = decisão do Lukas** | protocolo canônico (trilha A) |
 | AIC-0002 | codex | entregue em `92fc413`, **sem revisão** | superfície operacional (trilha B) |
 | AIC-0003 | codex | concluída: `MUDANCAS_NECESSARIAS` (1 alta, 3 médias, 1 baixa; todas reproduzidas e corrigidas) | revisar `8e48bfd` |
 
@@ -75,12 +76,18 @@ Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 
 ## Próximo passo exato
 
-1. **Re-revisão pelo Codex** de `f01adf6` (única rodada de correção; a SPEC §2 manda devolver ao
-   humano se persistir divergência). O Codex reproduz os 5 achados por conta própria, em cópia
-   temporária, sem editar `wt-claude`. Veredito: `ACEITAR` | `ACEITAR_COM_RESSALVAS` | `MUDANCAS_NECESSARIAS`.
+1. **Lukas decide o aceite de AIC-0001** (`f01adf6`, veredito do Codex: `ACEITAR_COM_RESSALVAS`). Ressalvas:
+   - `0003-claude.json` cita `01730e8` no `next_action`; o commit entregue é `f01adf6`. Handoff é imutável:
+     a correção está registrada em `0004-codex.json`, não em `0003`.
+   - **Autoria:** `01730e8`, `f01adf6`, `2d2965e` e todos os commits de `main` saíram como
+     `Lukas Ceratti Agnese <lukelucanolightknowledge@gmail.com>` (vem do `~/.gitconfig`), não como
+     `LuKas <Lukelucanolightknowledge@gmail.com>`. Config **local** do repo já corrigida (commits novos saem certos).
+     Reescrever os antigos muda o hash e invalida o que o Codex revisou; se quiser, faça **antes** do merge
+     e aceite a re-revisão. Padrão sugerido: não reescrever, só corrigir daqui para frente.
+   - Lock morto após `kill -9` exige `rmdir` manual (limite declarado).
 2. **Revisão cruzada de AIC-0002** (`92fc413`) pelo Claude, em cópia temporária, sem editar `wt-codex`.
-3. Lukas decide e faz o merge de `claude/AIC-0001-protocolo` e `codex/AIC-0002-operacional` em `main`,
-   remove `scripts/new-handoff.sh` e `.ai/STATUS.json` no mesmo merge, e atualiza este arquivo.
+3. Lukas faz o merge de `claude/AIC-0001-protocolo` e `codex/AIC-0002-operacional` em `main`, remove
+   `scripts/new-handoff.sh` e `.ai/STATUS.json` no mesmo merge, e atualiza este arquivo.
 4. Rodada 2: AIC-0004, adapters de skill `ai-handoff` sobre a SPEC aceita.
 
 Só o humano faz merge. Os agentes entregam commits nas próprias branches.
