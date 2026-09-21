@@ -16,13 +16,25 @@ trap 'rm -rf "$SANDBOX"' EXIT
 # repositorio de teste com branch de coordenacao main e uma branch de tarefa
 cd "$SANDBOX"
 git init -q -b main .
-git config user.email t@t; git config user.name t
+git config user.email Lukelucanolightknowledge@gmail.com; git config user.name LuKas
 mkdir -p scripts .ai/schemas
 cp "$SRC/scripts/handoff.sh" "$SRC/scripts/validate-handoff.py" scripts/
 echo base > base.txt
 git add -A >/dev/null; git commit -qm base
 git checkout -qb claude/AIC-0001-x
 echo work > work.txt; git add -A >/dev/null; git commit -qm work
+TASK_HEAD=$(git rev-parse HEAD)
+TASK_BASE=$(git merge-base main HEAD)
+git checkout -qb review/AIC-0006-source "$TASK_BASE"
+echo reviewed > reviewed.txt; git add -A >/dev/null; git commit -qm reviewed
+REVIEWED_HEAD=$(git rev-parse HEAD)
+REVIEWED_BASE=$(git merge-base main "$REVIEWED_HEAD")
+git checkout -q claude/AIC-0001-x
+git checkout -q main
+echo newer > main.txt; git add -A >/dev/null; git commit -qm main-advance
+MAIN_HEAD=$(git rev-parse HEAD)
+MAIN_SHORT=$(git rev-parse --short=12 main)
+git checkout -q claude/AIC-0001-x
 
 H=scripts/handoff.sh
 V=scripts/validate-handoff.py
@@ -36,6 +48,40 @@ bash $H "AIC-1" claude codex delivery >/dev/null 2>&1; check $? 2 "TASK_ID curto
 bash $H AIC-0001 claude claude delivery >/dev/null 2>&1; check $? 2 "from == to -> 2"
 bash $H AIC-0001 claude gemini delivery >/dev/null 2>&1; check $? 2 "agente desconhecido -> 2"
 bash $H AIC-0001 claude codex merge >/dev/null 2>&1; check $? 2 "kind desconhecido -> 2"
+bash $H AIC-0011 codex human review >/dev/null 2>&1; check $? 2 "review sem commit -> 2"
+[[ ! -e .ai/handoffs/AIC-0011 ]]; check $? 0 "review sem commit nao escreve"
+bash $H AIC-0012 claude codex delivery main >/dev/null 2>&1; check $? 2 "delivery com quinto argumento -> 2"
+[[ ! -e .ai/handoffs/AIC-0012 ]]; check $? 0 "delivery com quinto argumento nao escreve"
+bash $H AIC-0013 claude codex correction main >/dev/null 2>&1; check $? 2 "correction com quinto argumento -> 2"
+[[ ! -e .ai/handoffs/AIC-0013 ]]; check $? 0 "correction com quinto argumento nao escreve"
+bash $H AIC-0014 codex human review inexistente-aic-0006 >/dev/null 2>&1; check $? 1 "review de commit inexistente -> 1"
+[[ ! -e .ai/handoffs/AIC-0014 ]]; check $? 0 "review de commit inexistente nao escreve"
+
+OUTR=$(bash $H AIC-0015 codex human review main 2>/dev/null)
+python3 - "$OUTR" "$MAIN_HEAD" <<'PYX' 2>/dev/null; check $? 0 "review de branch grava commit revisado e sua base"
+import json, sys
+d = json.load(open(sys.argv[1]))
+assert d['delivery_commit'] == d['base_commit'] == sys.argv[2]
+PYX
+OUTS=$(bash $H AIC-0016 codex human review "$MAIN_SHORT" 2>/dev/null)
+python3 - "$OUTS" "$MAIN_HEAD" <<'PYX' 2>/dev/null; check $? 0 "review de SHA abreviado grava SHA completo"
+import json, sys
+d = json.load(open(sys.argv[1]))
+assert d['delivery_commit'] == d['base_commit'] == sys.argv[2]
+PYX
+OUTO=$(bash $H AIC-0017 codex human review "$REVIEWED_HEAD" 2>/dev/null)
+python3 - "$OUTO" "$REVIEWED_HEAD" "$REVIEWED_BASE" <<'PYX' 2>/dev/null; check $? 0 "review de outro ramo grava merge-base do commit revisado"
+import json, sys
+d = json.load(open(sys.argv[1]))
+assert d['delivery_commit'] == sys.argv[2], d
+assert d['base_commit'] == sys.argv[3] != d['delivery_commit'], d
+PYX
+ORPHAN_TREE=$(git mktree </dev/null)
+ORPHAN_COMMIT=$(printf 'orphan\n' | git commit-tree "$ORPHAN_TREE")
+git branch review/orphan "$ORPHAN_COMMIT"
+bash $H AIC-0018 codex human review review/orphan > "$SANDBOX/orphan.err" 2>&1; check $? 1 "review sem ancestral comum -> 1"
+grep -Fq "sem ancestral comum com main" "$SANDBOX/orphan.err"; check $? 0 "review sem ancestral comum tem mensagem distinta"
+[[ ! -e .ai/handoffs/AIC-0018 ]]; check $? 0 "review sem ancestral comum nao escreve"
 
 ESCAPED=$(find "$SANDBOX" -name '*evil*' -o -name 'etc' -type d 2>/dev/null | wc -l)
 check "$ESCAPED" 0 "nenhum arquivo criado fora de .ai/handoffs"
@@ -47,8 +93,8 @@ python3 -c "import json;json.load(open('$OUT1'))" 2>/dev/null; check $? 0 "hando
 python3 -c "
 import json;d=json.load(open('$OUT1'))
 assert d['previous_handoff'] is None and d['sequence']==1, d
-assert len(d['base_commit'])==40 and len(d['delivery_commit'])==40, d
-assert d['base_commit']!=d['delivery_commit'], 'base deve ser o merge-base, nao HEAD'
+assert d['delivery_commit']=='$TASK_HEAD', d
+assert d['base_commit']=='$TASK_BASE', d
 " 2>/dev/null; check $? 0 "git state capturado: seq 1, previous null, base != delivery"
 
 # esqueleto com placeholders tem de ser recusado pelo validador
@@ -56,7 +102,7 @@ python3 $V "$OUT1" >/dev/null 2>&1; check $? 1 "esqueleto com <TODO> e recusado"
 
 # --- imutabilidade e atomicidade ---------------------------------------------
 # reexecutar avanca a sequencia, nunca sobrescreve
-OUT2=$(bash $H AIC-0001 codex claude review 2>/dev/null)
+OUT2=$(bash $H AIC-0001 codex claude review HEAD 2>/dev/null)
 check "$OUT2" ".ai/handoffs/AIC-0001/0002-codex.json" "segundo handoff avanca a sequencia"
 python3 -c "
 import json;d=json.load(open('$OUT2'))
@@ -108,7 +154,7 @@ git checkout -q claude/AIC-0001-x
 
 # .ai como symlink (nao so .ai/handoffs) nao pode levar a escrita para fora
 mkdir -p "$SANDBOX/outside2" "$SANDBOX/s2"
-( cd "$SANDBOX/s2" && git init -q -b main . && git config user.email t@t && git config user.name t \
+( cd "$SANDBOX/s2" && git init -q -b main . && git config user.email Lukelucanolightknowledge@gmail.com && git config user.name LuKas \
   && echo x > x && git add -A >/dev/null && git commit -qm x && git checkout -qb claude/AIC-0001-y \
   && ln -s "$SANDBOX/outside2" .ai && bash "$SANDBOX/scripts/handoff.sh" AIC-0001 claude codex delivery >/dev/null 2>&1 )
 check $? 1 ".ai como symlink -> recusa"

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0006-0001",
+  "task_id": "AIC-0006",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T22:45:57Z",
+  "branch": "codex/AIC-0006-review-arg",
+  "base_commit": "cf71f31aaf509330ea4d945442bbfed43d23457c",
+  "delivery_commit": "3a0ba8cc3dc8eea8218a767f9bae540a16a0fbaf",
+  "summary": "AIC-0006 implementada: handoffs de review exigem o commit revisado e registram seu SHA completo e sua base, com teste escrito antes da correcao.",
+  "changes": [
+    {"path": "scripts/handoff.sh", "what": "Exige REVIEWED_COMMIT em review, rejeita argumento extra nos demais kinds e resolve delivery_commit e base_commit a partir do commit revisado."},
+    {"path": "tests/test_handoff.sh", "what": "Cobre codigos de saida, ausencia de escrita, referencias por branch e SHA abreviado, e preserva os testes anteriores de review."},
+    {"path": "docs/AI-HANDOFF.md", "what": "Atualiza o passo 5 e remove o ponto aberto do preenchimento manual do commit revisado."},
+    {"path": "docs/SPEC-v0.1.md", "what": "Documenta o quinto argumento, os campos derivados e os codigos de saida."}
+  ],
+  "tests": [
+    {"command": "bash tests/test_handoff.sh", "result": "pass", "note": "65 passaram, 0 falharam; teste novo falhou antes da alteracao do script."},
+    {"command": "bash tests/test_skills.sh", "result": "pass", "note": "44 passaram, 0 falharam."},
+    {"command": "bash tests/test_doctor.sh", "result": "pass", "note": "Codigos de saida 0, 1, 2, 3 e 4 verificados."},
+    {"command": "git diff --check", "result": "pass"}
+  ],
+  "risks": [],
+  "next_action": "Coordenador: encaminhe o commit 3a0ba8cc3dc8eea8218a767f9bae540a16a0fbaf para revisao do Claude na AIC-0007; nao houve merge nem push.",
+  "previous_handoff": null
+}
