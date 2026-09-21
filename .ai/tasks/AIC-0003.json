@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0003",
+  "title": "Revisao somente leitura da entrega da trilha A (commit 8e48bfd) pelo Codex",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "review",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T00:00:00Z",
+  "updated_at": "2026-09-21T00:00:00Z",
+  "branch": "codex/AIC-0002-operacional",
+  "worktree": "../wt-codex",
+  "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
+  "scope": {
+    "allowed_paths": ["-nenhuma escrita: revisao somente leitura"],
+    "forbidden_paths": ["docs/", "scripts/", "tests/", ".ai/", ".agents/", ".claude/"]
+  },
+  "acceptance": [
+    "A revisao mira o commit exato 8e48bfd, nao o nome da branch",
+    "Nenhum arquivo do worktree do Claude e criado, editado ou removido",
+    "Cada achado cita caminho e, quando aplicavel, linha, vinculado ao commit revisado",
+    "Toda alegacao de validacao e sustentada por comando executado e seu resultado",
+    "O veredito e um de: ACEITAR, ACEITAR_COM_RESSALVAS, MUDANCAS_NECESSARIAS"
+  ],
+  "handoffs": [],
+  "notes": "Fazer DEPOIS de entregar AIC-0002. O commit 8e48bfd vive na branch claude/AIC-0001-protocolo e ainda nao foi mergeado em main, de proposito: so o humano faz merge."
+}
