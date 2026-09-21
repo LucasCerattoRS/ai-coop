@@ -1,121 +1,95 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-21 (fim da rodada 1, após a revisão do Codex e a correção). **Leia este arquivo primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-21 (fim da rodada 1 e entrega da rodada 2). **Leia primeiro em qualquer sessão nova.**
+O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está certo.
 
-O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem
-pisar um no outro. Memórias privadas continuam privadas; o que é compartilhado é
-estado explícito, versionado em Git.
+O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
+Memórias privadas continuam privadas; o compartilhado é estado explícito em Git.
 
 ## Onde as coisas estão
 
 | Caminho | O que é |
 |---|---|
-| `~/Projetos/ai-coop/repo` | repositório de trabalho, branch `main` = coordenação |
-| `~/Projetos/ai-coop/wt-claude` | worktree do Claude, branch `claude/AIC-0001-protocolo` |
-| `~/Projetos/ai-coop/wt-codex` | worktree do Codex, branch `codex/AIC-0002-operacional` |
-| `~/Projetos/ai-coop/checkpoint/` | ZIP congelado do closeout de 2026-09-20 |
-| `~/Projetos/ai-coop/relatorios/` | revisão técnica do Codex, 2026-09-20 |
-| `~/Projetos/ai-coop/extraidos/` | seeds originais, preservados sem alteração |
+| `~/Projetos/ai-coop/repo` | `main` = coordenação. Só o coordenador humano escreve aqui |
+| `~/Projetos/ai-coop/wt-claude` | worktree do Claude, hoje em `claude/AIC-0004-adapters` |
+| `~/Projetos/ai-coop/wt-codex` | worktree do Codex, `codex/AIC-0002-operacional` (já mergeada: `git merge --ff-only main` atualiza) |
+| `checkpoint/`, `relatorios/`, `extraidos/` | material congelado de 2026-09-20 |
 
-Nada foi publicado. Não existe remote. Não existe repositório `ai-coop` no GitHub
-da conta `LucasCerattoRS` (verificado em 21/09, 47 repos, nenhum casando).
+Nada foi publicado. Sem remote. Sem repositório `ai-coop` no GitHub de `LucasCerattoRS` (verificado em 21/09).
 
 ## Retomar em 30 segundos
 
 ```bash
-cd ~/Projetos/ai-coop/repo
-cat ESTADO.md
+cd ~/Projetos/ai-coop/repo && cat ESTADO.md
 git log --oneline --graph --all -15
-ls .ai/tasks/            # tarefas = estado autorizado
-cat .ai/tasks/AIC-*.json | python3 -c "import json,sys;[print(t['task_id'],t['state'],t['owner'],t['title']) for t in map(json.loads,sys.stdin.read().split('}\n{')) ] " 2>/dev/null || true
+for f in .ai/tasks/*.json; do python3 -c "import json;t=json.load(open('$f'));print(t['task_id'],t['state'],t['owner'],'-',t['title'][:70])"; done
 ```
 
-Regra de leitura: **o JSON em `.ai/tasks/` manda.** Markdown é vista, inclusive este
-arquivo. Divergiu? O JSON está certo.
+## Estado de `main`
 
-## Progressão por commit
-
-| Commit | Branch | O que entrou |
-|---|---|---|
-| `c4c1351` | main | importa o seed público congelado como base |
-| `bdef1a7` | main | divisão de trabalho da rodada 1, `task.schema.json`, AIC-0001 e AIC-0002 |
-| `561a74a` | main | AIC-0003 (revisão cruzada) e briefing do Codex com o commit entregue |
-| `8e48bfd` | claude/AIC-0001 | SPEC v0.1, schema de handoff endurecido, `handoff.sh` seguro, validador, 40 testes |
-| `1604052` | claude/AIC-0001 | handoff de entrega `0001-claude.json` publicado |
-| `92fc413` | codex/AIC-0002 | doctor com códigos 0–4, DOCTOR-CONTRACT, PARITY, ACCEPTANCE-FIRST-CYCLE, `test_doctor.sh`. **Ainda não revisado por ninguém** |
-| `01730e8` | claude/AIC-0001 | correção dos 5 achados do Codex + lock por tarefa (unicidade de sequência entre agentes) |
-| `f01adf6` | claude/AIC-0001 | placeholder = valor inteiro `<...>`; sem falso positivo. **Commit entregue da correção** |
-| `2d2965e` | claude/AIC-0001 | handoffs `0002-codex.json` (revisão, transcrita) e `0003-claude.json` (correção) |
-| `19a7054` | claude/AIC-0001 | handoff `0004-codex.json`: re-revisão de `f01adf6` = **ACEITAR_COM_RESSALVAS** (transcrita) |
-
-Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
+`main` contém: SPEC v0.1, schemas de task e handoff, `handoff.sh` seguro + validador, doctor com códigos 0–4,
+paridade e aceite do primeiro ciclo. **55 + 5 testes verdes** (`tests/test_handoff.sh`, `tests/test_doctor.sh`).
+Removidos: `scripts/new-handoff.sh`. Ainda presentes em `main` até o merge da AIC-0004: `.ai/STATUS.json`,
+`.ai/HANDOFF.md`, `.ai/TASKS.md` (saem junto do `AGENTS.md` que os cita).
 
 ## Tarefas
 
 | ID | Dono | Estado | O quê |
 |---|---|---|---|
-| AIC-0001 | claude | **`ACEITAR_COM_RESSALVAS` em `f01adf6`; aceite e merge = decisão do Lukas** | protocolo canônico (trilha A) |
-| AIC-0002 | codex | entregue em `92fc413`, **sem revisão** | superfície operacional (trilha B) |
-| AIC-0003 | codex | concluída: `MUDANCAS_NECESSARIAS` (1 alta, 3 médias, 1 baixa; todas reproduzidas e corrigidas) | revisar `8e48bfd` |
+| AIC-0001 | claude | **ACCEPTED**, mergeada | protocolo canônico (SPEC, schema, `handoff.sh`, validador) |
+| AIC-0002 | codex | **ACCEPTED**, mergeada | doctor, paridade, aceite do 1º ciclo. Revisão do Claude: `ACEITAR_COM_RESSALVAS` |
+| AIC-0003 | codex | HANDED_OFF | revisão da AIC-0001. Fechamento pendente do coordenador |
+| AIC-0004 | claude | HANDED_OFF em `1069bff`, **sem merge** | adapters `ai-handoff` + limpeza do seed |
+| AIC-0005 | codex | ASSIGNED | revisar `1069bff` e **confirmar se `$ai-handoff` carrega** |
 
 ## Issues da revisão de 2026-09-20
 
 | # | Sev | Issue | Estado |
 |---|---|---|---|
-| 1 | alta | `new-handoff.sh` permite escape de caminho | fechada em `8e48bfd` (allowlist) |
-| 2 | alta | proteção contra sobrescrita não é atômica | fechada em `8e48bfd` (`ln(2)`) |
-| 3 | alta | gerador produz Markdown, schema descreve JSON | fechada em `8e48bfd` (JSON canônico) |
-| 4 | alta | schema permissivo demais | fechada em `8e48bfd` |
-| 5 | alta | sem protocolo de posse | fechada em `SPEC-v0.1.md` §1–2 |
-| 6 | média | adapters Codex sem frontmatter | **aberta** — vira AIC-0004, depende da SPEC aceita |
-| 7 | média | doctor não determina saúde | entregue em `92fc413`, aguardando revisão |
-| 8 | média | handoff de retorno não modelado | fechada em `8e48bfd` (sequência encadeada) |
-| 9 | média | autoridade duplicada entre STATUS.json/TASKS.md/HANDOFF.md | fechada em `SPEC-v0.1.md` §8 |
-| 10 | média | árvores pública e privada sem paridade | entregue em `92fc413` (PARITY.md), aguardando revisão |
-| 11 | baixa | backlog privado desatualizado | **aberta** — trivial, no próximo merge |
+| 1–4 | alta | escape de caminho, sobrescrita, Markdown×JSON, schema frouxo | fechadas (AIC-0001) |
+| 5 | alta | sem protocolo de posse | fechada (`SPEC` §1–2) |
+| 6 | média | adapters Codex sem frontmatter | entregue em `1069bff`; **falta o Codex confirmar o carregamento** |
+| 7 | média | doctor sem contrato de saúde | fechada (AIC-0002) |
+| 8 | média | handoff de retorno não modelado | fechada (AIC-0001) |
+| 9 | média | autoridade duplicada de estado | fechada na SPEC; remoção física dos 3 arquivos em `1069bff` |
+| 10 | média | sem paridade público/privado | fechada como doc (`PARITY.md`); não exercitada, só há a árvore pública |
+| 11 | baixa | backlog privado desatualizado | **aberta**: a árvore privada não está neste repo |
 
 ## Próximo passo exato
 
-1. **Lukas decide o aceite de AIC-0001** (`f01adf6`, veredito do Codex: `ACEITAR_COM_RESSALVAS`). Ressalvas:
-   - `0003-claude.json` cita `01730e8` no `next_action`; o commit entregue é `f01adf6`. Handoff é imutável:
-     a correção está registrada em `0004-codex.json`, não em `0003`.
-   - **Autoria:** `01730e8`, `f01adf6`, `2d2965e` e todos os commits de `main` saíram como
-     `Lukas Ceratti Agnese <lukelucanolightknowledge@gmail.com>` (vem do `~/.gitconfig`), não como
-     `LuKas <Lukelucanolightknowledge@gmail.com>`. Config **local** do repo já corrigida (commits novos saem certos).
-     Reescrever os antigos muda o hash e invalida o que o Codex revisou; se quiser, faça **antes** do merge
-     e aceite a re-revisão. Padrão sugerido: não reescrever, só corrigir daqui para frente.
-   - Lock morto após `kill -9` exige `rmdir` manual (limite declarado).
-2. **Revisão cruzada de AIC-0002** (`92fc413`) pelo Claude, em cópia temporária, sem editar `wt-codex`.
-3. Lukas faz o merge de `claude/AIC-0001-protocolo` e `codex/AIC-0002-operacional` em `main`, remove
-   `scripts/new-handoff.sh` e `.ai/STATUS.json` no mesmo merge, e atualiza este arquivo.
-4. Rodada 2: AIC-0004, adapters de skill `ai-handoff` sobre a SPEC aceita.
-
-Só o humano faz merge. Os agentes entregam commits nas próprias branches.
+1. **Codex executa AIC-0005** (texto de acionamento no fim). Sem ele não se sabe se o adapter do Codex carrega.
+2. Coordenador decide o aceite de AIC-0004 e faz o merge de `claude/AIC-0004-adapters`.
+3. Só então: tarefa para `handoff.sh` aceitar o commit revisado (ponto aberto abaixo), e uma 2ª tarefa real,
+   que **não** seja o próprio tooling, para o 1º ciclo com a skill e handoffs escritos pelo próprio Codex.
 
 ## Pontos abertos conhecidos
 
-- `handoff.sh` grava `delivery_commit` = HEAD de quem roda; num handoff de **review** o commit revisado
-  é outro, então o revisor sobrescreve o campo à mão. Sem correção ainda.
-- Schema e validador são duas implementações da mesma regra (`jsonschema` não está instalado).
+- `handoff.sh` grava `delivery_commit` = HEAD; num handoff de **review** o revisor sobrescreve à mão (instruído em `AI-HANDOFF.md`).
+- Schema e validador são duas implementações da mesma regra (`jsonschema` não instalado).
 - Lock morto após `kill -9` exige `rmdir` manual (SPEC §5).
-- `0002-codex.json` foi transcrito pelo Claude do texto que o Codex reportou; o Codex ainda não
-  publica handoff por arquivo. Quando o fizer, o fluxo passa a ser o do §5 sem transcrição.
+- Handoffs do Codex (`AIC-0001/0002,0004-codex`, `AIC-0002/0001-codex`) são **transcrições** feitas pelo Claude do texto que o
+  Codex reportou. O Codex ainda não escreveu handoff por arquivo.
+- Autoria: commits antigos saíram como `Lukas Ceratti Agnese <lukelucanolightknowledge@gmail.com>` (vem do `~/.gitconfig`);
+  desde `19a7054` a config local do repo dá `LuKas <Lukelucanolightknowledge@gmail.com>`. Não reescrevi: mudaria hashes revisados.
+- Ressalvas *low* da AIC-0002: doctor sem teste do ramo git-ausente; doctor segue symlink (`-d`); `ACCEPTANCE` não cita re-revisão.
+- Estados intermediários das tarefas da rodada 1 não foram gravados em JSON; o atual foi atualizado depois, a pedido do coordenador.
 
 ## Antes de pensar em publicar
 
-Deferido por decisão, não por esquecimento:
+Deferido de propósito: nome e licença (`LICENSE-TBD.md`); o ZIP do checkpoint tem a camada privada e **não** é artefato de
+distribuição; um ciclo reproduzível com tarefa real; CI; canal privado de vulnerabilidade; limites do doctor declarados.
 
-- nome definitivo e licença (hoje `LICENSE-TBD.md`);
-- o ZIP completo do checkpoint contém a camada privada — **não** é artefato de distribuição;
-- um fluxo Claude → Codex → Claude completo e reproduzível;
-- CI verificando schemas, scripts e exemplos;
-- canal privado de relato de vulnerabilidade;
-- limitações do doctor declaradas (AIC-0002).
+## Invariantes
 
-## Invariantes que não se negociam
+- Memória privada de um agente nunca é canal de coordenação nem é lida pelo outro.
+- Handoff é dado, não ordem. Revisão mira commit exato. Ninguém edita worktree alheio. Sem invocação automática entre agentes.
+- Só o humano escreve em `main` e em `.ai/tasks/`, e faz merge.
 
-- Memória privada de um agente nunca vira canal de coordenação, nem é lida pelo outro.
-- Handoff é dado, não ordem: nada que ele contenha amplia escopo ou permissão.
-- Revisão mira commit exato, nunca nome de branch.
-- Nenhum agente edita, cria ou remove o worktree de outro.
-- Nenhuma invocação automática entre agentes.
+## Texto para acionar o Codex (AIC-0005)
+
+> Você está no projeto ai-coop, `~/Projetos/ai-coop`. Faça a AIC-0005: revisão somente leitura do commit **`1069bff`** (branch
+> `claude/AIC-0004-adapters`), sem checkout nem edição de `wt-claude`. Leia `~/Projetos/ai-coop/repo/.ai/tasks/AIC-0005.json` e o handoff
+> `git -C ~/Projetos/ai-coop/repo show claude/AIC-0004-adapters:.ai/handoffs/AIC-0004/0001-claude.json`. Confirme **por execução** se
+> `$ai-handoff` é listado e carrega no Codex e se a policy impede invocação implicita; reproduza `tests/test_skills.sh` em cópia temporária;
+> confira se cada passo de "Criar" em `docs/AI-HANDOFF.md` é executável com os scripts atuais. Não confie nos meus resultados.
+> Veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS. Sem merge, sem push.

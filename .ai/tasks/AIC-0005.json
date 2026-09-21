@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0005",
+  "title": "Revisao somente leitura da entrega dos adapters (AIC-0004, commit 1069bff) pelo Codex, incluindo o carregamento real de $ai-handoff",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "review",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T22:12:41Z",
+  "updated_at": "2026-09-21T22:12:41Z",
+  "branch": "codex/AIC-0002-operacional",
+  "worktree": "../wt-codex",
+  "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
+  "scope": {
+    "allowed_paths": [
+      "-nenhuma escrita: revisao somente leitura"
+    ],
+    "forbidden_paths": [
+      "docs/",
+      "scripts/",
+      "tests/",
+      ".ai/",
+      ".agents/",
+      ".claude/",
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "A revisao mira o commit exato 1069bff, nao o nome da branch, sem checkout nem edicao de wt-claude",
+    "O Codex confirma por execucao se $ai-handoff e listado e carrega, e se a policy impede invocacao implicita; nao confia no que o handoff afirma",
+    "tests/test_skills.sh reproduzido pelo Codex em copia temporaria",
+    "Cada passo de 'Criar' em docs/AI-HANDOFF.md e conferido como executavel com os scripts existentes, principalmente o passo 5 de review",
+    "Cada achado cita caminho e, quando aplicavel, linha; veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS"
+  ],
+  "handoffs": [],
+  "notes": "Depende da entrega 0001-claude.json de AIC-0004. O commit 1069bff vive em claude/AIC-0004-adapters, ainda sem merge."
+}

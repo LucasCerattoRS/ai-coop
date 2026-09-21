@@ -2,15 +2,15 @@
   "schema_version": 1,
   "task_id": "AIC-0004",
   "title": "Adapters minimos da skill ai-handoff (Claude e Codex) sobre um protocolo comum, e limpeza das fontes de estado do seed",
-  "state": "ASSIGNED",
+  "state": "HANDED_OFF",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T22:09:14Z",
-  "updated_at": "2026-09-21T22:09:14Z",
+  "updated_at": "2026-09-21T22:12:41Z",
   "branch": "claude/AIC-0004-adapters",
   "worktree": "../wt-claude",
-  "base_commit": null,
+  "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
   "scope": {
     "allowed_paths": [
       "docs/AI-HANDOFF.md",
@@ -47,6 +47,8 @@
     "Nenhum arquivo em forbidden_paths tocado",
     "Carregamento real do adapter do Codex NAO e verificavel pelo Claude: declarado not_run e delegado a revisao do Codex"
   ],
-  "handoffs": [],
+  "handoffs": [
+    "0001-claude.json"
+  ],
   "notes": "Resolve a issue MEDIA 6 e a ponta restante da MEDIA 9. Ponto aberto que fica FORA desta tarefa: handoff.sh grava delivery_commit = HEAD; num handoff de review o revisor precisa sobrescrever o campo (o protocolo da skill instrui isso). Correcao no script vira tarefa propria, porque scripts/ e AIC-0001 ja aceita."
 }
