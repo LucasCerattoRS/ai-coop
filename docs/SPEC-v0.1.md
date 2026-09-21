@@ -76,6 +76,10 @@ Tocar um `forbidden_path` reprova a tarefa — é o que permite dois agentes
 trabalharem ao mesmo tempo sem colisão. Escopos de tarefas concorrentes têm de ser
 disjuntos, inclusive por prefixo de diretório.
 
+`.ai/handoffs/<TASK-ID>/` é sempre implicitamente permitido ao dono da tarefa e
+implicitamente proibido a todos os outros, sem precisar aparecer em `scope`: é o
+canal de entrega, não território de trabalho.
+
 `acceptance` é uma lista de critérios objetivos, verificáveis por execução. Tarefa
 sem critério de aceite não é atribuível.
 
