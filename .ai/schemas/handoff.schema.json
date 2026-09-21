@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Coop Handoff",
+  "type": "object",
+  "required": ["task_id", "source_agent", "target_agent", "status", "next_action"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "source_agent": {"type": "string"},
+    "target_agent": {"type": "string"},
+    "branch": {"type": "string"},
+    "worktree": {"type": "string"},
+    "last_commit": {"type": "string"},
+    "status": {"enum": ["ready", "blocked", "review", "done"]},
+    "completed": {"type": "array", "items": {"type": "string"}},
+    "files_changed": {"type": "array", "items": {"type": "string"}},
+    "tests": {"type": "array", "items": {"type": "string"}},
+    "risks": {"type": "array", "items": {"type": "string"}},
+    "decisions": {"type": "array", "items": {"type": "string"}},
+    "next_action": {"type": "string"}
+  },
+  "additionalProperties": true
+}

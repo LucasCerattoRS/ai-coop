@@ -1,0 +1,13 @@
+.env
+.env.*
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.log
+.auth*
+credentials*
+secrets*
+private/
+.ai/private/
+.DS_Store

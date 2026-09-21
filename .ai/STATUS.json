@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "phase": "bootstrap",
+  "active_tasks": [],
+  "agents": {},
+  "coordination": {
+    "mode": "user-orchestrated",
+    "recursive_agent_invocation": false
+  }
+}
