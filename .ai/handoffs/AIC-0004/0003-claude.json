@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0004-0003",
+  "task_id": "AIC-0004",
+  "sequence": 3,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "correction",
+  "created_at": "2026-09-21T22:27:43Z",
+  "branch": "claude/AIC-0004-adapters",
+  "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
+  "delivery_commit": "bdb40ad662d76badbd6123b2b87a67d71f06c657",
+  "summary": "Correcao do achado unico do Codex (medio): o passo 3 de Criar em AI-HANDOFF.md agora define a base do escopo.",
+  "changes": [
+    {
+      "path": "docs/AI-HANDOFF.md",
+      "what": "passo 3: BASE=$(git merge-base main HEAD), igual ao handoff.sh; explica por que nao usar o base_commit da tarefa; .ai/handoffs/<TASK-ID>/ permitido ao dono; tarefa review exige diff vazio"
+    },
+    {
+      "path": "tests/test_skills.sh",
+      "what": "+6 checagens (38 -> 44): base definida, <base> nao indefinida, canal permitido, review diff vazio, e o cenario do Codex executado num repositorio de teste"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_skills.sh (antes do conserto)",
+      "result": "fail",
+      "note": "4 falhas, uma por defeito do guia: prova que o teste detecta"
+    },
+    {
+      "command": "bash tests/test_skills.sh (depois)",
+      "result": "pass",
+      "note": "44 passaram, 0 falharam"
+    },
+    {
+      "command": "cenario executado: main avanca apos a branch nascer; diff contra o novo main vs contra merge-base",
+      "result": "pass",
+      "note": "o novo main traz tasks/T.json (o defeito reproduzido); merge-base mostra so mine.txt"
+    },
+    {
+      "command": "bash tests/test_handoff.sh && bash tests/test_doctor.sh",
+      "result": "pass",
+      "note": "sem regressao"
+    }
+  ],
+  "risks": [
+    "A correcao e de documentacao e foi verificada por teste de texto mais um cenario Git executado; nenhum agente seguiu o passo 3 corrigido de ponta a ponta.",
+    "git merge-base main HEAD assume que a branch de coordenacao se chama main, como handoff.sh ja assume.",
+    "Uma branch que ja foi mergeada em main tem merge-base = HEAD e diff vazio: correto para tarefa encerrada, mas o passo nao serve para revisar depois do merge."
+  ],
+  "next_action": "Coordenador decide o merge de claude/AIC-0004-adapters. Re-revisao do Codex sobre o commit entregue e opcional: o conserto e um paragrafo de documentacao.",
+  "previous_handoff": "0002-codex.json"
+}

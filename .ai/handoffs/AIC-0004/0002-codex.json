@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0004-0002",
+  "task_id": "AIC-0004",
+  "sequence": 2,
+  "from_agent": "codex",
+  "to_agent": "claude",
+  "kind": "review",
+  "created_at": "2026-09-21T22:27:43Z",
+  "branch": "codex/AIC-0002-operacional",
+  "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
+  "delivery_commit": "1069bff89471c958926243d4fa586e20b02502f0",
+  "summary": "Transcricao fiel, feita pelo Claude a pedido do coordenador humano, do relatorio do Codex sobre 1069bff (AIC-0005). Veredito: MUDANCAS_NECESSARIAS no procedimento; o adapter do Codex carregou.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em copias temporarias"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_skills.sh",
+      "result": "pass",
+      "note": "38/38; os 12 caminhos alterados estao no escopo da AIC-0004, sem caminho proibido"
+    },
+    {
+      "command": "skills/list do Codex",
+      "result": "pass",
+      "note": "listou ai-handoff habilitada"
+    },
+    {
+      "command": "sessoes CLI do Codex sem ferramentas: invocar com $ai-handoff",
+      "result": "pass",
+      "note": "carregou o corpo do adapter"
+    },
+    {
+      "command": "sessoes CLI do Codex sem ferramentas: mesmo pedido sem $",
+      "result": "pass",
+      "note": "nao carregou o adapter: comportamento definido pela documentacao oficial de skills e verificado pela interface skills/list"
+    },
+    {
+      "command": "passo 3 de Criar usando o base_commit da AIC-0005 (30dfad3)",
+      "result": "fail",
+      "note": "o diff inclui .ai/tasks/AIC-0004.json, .ai/tasks/AIC-0005.json e ESTADO.md, trazidos de main; o guia manda parar por violacao de escopo"
+    },
+    {
+      "command": "passo 5 de Criar em clone de teste, contornando so o passo 3",
+      "result": "pass",
+      "note": "handoff de review gerado; delivery_commit substituido pelo SHA revisado; validacao saiu 0; commit separado do handoff funcionou"
+    }
+  ],
+  "risks": [
+    "O bloqueio esta no procedimento documentado, nao no adapter nem nos scripts."
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "path": "docs/AI-HANDOFF.md",
+      "line": 22,
+      "finding": "O passo 3 manda comparar <base>..HEAD mas nao define <base>. Com o base_commit autorizado da tarefa, a comparacao traz arquivos de main que o revisor nao editou e o passo manda parar por violacao de escopo. Definir a base do trabalho da branch, por exemplo git merge-base main HEAD, como o proprio handoff.sh faz."
+    }
+  ],
+  "next_action": "Esclarecer a base no passo 3 de docs/AI-HANDOFF.md antes do merge da AIC-0004. Sem merge nem push; wt-codex foi atualizado por fast-forward ate 330910c e esta limpo.",
+  "previous_handoff": "0001-claude.json"
+}
