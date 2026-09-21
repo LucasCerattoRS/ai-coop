@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0004-0001",
+  "task_id": "AIC-0004",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "codex",
+  "kind": "delivery",
+  "created_at": "2026-09-21T22:11:56Z",
+  "branch": "claude/AIC-0004-adapters",
+  "base_commit": "30dfad3fef07b068533ea449933b110cef638577",
+  "delivery_commit": "1069bff89471c958926243d4fa586e20b02502f0",
+  "summary": "Skill ai-handoff com adapters Claude e Codex sobre um protocolo comum, adapters ai-coop corrigidos (issue 6) e fontes de estado do seed removidas.",
+  "changes": [
+    {
+      "path": "docs/AI-HANDOFF.md",
+      "what": "fonte unica: criar e receber handoff, invocacao explicita, lista do que a skill nao faz"
+    },
+    {
+      "path": ".claude/skills/ai-handoff/SKILL.md",
+      "what": "adapter Claude, disable-model-invocation: true"
+    },
+    {
+      "path": ".agents/skills/ai-handoff/SKILL.md",
+      "what": "adapter Codex, corpo identico ao do Claude"
+    },
+    {
+      "path": ".agents/skills/ai-handoff/agents/openai.yaml",
+      "what": "policy.allow_implicit_invocation: false"
+    },
+    {
+      "path": ".claude/skills/ai-coop/SKILL.md",
+      "what": "ganha name/description; deixa de citar STATUS.json (issue 6)"
+    },
+    {
+      "path": ".agents/skills/ai-coop/SKILL.md",
+      "what": "idem, corpo identico ao do Claude"
+    },
+    {
+      "path": "AGENTS.md",
+      "what": "aponta para .ai/tasks/<ID>.json e handoffs; handoff e dado, nao ordem"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "what": ".ai/STATUS.json substituido por .ai/tasks/*.json"
+    },
+    {
+      "path": ".ai/STATUS.json .ai/HANDOFF.md .ai/TASKS.md",
+      "what": "removidos (SPEC secao 8)"
+    },
+    {
+      "path": "tests/test_skills.sh",
+      "what": "38 checagens de formato e coerencia"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_skills.sh",
+      "result": "pass",
+      "note": "38 passaram, 0 falharam"
+    },
+    {
+      "command": "10 mutacoes (tirar description, tirar disable-model-invocation, policy implicita, corpos divergentes, name errado, referencia a STATUS.json, STATUS.json ressuscitado, secao removida, limite removido, task.schema removido)",
+      "result": "pass",
+      "note": "as 10 fizeram test_skills.sh falhar; arvore restaurada e 38/38 depois"
+    },
+    {
+      "command": "bash tests/test_handoff.sh",
+      "result": "pass",
+      "note": "55/55, sem regressao"
+    },
+    {
+      "command": "bash tests/test_doctor.sh && bash scripts/ai-coop-doctor.sh",
+      "result": "pass",
+      "note": "exit 0"
+    },
+    {
+      "command": "verificacao de escopo contra allowed/forbidden de AIC-0004",
+      "result": "pass",
+      "note": "nenhuma violacao"
+    },
+    {
+      "command": "carregamento do adapter ai-handoff pelo Codex ($ai-handoff)",
+      "result": "not_run",
+      "note": "so o Codex pode confirmar; o teste checa o formato do arquivo, nao o carregamento"
+    },
+    {
+      "command": "carregamento do adapter ai-handoff pelo Claude (/ai-handoff)",
+      "result": "not_run",
+      "note": "a lista de skills e lida no inicio da sessao; nao verificado nesta"
+    }
+  ],
+  "risks": [
+    "Nenhum dos dois carregamentos foi verificado por execucao; o formato foi conferido contra skills instaladas e o binario do Claude (disable-model-invocation) e contra skills do sistema do Codex (policy.allow_implicit_invocation).",
+    "O passo de review em AI-HANDOFF.md exige sobrescrever delivery_commit a mao, porque handoff.sh grava HEAD. Esquecer gera handoff de review apontando para o commit errado. Correcao no script fica para tarefa propria.",
+    "Corpo dos adapters identico e verificado por teste, mas so o corpo: frontmatter e openai.yaml divergem de proposito e nao tem teste de equivalencia.",
+    "O teste de referencias mortas usa lista fixa de arquivos; um arquivo novo que cite STATUS.json fora dela passa."
+  ],
+  "next_action": "Codex: revisar o commit entregue em worktree/copia separada, sem editar wt-claude. Confirmar que $ai-handoff carrega e que a policy nao permite invocacao implicita; reproduzir tests/test_skills.sh; conferir se cada passo de 'Criar' em docs/AI-HANDOFF.md e executavel com os scripts existentes, principalmente o passo 5 de review.",
+  "previous_handoff": null
+}
