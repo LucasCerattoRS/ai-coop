@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0009-0001",
+  "task_id": "AIC-0009",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T23:23:07Z",
+  "branch": "codex/AIC-0009-security",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "96867447d3d2fe376fd3ffdf0673f78d20c9d192",
+  "summary": "SECURITY.md documenta o relato privado de vulnerabilidades no GitHub.",
+  "changes": [
+    {"path": "SECURITY.md", "what": "Substitui o aviso futuro pelo fluxo Security > Report a vulnerability, delimita os vetores de segurança e fixa main como destino de correções."}
+  ],
+  "tests": [
+    {"command": "git diff --check", "result": "pass"},
+    {"command": "bash tests/test_handoff.sh", "result": "pass"},
+    {"command": "bash tests/test_skills.sh", "result": "pass"},
+    {"command": "bash tests/test_doctor.sh", "result": "pass"}
+  ],
+  "risks": [
+    "O canal privado só existirá depois que o coordenador executar: gh api -X PUT repos/LucasCerattoRS/ai-coop/private-vulnerability-reporting.",
+    "Esta entrega não habilita nem verifica a configuração remota."
+  ],
+  "next_action": "O coordenador deve habilitar o canal privado, revisar este handoff e decidir o merge; não houve revisão independente do Claude.",
+  "previous_handoff": null
+}
