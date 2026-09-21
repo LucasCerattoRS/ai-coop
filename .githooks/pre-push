@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [[ ${AI_COOP_HUMAN:-} != 1 ]]; then
+  printf '%s\n' 'ai-coop: somente o coordenador humano pode fazer push (AI_COOP_HUMAN=1).' >&2
+  exit 1
+fi
