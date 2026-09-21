@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0013",
+  "title": "Trava mecanica de merge e push por agente (hooks versionados)",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0013-merge-guard",
+  "worktree": "../wt-codex",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      ".githooks/",
+      "scripts/install-hooks.sh",
+      "tests/test_merge_guard.sh",
+      "docs/MERGE-GUARD.md",
+      "AGENTS.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      ".ai/examples/",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
+      "scripts/handoff.sh",
+      "scripts/validate-handoff.py",
+      "scripts/ai-coop-doctor.sh",
+      "docs/SPEC-v0.1.md",
+      "docs/AI-HANDOFF.md",
+      ".github/"
+    ]
+  },
+  "acceptance": [
+    "Hooks em .githooks/ (pre-merge-commit, pre-push e o que for preciso) recusam merge e push a menos que AI_COOP_HUMAN=1 esteja no ambiente; scripts/install-hooks.sh aplica core.hooksPath",
+    "Motivacao registrada: em 21/09 o Codex mergeou em main por um texto ambiguo; hoje a regra 'so o humano faz merge' depende so de redacao",
+    "Merge fast-forward NAO dispara pre-merge-commit: o Codex investiga e resolve (reference-transaction ou outro meio) ou declara o limite por escrito em docs/MERGE-GUARD.md; nao pode alegar cobertura que nao tem",
+    "tests/test_merge_guard.sh, sem framework, cobre: merge recusado, ff, push recusado, e liberado com AI_COOP_HUMAN=1. O teste falha se o hook for desligado",
+    "AGENTS.md ganha uma regra curta apontando para o guard",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+  ],
+  "handoffs": [],
+  "notes": "Hook local e por clone e pode ser burlado com --no-verify: e barreira contra erro, nao contra um agente hostil. Isso tem de estar dito no doc. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+}

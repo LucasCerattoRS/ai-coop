@@ -7,7 +7,7 @@
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T23:11:01Z",
-  "updated_at": "2026-09-21T23:11:01Z",
+  "updated_at": "2026-09-21T23:18:46Z",
   "branch": null,
   "worktree": null,
   "base_commit": null,
@@ -29,5 +29,5 @@
     "Resultado vira lista de correcoes no protocolo, nao so um aceite"
   ],
   "handoffs": [],
-  "notes": "E o teste que decide se o protocolo funciona fora do laboratorio. Ate aqui todas as tarefas foram o proprio tooling."
+  "notes": "E o teste que decide se o protocolo funciona fora do laboratorio. Ate aqui todas as tarefas foram o proprio tooling. NAO delegada ao Codex: exige o coordenador escolher a tarefa e /ai-handoff verificado no Claude, que so o Claude pode fazer numa sessao nova."
 }

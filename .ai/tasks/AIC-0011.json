@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0011",
+  "title": "Ressalvas low da AIC-0002: teste do ramo git-ausente, doctor e symlink, ACCEPTANCE e re-revisao",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0011-doctor-ressalvas",
+  "worktree": "../wt-codex",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "scripts/ai-coop-doctor.sh",
+      "tests/test_doctor.sh",
+      "docs/DOCTOR-CONTRACT.md",
+      "docs/ACCEPTANCE-FIRST-CYCLE.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      ".ai/examples/",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
+      "scripts/handoff.sh",
+      "scripts/validate-handoff.py",
+      "docs/SPEC-v0.1.md",
+      "docs/AI-HANDOFF.md",
+      ".github/"
+    ]
+  },
+  "acceptance": [
+    "tests/test_doctor.sh cobre o ramo git-indisponivel (PATH sem git -> exit 1) e falha se o ramo for removido",
+    "docs/DOCTOR-CONTRACT.md declara o comportamento com symlink em .ai, .ai/tasks e .ai/schemas; se o Codex decidir recusar symlink, o doctor e o teste mudam junto e o contrato diz por que",
+    "docs/ACCEPTANCE-FIRST-CYCLE.md item 4 diz que o coordenador pode pedir re-revisao da correcao e como a correcao e verificada quando nao pede",
+    "Codigos de saida existentes 0-4 nao mudam de significado",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+  ],
+  "handoffs": [],
+  "notes": "Ressalvas do handoff AIC-0002/0002-claude.json. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+}

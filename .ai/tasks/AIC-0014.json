@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0014",
+  "title": "Validador de tarefas: schema, transicoes legais de estado e escopos disjuntos",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0014-task-validator",
+  "worktree": "../wt-codex",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "scripts/validate-task.py",
+      "tests/test_task.sh"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      ".ai/examples/",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
+      "scripts/handoff.sh",
+      "scripts/validate-handoff.py",
+      "scripts/ai-coop-doctor.sh",
+      "docs/",
+      ".github/",
+      "SECURITY.md"
+    ]
+  },
+  "acceptance": [
+    "scripts/validate-task.py valida .ai/tasks/*.json contra task.schema.json e sai 0/1/2 como o validador de handoff, sem dependencia externa",
+    "Confere transicoes legais de estado usando dois JSONs (antes/depois), conforme a tabela da SPEC secao 2; transicao ilegal sai 1",
+    "Confere que os escopos de tarefas nao terminais com donos diferentes sao disjuntos, inclusive por prefixo de diretorio",
+    "tests/test_task.sh cobre cada regra e passa nos .ai/tasks/ reais deste repositorio. Se um deles for invalido, isso e achado do handoff, nao motivo para editar o JSON",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+  ],
+  "handoffs": [],
+  "notes": "As tarefas sao a autoridade do protocolo e ate aqui nao tinham validador; so os handoffs tinham. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+}

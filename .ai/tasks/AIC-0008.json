@@ -1,37 +1,48 @@
 {
   "schema_version": 1,
   "task_id": "AIC-0008",
-  "title": "CI: rodar as suites de teste a cada push e pull request no GitHub Actions",
-  "state": "NEW",
-  "owner": null,
+  "title": "CI: GitHub Actions rodando as suites e um validador JSON Schema independente",
+  "state": "ASSIGNED",
+  "owner": "codex",
   "role": "implement",
   "assigned_by": "human",
-  "created_at": "2026-09-21T23:11:01Z",
-  "updated_at": "2026-09-21T23:11:01Z",
-  "branch": null,
-  "worktree": null,
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0008-ci",
+  "worktree": "../wt-codex",
   "base_commit": null,
   "scope": {
     "allowed_paths": [
       ".github/workflows/",
+      "tests/test_schema_conformance.py",
       "README.md"
     ],
     "forbidden_paths": [
       ".ai/tasks/",
       ".ai/schemas/",
+      ".ai/examples/",
       "LICENSE",
-      "docs/SPEC-v0.1.md",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
       "scripts/",
-      "tests/"
+      "docs/",
+      "SECURITY.md",
+      "tests/test_handoff.sh",
+      "tests/test_skills.sh",
+      "tests/test_doctor.sh"
     ]
   },
   "acceptance": [
-    "Workflow roda tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh em push e pull_request",
-    "permissions: contents: read; nenhum segredo usado; acoes pinadas por versao",
-    "O CI FALHA de verdade: provado abrindo uma branch com um teste quebrado de proposito e vendo o job vermelho, depois descartando",
-    "Configura git user.name/user.email no job, porque os testes criam commits",
-    "O workflow nao executa codigo de forks com acesso a segredos (pull_request, nunca pull_request_target)"
+    "Workflow roda as 3 suites em push e pull_request; permissions: contents: read; sem segredos; nunca pull_request_target; acoes pinadas",
+    "O job configura git user.name/user.email (os testes criam commits) e instala python3 e jsonschema",
+    "tests/test_schema_conformance.py valida .ai/examples/ e todos os .ai/handoffs/**/*.json contra handoff.schema.json com a biblioteca jsonschema, e .ai/tasks/*.json contra task.schema.json. Fecha o risco 'schema e validador sao duas implementacoes'; divergencias reais encontradas viram achado no handoff, nao sao escondidas",
+    "Prova de que o CI falha: o Codex roda localmente exatamente os comandos do workflow num clone limpo, uma vez verde e uma vez com um teste quebrado de proposito (exit != 0). A prova no GitHub e passo do coordenador: empurrar a branch e ver o job",
+    "README ganha o badge do workflow",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
   ],
   "handoffs": [],
-  "notes": "Pedido do coordenador em 21/09. Dono a definir. Custo baixo. PR de fork e possivel: repositorio publico."
+  "notes": "Sem push do Codex: o workflow real so roda depois que o coordenador empurra a branch. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
 }

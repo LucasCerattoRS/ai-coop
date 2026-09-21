@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0012",
+  "title": "Documentar as licoes do protocolo na SPEC e no guia: sequencia por branch, review com tarefa propria, merge so do humano",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0012-spec-licoes",
+  "worktree": "../wt-codex",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "docs/SPEC-v0.1.md",
+      "docs/AI-HANDOFF.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      ".ai/examples/",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
+      "scripts/",
+      "tests/",
+      ".github/",
+      "SECURITY.md",
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "SPEC secoes 5/6 dizem que a sequencia de handoff e calculada por branch e que review ganha tarefa e diretorio de handoff proprios (exemplos: AIC-0003, 0005, 0007), com o motivo",
+    "SPEC diz que so o coordenador faz merge e registra o incidente de 21/09 como motivacao, sem culpar ninguem",
+    "docs/AI-HANDOFF.md, passo de review: diz que o REVIEWED_COMMIT deve ser o delivery_commit do handoff recebido e que nada o impoe hoje; o Codex avalia se o validador poderia checar e registra a conclusao",
+    "SPEC registra que o lock morto exige rmdir manual e ate quando isso e aceitavel",
+    "Edicao minima: so o que muda. tests/test_skills.sh tem de continuar verde; ele confere frases de AI-HANDOFF.md",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+  ],
+  "handoffs": [],
+  "notes": "Documenta o que aprendemos nas rodadas 1 e 2. Nao muda comportamento de script. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+}

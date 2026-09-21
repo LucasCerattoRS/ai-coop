@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "task_id": "AIC-0009",
-  "title": "Canal privado de vulnerabilidade: habilitar o relato privado do GitHub e reescrever SECURITY.md",
-  "state": "NEW",
-  "owner": null,
+  "title": "SECURITY.md: canal privado de vulnerabilidade (texto). A habilitacao do canal e passo do coordenador",
+  "state": "ASSIGNED",
+  "owner": "codex",
   "role": "implement",
   "assigned_by": "human",
-  "created_at": "2026-09-21T23:11:01Z",
-  "updated_at": "2026-09-21T23:11:01Z",
-  "branch": null,
-  "worktree": null,
+  "created_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-21T23:18:46Z",
+  "branch": "codex/AIC-0009-security",
+  "worktree": "../wt-codex",
   "base_commit": null,
   "scope": {
     "allowed_paths": [
@@ -18,19 +18,27 @@
     "forbidden_paths": [
       ".ai/tasks/",
       ".ai/schemas/",
+      ".ai/examples/",
       "LICENSE",
-      "docs/SPEC-v0.1.md",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
       "scripts/",
       "tests/",
-      ".github/"
+      ".github/",
+      "docs/",
+      "README.md"
     ]
   },
   "acceptance": [
-    "Private vulnerability reporting habilitado no repositorio, verificado pela API do GitHub",
-    "SECURITY.md remove a frase 'a future release should add...' e aponta para o canal real, sem inventar e-mail",
-    "SECURITY.md declara o que e vulneravel de fato neste projeto (escrita fora do repo, symlink, escape de caminho, lock) e o que nao e (adapters, docs)",
-    "SECURITY.md diz quais versoes recebem correcao (hoje so main)"
+    "SECURITY.md remove a frase 'A future release should add...' e manda relatar por 'Security > Report a vulnerability' do GitHub, sem inventar e-mail nem link",
+    "Declara o que e vulneravel de fato (escrita fora do repo, symlink, escape de caminho, condicao de corrida no lock, handoff tratado como ordem) e o que nao e",
+    "Declara que so a main recebe correcao",
+    "O handoff registra, em risks, que o canal so existe depois que o coordenador roda: gh api -X PUT repos/LucasCerattoRS/ai-coop/private-vulnerability-reporting",
+    "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
   ],
   "handoffs": [],
-  "notes": "Pedido do coordenador em 21/09. A parte da API exige o token do Lukas (gh auth): so o coordenador, ou o agente sob ordem explicita."
+  "notes": "Codex nao tem autoridade para mudar configuracao do repositorio remoto: essa parte e do coordenador. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
 }
