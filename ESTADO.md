@@ -1,6 +1,6 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-21. **Leia este arquivo primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-21 (fim da rodada 1, após a revisão do Codex e a correção). **Leia este arquivo primeiro em qualquer sessão nova.**
 
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem
 pisar um no outro. Memórias privadas continuam privadas; o que é compartilhado é
@@ -42,6 +42,10 @@ arquivo. Divergiu? O JSON está certo.
 | `561a74a` | main | AIC-0003 (revisão cruzada) e briefing do Codex com o commit entregue |
 | `8e48bfd` | claude/AIC-0001 | SPEC v0.1, schema de handoff endurecido, `handoff.sh` seguro, validador, 40 testes |
 | `1604052` | claude/AIC-0001 | handoff de entrega `0001-claude.json` publicado |
+| `92fc413` | codex/AIC-0002 | doctor com códigos 0–4, DOCTOR-CONTRACT, PARITY, ACCEPTANCE-FIRST-CYCLE, `test_doctor.sh`. **Ainda não revisado por ninguém** |
+| `01730e8` | claude/AIC-0001 | correção dos 5 achados do Codex + lock por tarefa (unicidade de sequência entre agentes) |
+| `f01adf6` | claude/AIC-0001 | placeholder = valor inteiro `<...>`; sem falso positivo. **Commit entregue da correção** |
+| `2d2965e` | claude/AIC-0001 | handoffs `0002-codex.json` (revisão, transcrita) e `0003-claude.json` (correção) |
 
 Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 
@@ -49,9 +53,9 @@ Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 
 | ID | Dono | Estado | O quê |
 |---|---|---|---|
-| AIC-0001 | claude | entregue, aguardando revisão | protocolo canônico (trilha A) |
-| AIC-0002 | codex | atribuída, não iniciada | superfície operacional (trilha B) |
-| AIC-0003 | codex | atribuída, depois de AIC-0002 | revisar o commit `8e48bfd` |
+| AIC-0001 | claude | **corrigida em `f01adf6`, aguardando re-revisão** | protocolo canônico (trilha A) |
+| AIC-0002 | codex | entregue em `92fc413`, **sem revisão** | superfície operacional (trilha B) |
+| AIC-0003 | codex | concluída: `MUDANCAS_NECESSARIAS` (1 alta, 3 médias, 1 baixa; todas reproduzidas e corrigidas) | revisar `8e48bfd` |
 
 ## Issues da revisão de 2026-09-20
 
@@ -62,23 +66,33 @@ Cada rodada acrescenta linhas aqui. Não reescreva as antigas.
 | 3 | alta | gerador produz Markdown, schema descreve JSON | fechada em `8e48bfd` (JSON canônico) |
 | 4 | alta | schema permissivo demais | fechada em `8e48bfd` |
 | 5 | alta | sem protocolo de posse | fechada em `SPEC-v0.1.md` §1–2 |
-| 6 | média | adapters Codex sem frontmatter | **aberta** — vira AIC-0004, depende da SPEC |
-| 7 | média | doctor não determina saúde | **aberta** — AIC-0002 |
+| 6 | média | adapters Codex sem frontmatter | **aberta** — vira AIC-0004, depende da SPEC aceita |
+| 7 | média | doctor não determina saúde | entregue em `92fc413`, aguardando revisão |
 | 8 | média | handoff de retorno não modelado | fechada em `8e48bfd` (sequência encadeada) |
 | 9 | média | autoridade duplicada entre STATUS.json/TASKS.md/HANDOFF.md | fechada em `SPEC-v0.1.md` §8 |
-| 10 | média | árvores pública e privada sem paridade | **aberta** — AIC-0002 |
+| 10 | média | árvores pública e privada sem paridade | entregue em `92fc413` (PARITY.md), aguardando revisão |
 | 11 | baixa | backlog privado desatualizado | **aberta** — trivial, no próximo merge |
 
 ## Próximo passo exato
 
-1. Lukas aciona o Codex com `CODEX-BRIEFING.md`. Codex entrega AIC-0002, depois AIC-0003.
-2. Lukas traz o veredito do Codex para o Claude.
-3. Claude faz **uma** rodada de correção sobre os achados (limite da SPEC §2).
-4. Lukas faz o merge de `claude/AIC-0001-protocolo` e `codex/AIC-0002-operacional` em `main`,
+1. **Re-revisão pelo Codex** de `f01adf6` (única rodada de correção; a SPEC §2 manda devolver ao
+   humano se persistir divergência). O Codex reproduz os 5 achados por conta própria, em cópia
+   temporária, sem editar `wt-claude`. Veredito: `ACEITAR` | `ACEITAR_COM_RESSALVAS` | `MUDANCAS_NECESSARIAS`.
+2. **Revisão cruzada de AIC-0002** (`92fc413`) pelo Claude, em cópia temporária, sem editar `wt-codex`.
+3. Lukas decide e faz o merge de `claude/AIC-0001-protocolo` e `codex/AIC-0002-operacional` em `main`,
    remove `scripts/new-handoff.sh` e `.ai/STATUS.json` no mesmo merge, e atualiza este arquivo.
-5. Rodada 2: AIC-0004, adapters de skill `ai-handoff` sobre a SPEC aceita.
+4. Rodada 2: AIC-0004, adapters de skill `ai-handoff` sobre a SPEC aceita.
 
 Só o humano faz merge. Os agentes entregam commits nas próprias branches.
+
+## Pontos abertos conhecidos
+
+- `handoff.sh` grava `delivery_commit` = HEAD de quem roda; num handoff de **review** o commit revisado
+  é outro, então o revisor sobrescreve o campo à mão. Sem correção ainda.
+- Schema e validador são duas implementações da mesma regra (`jsonschema` não está instalado).
+- Lock morto após `kill -9` exige `rmdir` manual (SPEC §5).
+- `0002-codex.json` foi transcrito pelo Claude do texto que o Codex reportou; o Codex ainda não
+  publica handoff por arquivo. Quando o fizer, o fluxo passa a ser o do §5 sem transcrição.
 
 ## Antes de pensar em publicar
 
