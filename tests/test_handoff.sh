@@ -178,6 +178,8 @@ mk '{"tests":[{"command":"x","result":"not_run"}]}' p4.json
 python3 $V p4.json >/dev/null 2>&1; check $? 1 "not_run sem note -> invalido"
 mk '{"tests":[{"command":"x","result":"not_run","note":"sem ambiente"}]}' p5.json
 python3 $V p5.json >/dev/null 2>&1; check $? 0 "not_run com note -> valido"
+mk '{"summary":"o esqueleto traz <TODO> e <caminho> como marcadores","tests":[{"command":"grep TODO x","result":"pass"}]}' p6.json
+python3 $V p6.json >/dev/null 2>&1; check $? 0 "texto que apenas cita <TODO> numa frase -> valido (sem falso positivo)"
 python3 $V good.json p5.json >/dev/null 2>&1; check $? 0 "validador aceita varios arquivos validos"
 python3 $V good.json m1.json >/dev/null 2>&1; check $? 1 "varios arquivos, um invalido -> 1"
 python3 - "$SRC" <<'PYX' 2>/dev/null; check $? 0 "schema exige note em not_run e proibe findings fora de review"

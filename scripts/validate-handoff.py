@@ -34,8 +34,9 @@ REQUIRED = [
 ]
 OPTIONAL = ["findings"]
 
-# Placeholders que o gerador escreve e o agente tem de substituir.
-PLACEHOLDER = re.compile(r"(?i)\bTODO\b|^<.*>$|^$")
+# Placeholder do gerador = o VALOR INTEIRO entre <...> (ex.: "<TODO o que mudou>").
+# So o valor inteiro: texto que apenas cita "<TODO>" numa frase e legitimo.
+PLACEHOLDER = re.compile(r"^<.*>$")
 
 
 def real_str(value):

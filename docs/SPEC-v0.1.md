@@ -101,7 +101,7 @@ O que a versão do seed permitia e esta proíbe:
 - `tests` podia sumir → agora exige ao menos um item; não rodou nada é
   `{"result": "not_run", "note": "<por quê>"}`, declarado, não omitido. `not_run`
   **sem** `note` é inválido, no schema e no validador.
-- placeholders `<...>` / `TODO` são recusados em **todo** campo de texto (`summary`,
+- placeholder do gerador (o valor **inteiro** entre `<...>`, ex. `<TODO o que mudou>`) é recusado em **todo** campo de texto (`summary`,
   `next_action`, `changes`, `tests`, `risks`, `findings`), não só em dois deles.
 - `findings` é proibido fora de `kind: "review"` também no **schema**, não só no validador.
 
@@ -185,7 +185,7 @@ mão contra este schema, e schema e validador mudam juntos.
 O esqueleto **nasce inválido** de propósito — traz placeholders `<TODO>` que o
 validador recusa. Não dá para entregar um handoff em branco.
 
-`tests/test_handoff.sh` cobre os dois, sem framework: 54 casos, incluindo escape de
+`tests/test_handoff.sh` cobre os dois, sem framework: 55 casos, incluindo escape de
 caminho, symlink em `.ai` e em `.ai/handoffs`, branch com aspas, lock ocupado, 8
 criações simultâneas de **agentes diferentes** (propriedade: sequência contígua, sem
 repetição, cadeia íntegra — não "um vencedor", que depende de temporização) e cada
