@@ -1,0 +1,6 @@
+interface:
+  display_name: "AI Handoff"
+  short_description: "Criar ou receber um handoff do protocolo ai-coop"
+  default_prompt: "Use $ai-handoff para criar ou receber um handoff conforme docs/AI-HANDOFF.md."
+policy:
+  allow_implicit_invocation: false

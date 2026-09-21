@@ -8,7 +8,7 @@
 
 ## Phase 1 — Shared coordination
 
-- `.ai/STATUS.json`
+- `.ai/tasks/*.json` (authoritative task state)
 - task registry
 - deterministic handoff format
 - decision log
