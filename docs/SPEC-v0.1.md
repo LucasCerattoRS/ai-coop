@@ -189,7 +189,7 @@ mão contra este schema, e schema e validador mudam juntos.
 O esqueleto **nasce inválido** de propósito — traz placeholders `<TODO>` que o
 validador recusa. Não dá para entregar um handoff em branco.
 
-`tests/test_handoff.sh` cobre os dois, sem framework: 65 casos, incluindo escape de
+`tests/test_handoff.sh` cobre os dois, sem framework: 69 casos, incluindo escape de
 caminho, symlink em `.ai` e em `.ai/handoffs`, branch com aspas, lock ocupado, 8
 criações simultâneas de **agentes diferentes** (propriedade: sequência contígua, sem
 repetição, cadeia íntegra — não "um vencedor", que depende de temporização) e cada

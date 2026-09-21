@@ -37,7 +37,8 @@ else
   DELIVERY_COMMIT=$(git rev-parse HEAD)
 fi
 if ! BASE_COMMIT=$(git merge-base main "$DELIVERY_COMMIT" 2>/dev/null); then
-  die "nao foi possivel derivar base_commit: branch de coordenacao 'main' ausente" 1
+  git rev-parse --verify 'main^{commit}' >/dev/null 2>&1 || die "nao foi possivel derivar base_commit: branch de coordenacao 'main' ausente" 1
+  die "nao foi possivel derivar base_commit: sem ancestral comum com main" 1
 fi
 
 # .ai, .ai/handoffs e .ai/handoffs/<TASK_ID> tem de ser diretorios reais, nunca symlinks:

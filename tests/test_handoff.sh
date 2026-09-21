@@ -25,6 +25,11 @@ git checkout -qb claude/AIC-0001-x
 echo work > work.txt; git add -A >/dev/null; git commit -qm work
 TASK_HEAD=$(git rev-parse HEAD)
 TASK_BASE=$(git merge-base main HEAD)
+git checkout -qb review/AIC-0006-source "$TASK_BASE"
+echo reviewed > reviewed.txt; git add -A >/dev/null; git commit -qm reviewed
+REVIEWED_HEAD=$(git rev-parse HEAD)
+REVIEWED_BASE=$(git merge-base main "$REVIEWED_HEAD")
+git checkout -q claude/AIC-0001-x
 git checkout -q main
 echo newer > main.txt; git add -A >/dev/null; git commit -qm main-advance
 MAIN_HEAD=$(git rev-parse HEAD)
@@ -64,6 +69,19 @@ import json, sys
 d = json.load(open(sys.argv[1]))
 assert d['delivery_commit'] == d['base_commit'] == sys.argv[2]
 PYX
+OUTO=$(bash $H AIC-0017 codex human review "$REVIEWED_HEAD" 2>/dev/null)
+python3 - "$OUTO" "$REVIEWED_HEAD" "$REVIEWED_BASE" <<'PYX' 2>/dev/null; check $? 0 "review de outro ramo grava merge-base do commit revisado"
+import json, sys
+d = json.load(open(sys.argv[1]))
+assert d['delivery_commit'] == sys.argv[2], d
+assert d['base_commit'] == sys.argv[3] != d['delivery_commit'], d
+PYX
+ORPHAN_TREE=$(git mktree </dev/null)
+ORPHAN_COMMIT=$(printf 'orphan\n' | git commit-tree "$ORPHAN_TREE")
+git branch review/orphan "$ORPHAN_COMMIT"
+bash $H AIC-0018 codex human review review/orphan > "$SANDBOX/orphan.err" 2>&1; check $? 1 "review sem ancestral comum -> 1"
+grep -Fq "sem ancestral comum com main" "$SANDBOX/orphan.err"; check $? 0 "review sem ancestral comum tem mensagem distinta"
+[[ ! -e .ai/handoffs/AIC-0018 ]]; check $? 0 "review sem ancestral comum nao escreve"
 
 ESCAPED=$(find "$SANDBOX" -name '*evil*' -o -name 'etc' -type d 2>/dev/null | wc -l)
 check "$ESCAPED" 0 "nenhum arquivo criado fora de .ai/handoffs"
