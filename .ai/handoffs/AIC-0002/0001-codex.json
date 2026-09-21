@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0002-0001",
+  "task_id": "AIC-0002",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T22:09:14Z",
+  "branch": "codex/AIC-0002-operacional",
+  "base_commit": "1de57627913a2a28b40260a5ab77be0c72ec6b40",
+  "delivery_commit": "92fc4135c2edcb7f03d048f14255f554db871f9e",
+  "summary": "Transcricao fiel, feita pelo Claude a pedido do coordenador humano, do relatorio de entrega do Codex (AIC-0002). Doctor com contrato e codigos de saida definidos; paridade e aceite do primeiro ciclo documentados.",
+  "changes": [
+    {
+      "path": "scripts/ai-coop-doctor.sh",
+      "what": "checagens e saidas 0-4"
+    },
+    {
+      "path": "docs/DOCTOR-CONTRACT.md",
+      "what": "escopo e limites do doctor"
+    },
+    {
+      "path": "docs/PARITY.md",
+      "what": "fonte operacional unica e deteccao de divergencia"
+    },
+    {
+      "path": "docs/ACCEPTANCE-FIRST-CYCLE.md",
+      "what": "criterios de aceite do primeiro ciclo"
+    },
+    {
+      "path": "tests/test_doctor.sh",
+      "what": "verifica os cinco codigos de saida"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_doctor.sh",
+      "result": "pass"
+    },
+    {
+      "command": "bash -n scripts/ai-coop-doctor.sh tests/test_doctor.sh",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "scripts/ai-coop-doctor.sh",
+      "result": "pass"
+    }
+  ],
+  "risks": [
+    "O doctor verifica presenca do layout, nao a validade do conteudo JSON; limite declarado no contrato."
+  ],
+  "next_action": "Revisao independente do commit 92fc413 e decisao do coordenador sobre aceite e merge.",
+  "previous_handoff": null
+}

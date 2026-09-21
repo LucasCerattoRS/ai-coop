@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0002-0002",
+  "task_id": "AIC-0002",
+  "sequence": 2,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-21T22:09:14Z",
+  "branch": "codex/AIC-0002-operacional",
+  "base_commit": "1de57627913a2a28b40260a5ab77be0c72ec6b40",
+  "delivery_commit": "92fc4135c2edcb7f03d048f14255f554db871f9e",
+  "summary": "Revisao do Claude sobre 92fc413, em copia temporaria (git archive), sem tocar em wt-codex. Veredito: ACEITAR_COM_RESSALVAS. Nenhum achado bloqueia o merge.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo dos 5 arquivos do commit contra allowed/forbidden de AIC-0002",
+      "result": "pass",
+      "note": "nenhuma violacao"
+    },
+    {
+      "command": "bash -n scripts/ai-coop-doctor.sh tests/test_doctor.sh; git diff --check 1de5762 92fc413",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_doctor.sh",
+      "result": "pass",
+      "note": "exit codes 0,1,2,3,4"
+    },
+    {
+      "command": "doctor com PATH sem git",
+      "result": "pass",
+      "note": "exit 1"
+    },
+    {
+      "command": "doctor com argumento fora de repositorio",
+      "result": "pass",
+      "note": "exit 2: uso vence, como o contrato declara"
+    },
+    {
+      "command": "doctor com task.schema.json vazio",
+      "result": "pass",
+      "note": "exit 4"
+    },
+    {
+      "command": "suite completa e doctor em main apos o merge",
+      "result": "pass",
+      "note": "55/55 e exit 0"
+    }
+  ],
+  "risks": [
+    "PARITY.md e ACCEPTANCE-FIRST-CYCLE.md sao documentos de processo: conferidos por coerencia com a SPEC, nao por execucao."
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "path": "tests/test_doctor.sh",
+      "line": null,
+      "finding": "Nenhum caso cobre o ramo git-indisponivel (exit 1); o teste simula so falha de git worktree list, mas anuncia o codigo 1 como verificado. O ramo funciona (conferido a mao), sem teste que o proteja."
+    },
+    {
+      "severity": "low",
+      "path": "docs/DOCTOR-CONTRACT.md",
+      "line": null,
+      "finding": "O doctor usa -d, que segue symlink em .ai, .ai/tasks e .ai/schemas e sai 0. E somente leitura e o contrato nao promete o contrario, mas contrasta com a recusa de symlink do handoff.sh (SPEC secao 5) e deveria estar declarado."
+    },
+    {
+      "severity": "low",
+      "path": "docs/ACCEPTANCE-FIRST-CYCLE.md",
+      "line": null,
+      "finding": "O item 4 diz que nao ha segunda revisao automatica, mas nao diz que o humano pode pedir re-revisao da correcao, o que o ciclo da AIC-0001 fez. Deixa ambiguo como a correcao e verificada."
+    }
+  ],
+  "next_action": "Coordenador mergeou 92fc413 em main. As tres ressalvas seguem para uma rodada futura, sem bloquear.",
+  "previous_handoff": "0001-codex.json"
+}

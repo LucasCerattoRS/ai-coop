@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0004",
+  "title": "Adapters minimos da skill ai-handoff (Claude e Codex) sobre um protocolo comum, e limpeza das fontes de estado do seed",
+  "state": "ASSIGNED",
+  "owner": "claude",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T22:09:14Z",
+  "updated_at": "2026-09-21T22:09:14Z",
+  "branch": "claude/AIC-0004-adapters",
+  "worktree": "../wt-claude",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "docs/AI-HANDOFF.md",
+      ".claude/skills/",
+      ".agents/skills/",
+      "AGENTS.md",
+      "docs/ROADMAP.md",
+      ".ai/STATUS.json",
+      ".ai/HANDOFF.md",
+      ".ai/TASKS.md",
+      "tests/test_skills.sh"
+    ],
+    "forbidden_paths": [
+      "scripts/",
+      "tests/test_handoff.sh",
+      "tests/test_doctor.sh",
+      ".ai/schemas/",
+      ".ai/tasks/",
+      ".ai/examples/",
+      "docs/SPEC-v0.1.md",
+      "docs/DOCTOR-CONTRACT.md",
+      "docs/PARITY.md",
+      "docs/ACCEPTANCE-FIRST-CYCLE.md"
+    ]
+  },
+  "acceptance": [
+    "docs/AI-HANDOFF.md e a unica fonte do protocolo da skill: cobre criar handoff e receber handoff, com o que a skill pode e o que NAO pode fazer",
+    "Os dois adapters ai-handoff tem name e description no frontmatter; corpo identico nos dois, verificado por teste",
+    "Invocacao explicita apenas: Claude com disable-model-invocation: true; Codex com agents/openai.yaml policy.allow_implicit_invocation: false",
+    "Os adapters ai-coop existentes ganham name e description (issue 6) e deixam de referenciar arquivos removidos",
+    "AGENTS.md aponta para as fontes canonicas: .ai/tasks/<ID>.json, o ultimo handoff, DECISIONS.md",
+    ".ai/STATUS.json, .ai/HANDOFF.md e .ai/TASKS.md removidos; nenhuma referencia restante no repositorio fora de historico e SPEC",
+    "tests/test_skills.sh roda sem framework e falha se qualquer criterio acima quebrar; doctor continua saindo 0",
+    "Nenhum arquivo em forbidden_paths tocado",
+    "Carregamento real do adapter do Codex NAO e verificavel pelo Claude: declarado not_run e delegado a revisao do Codex"
+  ],
+  "handoffs": [],
+  "notes": "Resolve a issue MEDIA 6 e a ponta restante da MEDIA 9. Ponto aberto que fica FORA desta tarefa: handoff.sh grava delivery_commit = HEAD; num handoff de review o revisor precisa sobrescrever o campo (o protocolo da skill instrui isso). Correcao no script vira tarefa propria, porque scripts/ e AIC-0001 ja aceita."
+}

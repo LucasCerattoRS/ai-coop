@@ -2,15 +2,15 @@
   "schema_version": 1,
   "task_id": "AIC-0001",
   "title": "Trilha A — protocolo canonico: especificacao v0.1, schema de handoff e criacao segura de handoff",
-  "state": "ASSIGNED",
+  "state": "ACCEPTED",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T00:00:00Z",
-  "updated_at": "2026-09-21T00:00:00Z",
+  "updated_at": "2026-09-21T22:09:14Z",
   "branch": "claude/AIC-0001-protocolo",
   "worktree": "../wt-claude",
-  "base_commit": null,
+  "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
   "scope": {
     "allowed_paths": [
       "docs/SPEC-v0.1.md",
@@ -39,6 +39,11 @@
     "tests/test_handoff.sh roda sem framework e falha se qualquer criterio acima quebrar",
     "nenhum arquivo em forbidden_paths e tocado"
   ],
-  "handoffs": [],
-  "notes": "Resolve as issues ALTA 1, 2, 3, 4 e MEDIA 8 e 9 do relatorio do Codex de 2026-09-20."
+  "handoffs": [
+    "0001-claude.json",
+    "0002-codex.json",
+    "0003-claude.json",
+    "0004-codex.json"
+  ],
+  "notes": "Aceita pelo coordenador em f01adf6 (re-revisao do Codex: ACEITAR_COM_RESSALVAS). Estados intermediarios nao foram gravados em JSON durante a rodada 1; o estado atual foi atualizado depois, sob autorizacao do coordenador. Ressalvas: 0003 cita 01730e8 no next_action (entregue: f01adf6); autoria dos commits antigos; lock morto exige rmdir."
 }
