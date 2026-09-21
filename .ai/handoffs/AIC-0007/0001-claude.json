@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0007-0001",
+  "task_id": "AIC-0007",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-21T22:50:28Z",
+  "branch": "claude/AIC-0007-review",
+  "base_commit": "cf71f31aaf509330ea4d945442bbfed43d23457c",
+  "delivery_commit": "3a0ba8cc3dc8eea8218a767f9bae540a16a0fbaf",
+  "summary": "Revisao de 3a0ba8c (AIC-0006): ACEITAR_COM_RESSALVAS. O codigo esta correto em todos os casos que executei; o teste nao protege o criterio central de base_commit em review.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em copia temporaria (git archive e clone local), sem tocar em wt-codex"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo de 5 arquivos contra allowed/forbidden de AIC-0006, autoria e trailers",
+      "result": "pass",
+      "note": "nenhuma violacao; autoria LuKas nos 2 commits; 0 trailers de coautoria"
+    },
+    {
+      "command": "bash tests/test_handoff.sh em 3a0ba8c",
+      "result": "pass",
+      "note": "65/65"
+    },
+    {
+      "command": "bash tests/test_skills.sh e tests/test_doctor.sh em clone real de 3a0ba8c",
+      "result": "pass",
+      "note": "44/44 e codigos 0-4. Numa copia sem .git deu 43/44 pelo teste do doctor: artefato da minha extracao, nao defeito"
+    },
+    {
+      "command": "scripts/validate-handoff.py no handoff 0001-codex.json da AIC-0006",
+      "result": "pass",
+      "note": "handoff escrito pelo proprio Codex, valido"
+    },
+    {
+      "command": "testes novos contra o handoff.sh ANTIGO (cf71f31)",
+      "result": "pass",
+      "note": "8 falhas: confirma a alegacao de que o teste falhava antes da correcao"
+    },
+    {
+      "command": "casos adversariais no script: review de outro ramo, tag anotada, SHA de arvore, string vazia, -x, --help, seis argumentos, historia sem base comum, revisar HEAD",
+      "result": "pass",
+      "note": "delivery = commit revisado e base = merge-base main (outro ramo: delivery C, base A); tag anotada vira SHA de commit; os erros saem 1 ou 2 e nao escrevem nada"
+    },
+    {
+      "command": "mutante: base_commit = commit revisado, so em review (delivery inalterado)",
+      "result": "fail",
+      "note": "65/65 passam: o mutante SOBREVIVE, ou seja o criterio de base_commit em review nao esta protegido por teste"
+    }
+  ],
+  "risks": [
+    "Nada no protocolo garante que o REVIEWED_COMMIT passado seja o delivery_commit do handoff recebido; o guia so instrui.",
+    "A sequencia de handoff e calculada por branch: dois agentes escrevendo no mesmo diretorio de tarefa em branches diferentes geram o mesmo NNNN. Por isso a revisao ficou em tarefa propria (AIC-0007)."
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "path": "tests/test_handoff.sh",
+      "line": null,
+      "finding": "Os testes de review so revisam main, onde base_commit e delivery_commit sao iguais. Um mutante que grava base_commit = commit revisado (em vez de merge-base main <revisado>) passa 65/65. Falta um caso revisando um commit de OUTRO ramo, em que base != delivery, afirmando base == git merge-base main <revisado>. Verifiquei a mao que o script acerta (delivery C, base A); falta o teste que o proteja."
+    },
+    {
+      "severity": "low",
+      "path": "scripts/handoff.sh",
+      "line": null,
+      "finding": "Historia sem ancestral comum com main (commit orfao) cai na mensagem \"branch de coordenacao 'main' ausente\", que e falsa: main existe. Agora alcancavel via REVIEWED_COMMIT; a mensagem deveria distinguir as duas causas."
+    }
+  ],
+  "next_action": "Codex: uma rodada de correcao em AIC-0006, com o teste faltante (escreva antes de qualquer mudanca e confirme que o mutante base=delivery o reprova) e, se couber, a mensagem do orfao. Correcao entra como handoff kind=correction escrito por voce, com a skill. Depois disso, coordenador decide o merge.",
+  "previous_handoff": null
+}
