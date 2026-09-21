@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0001-0001",
+  "task_id": "AIC-0001",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T21:13:46Z",
+  "branch": "claude/AIC-0001-protocolo",
+  "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
+  "delivery_commit": "8e48bfdcd2e652bb5f8f6bfdf2065f6cfa02d8e7",
+  "summary": "Trilha A entregue: protocolo v0.1 especificado, schema de handoff endurecido e gerador inseguro substituido.",
+  "changes": [
+    {
+      "path": "docs/SPEC-v0.1.md",
+      "what": "especificacao dos contratos 1-9: autoridade, estados, schemas, imutabilidade, branch de coordenacao, worktree, Markdown derivado"
+    },
+    {
+      "path": ".ai/schemas/handoff.schema.json",
+      "what": "campos de commit/branch/testes/changes obrigatorios, additionalProperties false, encadeamento por previous_handoff"
+    },
+    {
+      "path": "scripts/handoff.sh",
+      "what": "allowlist de TASK_ID, recusa de symlink no destino, criacao atomica via ln(2), sequencia encadeada"
+    },
+    {
+      "path": "scripts/validate-handoff.py",
+      "what": "validador do contrato sem dependencia externa, recusa placeholders do esqueleto"
+    },
+    {
+      "path": ".ai/examples/",
+      "what": "um handoff de entrega e um de revisao, ambos validos"
+    },
+    {
+      "path": "tests/test_handoff.sh",
+      "what": "40 casos sem framework, incluindo corrida de 8 criacoes simultaneas"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_handoff.sh",
+      "result": "pass",
+      "note": "40 passaram, 0 falharam"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/examples/*.json",
+      "result": "pass",
+      "note": "ambos os exemplos validos"
+    },
+    {
+      "command": "bash -n scripts/handoff.sh",
+      "result": "pass"
+    }
+  ],
+  "risks": [
+    "O validador e escrito a mao contra este schema; alterar um sem o outro passa despercebido.",
+    "base_commit vem de git merge-base com main; em repositorio sem main o script falha por projeto, o que pode surpreender quem clonar so a branch da tarefa.",
+    "A varredura de sequencia le o diretorio a cada execucao; correto, mas O(n) por tarefa."
+  ],
+  "next_action": "Codex: revisar o commit 8e48bfd quanto a escape de caminho, atomicidade, suficiencia do schema e cobertura do teste, em worktree separado, sem editar wt-claude.",
+  "previous_handoff": null
+}
