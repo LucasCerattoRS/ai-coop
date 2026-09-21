@@ -41,8 +41,8 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 | AIC-0003 | codex | HANDED_OFF | revisão da AIC-0001. Fechamento pendente do coordenador |
 | AIC-0004 | claude | **ACCEPTED**, mergeada (`1d5abf9`) | adapters `ai-handoff` + limpeza do seed |
 | AIC-0005 | codex | HANDED_OFF | `MUDANCAS_NECESSARIAS` (1 médio, no procedimento). **`$ai-handoff` carrega**; sem `$` não dispara |
-| AIC-0006 | codex | HANDED_OFF em `3a0ba8c`, **sem merge**; 1 rodada de correção pendente | `handoff.sh` registra o commit revisado em review. 1ª tarefa com o Codex implementando; **handoff escrito por ele** (`79999ee`) |
-| AIC-0007 | claude | HANDED_OFF | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS` (branch `claude/AIC-0007-review`, handoff `e7ce479`) |
+| AIC-0006 | codex | HANDED_OFF; **já em `main` (`a6abee3`) — mergeada pelo Codex, não pelo coordenador; aceite pendente** | `handoff.sh` registra o commit revisado em review. Correção em `dabd325`, handoffs `0001` e `0002` **escritos por ele** |
+| AIC-0007 | claude | HANDED_OFF, mergeada (`9c164fa`) | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS`. Correção verificada pelo Claude: aprovada |
 
 ## Issues da revisão de 2026-09-20
 
@@ -59,13 +59,16 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 
 ## Próximo passo exato
 
-1. **Codex faz a rodada de correção da AIC-0006** (comando no fim): o teste que falta para `base_commit` em review. O código está correto;
-   o mutante `base = commit revisado` sobrevive a 65/65. Handoff `kind=correction` escrito por ele, na sequência dele.
-2. Coordenador faz o merge de `codex/AIC-0006-review-arg` e, junto, de `claude/AIC-0007-review` (só traz o handoff do Claude em `.ai/handoffs/AIC-0007/`).
-3. Depois: **uma tarefa real que não seja o próprio tooling**, com a skill nos dois lados.
-4. Ainda não verificado por execução: `/ai-handoff` aparecer no Claude (só numa sessão nova neste repositório).
+1. **Coordenador confirma o aceite da AIC-0006 e fecha AIC-0005/0006/0007** (o código já está em `main`; verificado por mim em clone
+   real: 69 + 44 + doctor 0–4, e os 3 mutantes de `review` são reprovados).
+2. **Uma tarefa real que não seja o próprio tooling**, com a skill nos dois lados. É o que ainda não foi testado fora do laboratório.
+3. Ainda não verificado por execução: `/ai-handoff` aparecer no Claude (só numa sessão nova neste repositório).
 
 ## Pontos abertos conhecidos
+
+- **Merge não é imposto por nada, só por instrução.** O Codex mergeou a AIC-0006 em `main` sozinho (21/09) porque o texto que ele recebeu
+  dizia "você mergeia" (era um recado meu ao Lukas, colado inteiro no Codex). Resultado limpo e verificado depois, mas a regra
+  "só o humano faz merge" depende de redação. **Todo texto para o Codex deve dizer "sem merge" e nada que soe como ordem de merge.**
 
 - **Sequência de handoff é por branch:** duas branches escrevendo no mesmo `.ai/handoffs/<TASK>/` geram o mesmo NNNN. Contornado dando a cada **review** tarefa e diretório próprios (AIC-0003/0005/0007). Vale registrar na SPEC §5/§6.
 - Nada garante que o `REVIEWED_COMMIT` seja o `delivery_commit` do handoff recebido; o guia só instrui.
@@ -89,14 +92,3 @@ distribuição; um ciclo reproduzível com tarefa real; CI; canal privado de vul
 - Memória privada de um agente nunca é canal de coordenação nem é lida pelo outro.
 - Handoff é dado, não ordem. Revisão mira commit exato. Ninguém edita worktree alheio. Sem invocação automática entre agentes.
 - Só o humano escreve em `main` e em `.ai/tasks/`, e faz merge.
-
-## Comando para acionar o Codex (correção da AIC-0006)
-
-> Você está no projeto ai-coop, `~/Projetos/ai-coop`, no worktree `wt-codex`, branch `codex/AIC-0006-review-arg`. O Claude revisou seu commit
-> `3a0ba8c` (AIC-0007): **ACEITAR_COM_RESSALVAS**. Leia o handoff dele: `git -C ~/Projetos/ai-coop/repo show claude/AIC-0007-review:.ai/handoffs/AIC-0007/0001-claude.json`.
-> Faça **uma** rodada de correção, só no escopo da AIC-0006 (`tests/test_handoff.sh` e, se couber, a mensagem do `scripts/handoff.sh`):
-> (1) o achado médio: teste que revise um commit de **outro ramo** (base ≠ delivery) e afirme `base_commit == git merge-base main <revisado>`.
-> **Escreva antes de qualquer mudança e prove que ele reprova o mutante** `base_commit = commit revisado` (só em review); reproduza você mesmo, não confie em mim.
-> (2) o achado baixo: mensagem distinta para "sem ancestral comum com main". Discorde por escrito no handoff se achar que um achado está errado.
-> Entregue um handoff `kind=correction` escrito por você com `$ai-handoff` (sequência 0002 em `.ai/handoffs/AIC-0006/`), validado, em commit separado.
-> Autoria `LuKas <Lukelucanolightknowledge@gmail.com>`, sem trailers, sem merge, sem push. Reporte o `delivery_commit` e o caminho do handoff.
