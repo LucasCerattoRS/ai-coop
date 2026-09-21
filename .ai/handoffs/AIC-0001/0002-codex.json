@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0001-0002",
+  "task_id": "AIC-0001",
+  "sequence": 2,
+  "from_agent": "codex",
+  "to_agent": "claude",
+  "kind": "review",
+  "created_at": "2026-09-21T21:32:46Z",
+  "branch": "codex/AIC-0002-operacional",
+  "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
+  "delivery_commit": "8e48bfdcd2e652bb5f8f6bfdf2065f6cfa02d8e7",
+  "summary": "Transcricao fiel, feita pelo Claude a pedido do coordenador humano, do relatorio de revisao do Codex sobre 8e48bfd (AIC-0003). Veredito: MUDANCAS_NECESSARIAS. O Codex reportou em texto; este arquivo existe so para preservar a cadeia Claude -> Codex -> Claude.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura, feita em copias temporarias"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_handoff.sh",
+      "result": "pass",
+      "note": "40/40 no commit 8e48bfd"
+    },
+    {
+      "command": "reproducao com .ai como symlink",
+      "result": "fail",
+      "note": "escreveu fora da arvore: defeito reproduzido"
+    },
+    {
+      "command": "reproducao com aspas no nome da branch",
+      "result": "fail",
+      "note": "JSON invalido: defeito reproduzido"
+    },
+    {
+      "command": "handoff com campos <TODO> em changes/tests",
+      "result": "fail",
+      "note": "validador retornou 0: defeito reproduzido"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/examples/*.json",
+      "result": "fail",
+      "note": "saida 2: o validador aceitava um unico caminho; o handoff 0001 alegava pass"
+    }
+  ],
+  "risks": [
+    "O handoff 0001 declara que o ultimo comando passou, mas ele recebe dois caminhos e retornava 2. Corrigir a evidencia em novo handoff, preservando o anterior."
+  ],
+  "findings": [
+    {
+      "severity": "high",
+      "path": "scripts/handoff.sh",
+      "line": 38,
+      "finding": "Nao verifica se .ai e symlink. Reproduzida a criacao de .ai/handoffs/AIC-0001/0001-claude.json fora do repositorio."
+    },
+    {
+      "severity": "medium",
+      "path": "scripts/handoff.sh",
+      "line": 83,
+      "finding": "Interpola o nome da branch sem escape JSON. Uma branch Git valida com aspas gera arquivo invalido."
+    },
+    {
+      "severity": "medium",
+      "path": "scripts/validate-handoff.py",
+      "line": 97,
+      "finding": "Aceita <caminho>, <TODO o que mudou> e <TODO comando executado> apos preencher so summary e next_action. Aceita not_run sem justificativa; o schema (linha 59) nao exige note nesse caso."
+    },
+    {
+      "severity": "medium",
+      "path": "tests/test_handoff.sh",
+      "line": 83,
+      "finding": "A corrida passou com dois handoffs criados; o teste exige um ou mais sucessos e nao comprova um unico vencedor para a mesma sequencia."
+    },
+    {
+      "severity": "low",
+      "path": ".ai/schemas/handoff.schema.json",
+      "line": 95,
+      "finding": "Exige findings em review mas nao o proibe nos demais tipos, contrariando a SPEC; o validador manual o proibe."
+    }
+  ],
+  "next_action": "Lukas encaminha os achados ao Claude para uma rodada de correcao, com testes que reproduzam os defeitos e novo handoff contendo resultados executados.",
+  "previous_handoff": "0001-claude.json"
+}

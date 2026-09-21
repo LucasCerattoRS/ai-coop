@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0001-0003",
+  "task_id": "AIC-0001",
+  "sequence": 3,
+  "from_agent": "claude",
+  "to_agent": "codex",
+  "kind": "correction",
+  "created_at": "2026-09-21T21:32:46Z",
+  "branch": "claude/AIC-0001-protocolo",
+  "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
+  "delivery_commit": "f01adf6bcf5acafecc9a0548c15ff42fdbeb467a",
+  "summary": "Rodada de correcao: os 5 achados do Codex reproduzidos como testes falhando e corrigidos, mais a unicidade de sequencia entre agentes diferentes, que a revisao so apontou de raso. Ao validar os proprios handoffs da rodada, a checagem ampliada se mostrou agressiva demais (recusava texto que apenas cita <TODO>); corrigida no mesmo commit entregue.",
+  "changes": [
+    {
+      "path": "scripts/handoff.sh",
+      "what": "recusa .ai symlink e destino fora do repo (HIGH); branch escapada via json.dumps (MEDIUM); lock por tarefa via mkdir, porque a sequencia dependia do nome do arquivo e claude/codex gravavam a mesma sequencia"
+    },
+    {
+      "path": "scripts/validate-handoff.py",
+      "what": "placeholder recusado em todo campo de texto, not_run exige note (MEDIUM); aceita varios arquivos, tornando verdadeiro o comando alegado no handoff 0001; placeholder = valor inteiro entre <...>, sem falso positivo em texto que cita TODO"
+    },
+    {
+      "path": ".ai/schemas/handoff.schema.json",
+      "what": "note obrigatoria em not_run; findings proibido fora de review (LOW)"
+    },
+    {
+      "path": "tests/test_handoff.sh",
+      "what": "40 -> 55 casos; corrida com agentes diferentes afirma propriedade (sequencia contigua, sem repeticao, cadeia integra) em vez de contar vencedores (MEDIUM)"
+    },
+    {
+      "path": "docs/SPEC-v0.1.md",
+      "what": "documenta lock, .ai symlink, not_run, placeholders e o limite schema/validador duplicados"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_handoff.sh (antes das correcoes)",
+      "result": "fail",
+      "note": "13 falhas, uma por defeito reproduzido: prova que os testes detectam o defeito"
+    },
+    {
+      "command": "bash tests/test_handoff.sh (depois das correcoes)",
+      "result": "pass",
+      "note": "55 passaram, 0 falharam"
+    },
+    {
+      "command": "bash tests/test_handoff.sh, repetido 6 vezes (54 casos) e mais 3 (55 casos)",
+      "result": "pass",
+      "note": "todas as 9 execucoes sem falha; descarta instabilidade da corrida"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/examples/*.json .ai/handoffs/AIC-0001/0001-claude.json",
+      "result": "pass",
+      "note": "3 arquivos validos, exit 0"
+    },
+    {
+      "command": "bash -n scripts/handoff.sh",
+      "result": "pass"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/handoffs/AIC-0001/*.json",
+      "result": "pass",
+      "note": "0001, 0002 e 0003 validos"
+    }
+  ],
+  "risks": [
+    "Schema e validador sao duas implementacoes da mesma regra. Um teste cobre so as regras que ja falharam; jsonschema nao esta instalado.",
+    "Lock morto apos kill -9 exige rmdir manual. Sem expiracao automatica no MVP, documentado na SPEC.",
+    "handoff.sh grava delivery_commit = HEAD do worktree de quem roda. Num handoff de review o commit revisado e outro: quem revisa tem de sobrescrever o campo a mao. Nao coberto pelos achados; deixado aberto.",
+    "0002-codex.json e transcricao feita pelo Claude do texto encaminhado pelo humano, nao arquivo publicado pelo Codex.",
+    "Este handoff descreve o Claude corrigindo o proprio codigo; a validade da correcao depende de nova revisao independente."
+  ],
+  "next_action": "Codex: reproduzir por conta propria os 5 achados contra o commit 01730e8 (em copia temporaria, sem editar wt-claude) e devolver ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS. Limite da SPEC: esta e a unica rodada de correcao; persistindo divergencia, decide o humano.",
+  "previous_handoff": "0002-codex.json"
+}
