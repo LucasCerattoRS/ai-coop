@@ -1,22 +1,100 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-coop.invalid/schemas/handoff.schema.json",
   "title": "AI Coop Handoff",
+  "description": "Registro imutavel de uma entrega ou revisao. Nunca editado apos publicado.",
   "type": "object",
-  "required": ["task_id", "source_agent", "target_agent", "status", "next_action"],
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "handoff_id",
+    "task_id",
+    "sequence",
+    "from_agent",
+    "to_agent",
+    "kind",
+    "created_at",
+    "branch",
+    "base_commit",
+    "delivery_commit",
+    "summary",
+    "changes",
+    "tests",
+    "risks",
+    "next_action",
+    "previous_handoff"
+  ],
   "properties": {
-    "task_id": {"type": "string"},
-    "source_agent": {"type": "string"},
-    "target_agent": {"type": "string"},
-    "branch": {"type": "string"},
-    "worktree": {"type": "string"},
-    "last_commit": {"type": "string"},
-    "status": {"enum": ["ready", "blocked", "review", "done"]},
-    "completed": {"type": "array", "items": {"type": "string"}},
-    "files_changed": {"type": "array", "items": {"type": "string"}},
-    "tests": {"type": "array", "items": {"type": "string"}},
-    "risks": {"type": "array", "items": {"type": "string"}},
-    "decisions": {"type": "array", "items": {"type": "string"}},
-    "next_action": {"type": "string"}
+    "schema_version": {"const": 1},
+    "handoff_id": {"type": "string", "pattern": "^AIC-[0-9]{4}-[0-9]{4}$"},
+    "task_id": {"type": "string", "pattern": "^AIC-[0-9]{4}$"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "from_agent": {"enum": ["claude", "codex"]},
+    "to_agent": {"enum": ["claude", "codex", "human"]},
+    "kind": {"enum": ["delivery", "review", "correction"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "branch": {"type": "string", "minLength": 1},
+    "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "delivery_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "summary": {"type": "string", "minLength": 1},
+    "changes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "what"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "what": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "result"],
+        "properties": {
+          "command": {"type": "string", "minLength": 1},
+          "result": {"enum": ["pass", "fail", "not_run"]},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "risks": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "findings": {
+      "type": "array",
+      "description": "Somente em kind=review. Achados vinculados ao commit revisado.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "path", "finding"],
+        "properties": {
+          "severity": {"enum": ["high", "medium", "low"]},
+          "path": {"type": "string", "minLength": 1},
+          "line": {"type": ["integer", "null"], "minimum": 1},
+          "finding": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "next_action": {"type": "string", "minLength": 1},
+    "previous_handoff": {"type": ["string", "null"], "pattern": "^[0-9]{4}-(claude|codex)\\.json$"}
   },
-  "additionalProperties": true
+  "allOf": [
+    {
+      "if": {"properties": {"sequence": {"const": 1}}, "required": ["sequence"]},
+      "then": {"properties": {"previous_handoff": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"sequence": {"minimum": 2}}, "required": ["sequence"]},
+      "then": {"properties": {"previous_handoff": {"type": "string"}}}
+    },
+    {
+      "if": {"properties": {"kind": {"const": "review"}}, "required": ["kind"]},
+      "then": {"required": ["findings"]}
+    }
+  ]
 }
