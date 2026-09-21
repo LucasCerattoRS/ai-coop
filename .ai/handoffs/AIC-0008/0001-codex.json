@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0008-0001",
+  "task_id": "AIC-0008",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T23:30:23Z",
+  "branch": "codex/AIC-0008-ci",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "5cc5f2b7847d8fbff4683a60bade0e5ac788f2e3",
+  "summary": "CI pinado valida as suites e todos os dados publicados com jsonschema.",
+  "changes": [
+    {"path": ".github/workflows/ci.yml", "what": "Executa as tres suites e a conformidade JSON Schema em push e pull_request com permissao minima."},
+    {"path": "tests/test_schema_conformance.py", "what": "Valida exemplos e handoffs pelo schema de handoff e tarefas pelo schema de task usando jsonschema."},
+    {"path": "README.md", "what": "Adiciona o badge do workflow CI."}
+  ],
+  "tests": [
+    {"command": "/tmp/ai-coop-ci-0008/bin/python tests/test_schema_conformance.py", "result": "pass"},
+    {"command": "bash tests/test_handoff.sh", "result": "pass"},
+    {"command": "bash tests/test_skills.sh", "result": "pass"},
+    {"command": "bash tests/test_doctor.sh", "result": "pass"},
+    {"command": "clone limpo: comandos do workflow", "result": "pass", "note": "As tres suites e test_schema_conformance.py passaram com jsonschema instalado."},
+    {"command": "clone limpo com test_schema_conformance.py quebrado de proposito", "result": "pass", "note": "O comando terminou em erro esperado (EXPECTED_RED), provando que a etapa falha."}
+  ],
+  "risks": [
+    "A prova no GitHub ainda exige que o coordenador envie a branch e observe um job verde e outro vermelho de proposito.",
+    "O validador Python existente continua independente e escrito a mao; este teste detecta divergencia dos dados publicados contra os schemas, sem altera-lo."
+  ],
+  "next_action": "O coordenador deve enviar a branch, verificar CI verde e uma falha proposital no GitHub, revisar este handoff e decidir o merge; não houve revisão independente do Claude.",
+  "previous_handoff": null
+}
