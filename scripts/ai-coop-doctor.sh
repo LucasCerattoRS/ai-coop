@@ -1,22 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-printf 'ai-coop doctor\n'
-printf '%-28s %s\n' 'git' "$(command -v git || echo MISSING)"
-printf '%-28s %s\n' 'claude' "$(command -v claude || echo not-found)"
-printf '%-28s %s\n' 'codex' "$(command -v codex || echo not-found)"
+if [[ $# -ne 0 ]]; then
+  printf 'usage: %s\n' "${0##*/}" >&2
+  exit 2
+fi
 
-for f in AGENTS.md .ai/STATUS.json .ai/TASKS.md .ai/DECISIONS.md .ai/HANDOFF.md; do
-  if [[ -e "$f" ]]; then
-    printf 'OK   %s\n' "$f"
-  else
-    printf 'MISS %s\n' "$f"
+if ! command -v git >/dev/null 2>&1; then
+  printf 'DEGRADED git unavailable\n' >&2
+  exit 1
+fi
+
+if ! root="$(git rev-parse --show-toplevel)"; then
+  printf 'NOT_GIT run inside a Git worktree\n' >&2
+  exit 3
+fi
+
+missing=0
+for path in .ai .ai/tasks .ai/schemas; do
+  if [[ ! -d "$root/$path" ]]; then
+    printf 'MISS %s\n' "$path"
+    missing=1
   fi
 done
-
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  printf 'OK   git repository detected\n'
-  git worktree list || true
-else
-  printf 'INFO not currently inside a git worktree\n'
+if [[ ! -s "$root/.ai/schemas/task.schema.json" ]]; then
+  printf 'MISS .ai/schemas/task.schema.json\n'
+  missing=1
 fi
+if [[ "$missing" -ne 0 ]]; then
+  exit 4
+fi
+
+if ! git worktree list --porcelain >/dev/null; then
+  printf 'DEGRADED git worktree list failed\n' >&2
+  exit 1
+fi
+
+printf 'OK Git worktree and required .ai layout\n'
