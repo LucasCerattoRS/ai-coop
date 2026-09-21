@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0003",
   "title": "Revisao somente leitura da entrega da trilha A (commit 8e48bfd) pelo Codex",
-  "state": "HANDED_OFF",
+  "state": "ACCEPTED",
   "owner": "codex",
   "role": "review",
   "assigned_by": "human",
   "created_at": "2026-09-21T00:00:00Z",
-  "updated_at": "2026-09-21T22:09:14Z",
+  "updated_at": "2026-09-21T23:05:46Z",
   "branch": "codex/AIC-0002-operacional",
   "worktree": "../wt-codex",
   "base_commit": "bdef1a7a0f2e1b760ca490fb14e8eda2434ec7db",
@@ -32,5 +32,5 @@
     "O veredito e um de: ACEITAR, ACEITAR_COM_RESSALVAS, MUDANCAS_NECESSARIAS"
   ],
   "handoffs": [],
-  "notes": "Revisao concluida pelo Codex (MUDANCAS_NECESSARIAS em 8e48bfd; ACEITAR_COM_RESSALVAS em f01adf6). Os handoffs vivem em .ai/handoffs/AIC-0001/0002-codex.json e 0004-codex.json. Fechamento pendente do coordenador."
+  "notes": "Revisao concluida pelo Codex (MUDANCAS_NECESSARIAS em 8e48bfd; ACEITAR_COM_RESSALVAS em f01adf6). Os handoffs vivem em .ai/handoffs/AIC-0001/0002-codex.json e 0004-codex.json. Fechamento pendente do coordenador. Fechamento registrado pelo coordenador ao publicar (21/09): as revisoes foram consumidas no aceite de AIC-0001."
 }

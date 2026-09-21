@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0007",
   "title": "Revisao somente leitura da entrega da AIC-0006 (commit 3a0ba8c) pelo Claude",
-  "state": "HANDED_OFF",
+  "state": "ACCEPTED",
   "owner": "claude",
   "role": "review",
   "assigned_by": "human",
   "created_at": "2026-09-21T22:50:27Z",
-  "updated_at": "2026-09-21T22:50:27Z",
+  "updated_at": "2026-09-21T23:05:46Z",
   "branch": "claude/AIC-0007-review",
   "worktree": "../wt-claude",
   "base_commit": null,
@@ -32,5 +32,5 @@
   "handoffs": [
     "0001-claude.json"
   ],
-  "notes": "Review tem tarefa e diretorio de handoff proprios para nao colidir a sequencia com a tarefa revisada (AIC-0006): a sequencia e calculada por branch, e duas branches escrevendo no mesmo diretorio geram o mesmo NNNN."
+  "notes": "Review tem tarefa e diretorio de handoff proprios para nao colidir a sequencia com a tarefa revisada (AIC-0006): a sequencia e calculada por branch, e duas branches escrevendo no mesmo diretorio geram o mesmo NNNN. Fechamento registrado pelo coordenador ao publicar (21/09): correcao do achado verificada e aceita com AIC-0006."
 }

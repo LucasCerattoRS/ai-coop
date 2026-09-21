@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0006",
   "title": "handoff.sh: registrar o commit revisado em handoffs de review (fecha o ponto aberto do delivery_commit = HEAD)",
-  "state": "HANDED_OFF",
+  "state": "ACCEPTED",
   "owner": "codex",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T22:41:05Z",
-  "updated_at": "2026-09-21T22:50:27Z",
+  "updated_at": "2026-09-21T23:05:46Z",
   "branch": "codex/AIC-0006-review-arg",
   "worktree": "../wt-codex",
   "base_commit": "cf71f31aaf509330ea4d945442bbfed43d23457c",
@@ -49,5 +49,5 @@
   "handoffs": [
     "0001-codex.json"
   ],
-  "notes": "Entregue pelo Codex em 3a0ba8c com handoff escrito por ele (79999ee), na branch codex/AIC-0006-review-arg, sem merge. Revisao do Claude (AIC-0007): ACEITAR_COM_RESSALVAS. Codigo correto; o teste nao protege base_commit em review. Uma rodada de correcao pendente."
+  "notes": "Entregue pelo Codex em 3a0ba8c com handoff escrito por ele (79999ee), na branch codex/AIC-0006-review-arg, sem merge. Revisao do Claude (AIC-0007): ACEITAR_COM_RESSALVAS. Codigo correto; o teste nao protege base_commit em review. Uma rodada de correcao pendente. Aceita pelo coordenador em 21/09. Mergeada em main pelo Codex (a6abee3) por instrucao ambigua; codigo verificado pelo Claude: 69+44+doctor, 3 mutantes de review reprovados."
 }

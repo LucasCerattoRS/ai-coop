@@ -15,7 +15,7 @@ Memórias privadas continuam privadas; o compartilhado é estado explícito em G
 | `~/Projetos/ai-coop/wt-codex` | worktree do Codex, `codex/AIC-0002-operacional` (já mergeada: `git merge --ff-only main` atualiza) |
 | `checkpoint/`, `relatorios/`, `extraidos/` | material congelado de 2026-09-20 |
 
-Nada foi publicado. Sem remote. Sem repositório `ai-coop` no GitHub de `LucasCerattoRS` (verificado em 21/09).
+**Publicado em 21/09/2026:** https://github.com/LucasCerattoRS/ai-coop (público, só a branch `main`; as branches de trabalho ficam locais). Sem licença ainda (`LICENSE-TBD.md`).
 
 ## Retomar em 30 segundos
 
@@ -38,11 +38,11 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 |---|---|---|---|
 | AIC-0001 | claude | **ACCEPTED**, mergeada | protocolo canônico (SPEC, schema, `handoff.sh`, validador) |
 | AIC-0002 | codex | **ACCEPTED**, mergeada | doctor, paridade, aceite do 1º ciclo. Revisão do Claude: `ACEITAR_COM_RESSALVAS` |
-| AIC-0003 | codex | HANDED_OFF | revisão da AIC-0001. Fechamento pendente do coordenador |
+| AIC-0003 | codex | **ACCEPTED** | revisão da AIC-0001. Fechamento pendente do coordenador |
 | AIC-0004 | claude | **ACCEPTED**, mergeada (`1d5abf9`) | adapters `ai-handoff` + limpeza do seed |
-| AIC-0005 | codex | HANDED_OFF | `MUDANCAS_NECESSARIAS` (1 médio, no procedimento). **`$ai-handoff` carrega**; sem `$` não dispara |
-| AIC-0006 | codex | HANDED_OFF; **já em `main` (`a6abee3`) — mergeada pelo Codex, não pelo coordenador; aceite pendente** | `handoff.sh` registra o commit revisado em review. Correção em `dabd325`, handoffs `0001` e `0002` **escritos por ele** |
-| AIC-0007 | claude | HANDED_OFF, mergeada (`9c164fa`) | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS`. Correção verificada pelo Claude: aprovada |
+| AIC-0005 | codex | **ACCEPTED** | `MUDANCAS_NECESSARIAS` (1 médio, no procedimento). **`$ai-handoff` carrega**; sem `$` não dispara |
+| AIC-0006 | codex | **ACCEPTED** (aceite do Lukas, 21/09) | `handoff.sh` registra o commit revisado em review. Correção em `dabd325`, handoffs `0001` e `0002` **escritos por ele** |
+| AIC-0007 | claude | **ACCEPTED** | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS`. Correção verificada pelo Claude: aprovada |
 
 ## Issues da revisão de 2026-09-20
 
@@ -59,10 +59,10 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 
 ## Próximo passo exato
 
-1. **Coordenador confirma o aceite da AIC-0006 e fecha AIC-0005/0006/0007** (o código já está em `main`; verificado por mim em clone
-   real: 69 + 44 + doctor 0–4, e os 3 mutantes de `review` são reprovados).
-2. **Uma tarefa real que não seja o próprio tooling**, com a skill nos dois lados. É o que ainda não foi testado fora do laboratório.
+1. **Uma tarefa real que não seja o próprio tooling**, com a skill nos dois lados. É o que ainda não foi testado fora do laboratório.
+2. **Licença e nome definitivos** (decisão do Lukas). Sem licença, o código é "todos os direitos reservados" por padrão: ninguém pode reutilizar.
 3. Ainda não verificado por execução: `/ai-handoff` aparecer no Claude (só numa sessão nova neste repositório).
+4. CI verificando schemas, scripts e exemplos (`tests/*.sh`), e canal privado de vulnerabilidade (`SECURITY.md`).
 
 ## Pontos abertos conhecidos
 
@@ -82,10 +82,12 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 - Ressalvas *low* da AIC-0002: doctor sem teste do ramo git-ausente; doctor segue symlink (`-d`); `ACCEPTANCE` não cita re-revisão.
 - Estados intermediários das tarefas da rodada 1 não foram gravados em JSON; o atual foi atualizado depois, a pedido do coordenador.
 
-## Antes de pensar em publicar
+## Publicação (feita em 21/09 por decisão do Lukas)
 
-Deferido de propósito: nome e licença (`LICENSE-TBD.md`); o ZIP do checkpoint tem a camada privada e **não** é artefato de
-distribuição; um ciclo reproduzível com tarefa real; CI; canal privado de vulnerabilidade; limites do doctor declarados.
+Publicado **antes** de fechar estes itens, que o Lukas reafirmou deixar para depois: licença (`LICENSE-TBD.md`); CI; canal de
+vulnerabilidade; um ciclo reproduzível com tarefa real. Varredura antes do push: sem segredos na história inteira, sem arquivos
+sensíveis, único e-mail = o do próprio Lukas. O ZIP do checkpoint e `extraidos/` ficam **fora** do repositório (estão em `~/Projetos/ai-coop/`,
+irmãos de `repo/`) e não são artefato de distribuição.
 
 ## Invariantes
 
