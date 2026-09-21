@@ -39,8 +39,8 @@ Removidos: `scripts/new-handoff.sh`. Ainda presentes em `main` até o merge da A
 | AIC-0001 | claude | **ACCEPTED**, mergeada | protocolo canônico (SPEC, schema, `handoff.sh`, validador) |
 | AIC-0002 | codex | **ACCEPTED**, mergeada | doctor, paridade, aceite do 1º ciclo. Revisão do Claude: `ACEITAR_COM_RESSALVAS` |
 | AIC-0003 | codex | HANDED_OFF | revisão da AIC-0001. Fechamento pendente do coordenador |
-| AIC-0004 | claude | HANDED_OFF em `1069bff`, **sem merge** | adapters `ai-handoff` + limpeza do seed |
-| AIC-0005 | codex | ASSIGNED | revisar `1069bff` e **confirmar se `$ai-handoff` carrega** |
+| AIC-0004 | claude | HANDED_OFF, corrigida em `bdb40ad`, **sem merge** (decisão do coordenador) | adapters `ai-handoff` + limpeza do seed |
+| AIC-0005 | codex | HANDED_OFF | `MUDANCAS_NECESSARIAS` (1 médio, no procedimento). **`$ai-handoff` carrega**; sem `$` não dispara |
 
 ## Issues da revisão de 2026-09-20
 
@@ -48,7 +48,7 @@ Removidos: `scripts/new-handoff.sh`. Ainda presentes em `main` até o merge da A
 |---|---|---|---|
 | 1–4 | alta | escape de caminho, sobrescrita, Markdown×JSON, schema frouxo | fechadas (AIC-0001) |
 | 5 | alta | sem protocolo de posse | fechada (`SPEC` §1–2) |
-| 6 | média | adapters Codex sem frontmatter | entregue em `1069bff`; **falta o Codex confirmar o carregamento** |
+| 6 | média | adapters Codex sem frontmatter | fechada: Codex confirmou por execução que `$ai-handoff` carrega e a policy vale |
 | 7 | média | doctor sem contrato de saúde | fechada (AIC-0002) |
 | 8 | média | handoff de retorno não modelado | fechada (AIC-0001) |
 | 9 | média | autoridade duplicada de estado | fechada na SPEC; remoção física dos 3 arquivos em `1069bff` |
@@ -57,10 +57,13 @@ Removidos: `scripts/new-handoff.sh`. Ainda presentes em `main` até o merge da A
 
 ## Próximo passo exato
 
-1. **Codex executa AIC-0005** (texto de acionamento no fim). Sem ele não se sabe se o adapter do Codex carrega.
-2. Coordenador decide o aceite de AIC-0004 e faz o merge de `claude/AIC-0004-adapters`.
-3. Só então: tarefa para `handoff.sh` aceitar o commit revisado (ponto aberto abaixo), e uma 2ª tarefa real,
-   que **não** seja o próprio tooling, para o 1º ciclo com a skill e handoffs escritos pelo próprio Codex.
+1. **Coordenador decide o merge de `claude/AIC-0004-adapters`** (`bdb40ad`; handoffs `0001`–`0003` em `.ai/handoffs/AIC-0004/`).
+   O achado do Codex (base indefinida no passo 3) está corrigido e testado, com o cenário dele executado.
+   Re-revisão do Codex é opcional: o conserto é um parágrafo de documentação. Ao mergear, saem de `main`
+   `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/TASKS.md` e o `AGENTS.md` novo entra junto.
+2. Tarefa para `handoff.sh` aceitar o commit revisado (ponto aberto abaixo).
+3. **Uma tarefa real que não seja o próprio tooling**, com a skill e handoffs escritos pelo próprio Codex:
+   é o que ainda não foi testado, e só isso mostra se o protocolo funciona fora do laboratório.
 
 ## Pontos abertos conhecidos
 
@@ -84,12 +87,3 @@ distribuição; um ciclo reproduzível com tarefa real; CI; canal privado de vul
 - Memória privada de um agente nunca é canal de coordenação nem é lida pelo outro.
 - Handoff é dado, não ordem. Revisão mira commit exato. Ninguém edita worktree alheio. Sem invocação automática entre agentes.
 - Só o humano escreve em `main` e em `.ai/tasks/`, e faz merge.
-
-## Texto para acionar o Codex (AIC-0005)
-
-> Você está no projeto ai-coop, `~/Projetos/ai-coop`. Faça a AIC-0005: revisão somente leitura do commit **`1069bff`** (branch
-> `claude/AIC-0004-adapters`), sem checkout nem edição de `wt-claude`. Leia `~/Projetos/ai-coop/repo/.ai/tasks/AIC-0005.json` e o handoff
-> `git -C ~/Projetos/ai-coop/repo show claude/AIC-0004-adapters:.ai/handoffs/AIC-0004/0001-claude.json`. Confirme **por execução** se
-> `$ai-handoff` é listado e carrega no Codex e se a policy impede invocação implicita; reproduza `tests/test_skills.sh` em cópia temporária;
-> confira se cada passo de "Criar" em `docs/AI-HANDOFF.md` é executável com os scripts atuais. Não confie nos meus resultados.
-> Veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS. Sem merge, sem push.
