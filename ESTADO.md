@@ -15,7 +15,7 @@ Memórias privadas continuam privadas; o compartilhado é estado explícito em G
 | `~/Projetos/ai-coop/wt-codex` | worktree do Codex, `codex/AIC-0002-operacional` (já mergeada: `git merge --ff-only main` atualiza) |
 | `checkpoint/`, `relatorios/`, `extraidos/` | material congelado de 2026-09-20 |
 
-**Publicado em 21/09/2026:** https://github.com/LucasCerattoRS/ai-coop (público, só a branch `main`; as branches de trabalho ficam locais). Sem licença ainda (`LICENSE-TBD.md`).
+**Publicado em 21/09/2026:** https://github.com/LucasCerattoRS/ai-coop (público, só a branch `main`; as branches de trabalho ficam locais). Licença: **PolyForm Noncommercial 1.0.0** (`LICENSE`): uso livre não comercial; uso comercial exige licença paga com o autor.
 
 ## Retomar em 30 segundos
 
@@ -57,12 +57,14 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 | 10 | média | sem paridade público/privado | fechada como doc (`PARITY.md`); não exercitada, só há a árvore pública |
 | 11 | baixa | backlog privado desatualizado | **aberta**: a árvore privada não está neste repo |
 
-## Próximo passo exato
+## Próximo passo exato (tarefas `NEW`, sem dono)
 
-1. **Uma tarefa real que não seja o próprio tooling**, com a skill nos dois lados. É o que ainda não foi testado fora do laboratório.
-2. **Licença e nome definitivos** (decisão do Lukas). Sem licença, o código é "todos os direitos reservados" por padrão: ninguém pode reutilizar.
-3. Ainda não verificado por execução: `/ai-handoff` aparecer no Claude (só numa sessão nova neste repositório).
-4. CI verificando schemas, scripts e exemplos (`tests/*.sh`), e canal privado de vulnerabilidade (`SECURITY.md`).
+1. **AIC-0008 — CI** (GitHub Actions rodando as 3 suítes; provar que falha de verdade).
+2. **AIC-0009 — canal de vulnerabilidade** (habilitar o relato privado do GitHub + `SECURITY.md`). É rápido; exige o token do Lukas.
+3. **AIC-0010 — tarefa real fora do laboratório**, com `/ai-handoff` verificado no Claude. É a que decide se o protocolo funciona.
+4. **Revisão jurídica da licença e do termo de contribuição** por quem entenda: usei texto padrão (PolyForm) e um resumo de cessão em `CONTRIBUTING.md`.
+
+O repositório público fica aberto a contribuições nesses itens. A **cópia privada mais abrangente** existe (ver abaixo).
 
 ## Pontos abertos conhecidos
 
@@ -82,12 +84,17 @@ Removidos: `scripts/new-handoff.sh`, `.ai/STATUS.json`, `.ai/HANDOFF.md`, `.ai/T
 - Ressalvas *low* da AIC-0002: doctor sem teste do ramo git-ausente; doctor segue symlink (`-d`); `ACCEPTANCE` não cita re-revisão.
 - Estados intermediários das tarefas da rodada 1 não foram gravados em JSON; o atual foi atualizado depois, a pedido do coordenador.
 
-## Publicação (feita em 21/09 por decisão do Lukas)
+## Publicação e cópia privada
 
-Publicado **antes** de fechar estes itens, que o Lukas reafirmou deixar para depois: licença (`LICENSE-TBD.md`); CI; canal de
-vulnerabilidade; um ciclo reproduzível com tarefa real. Varredura antes do push: sem segredos na história inteira, sem arquivos
-sensíveis, único e-mail = o do próprio Lukas. O ZIP do checkpoint e `extraidos/` ficam **fora** do repositório (estão em `~/Projetos/ai-coop/`,
-irmãos de `repo/`) e não são artefato de distribuição.
+Publicado em 21/09 **antes** de fechar CI, canal de vulnerabilidade e ciclo real (decisão do Lukas). Varredura antes do push: sem
+segredos na história inteira, sem arquivos sensíveis, único e-mail = o do Lukas.
+
+- **Público:** https://github.com/LucasCerattoRS/ai-coop — só `repo/`, só a branch `main`.
+- **Privado:** https://github.com/LucasCerattoRS/ai-coop-private — a pasta `~/Projetos/ai-coop/` **sem** `repo/` nem `wt-*/`
+  (checkpoint, seeds originais, relatório do Codex, `ORGANIZACAO.json`). É onde entra o que não pode ir ao público.
+- Regra: **nada da cópia privada vai para o público sem sanitização**; o ZIP do checkpoint tem a camada privada.
+- Licença/contribuição: qualquer contribuinte cede ao mantenedor o direito de relicenciar (`CONTRIBUTING.md`), senão o
+  autor não conseguiria vender licença comercial do conjunto.
 
 ## Invariantes
 

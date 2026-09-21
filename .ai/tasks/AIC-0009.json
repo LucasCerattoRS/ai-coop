@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0009",
+  "title": "Canal privado de vulnerabilidade: habilitar o relato privado do GitHub e reescrever SECURITY.md",
+  "state": "NEW",
+  "owner": null,
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:11:01Z",
+  "updated_at": "2026-09-21T23:11:01Z",
+  "branch": null,
+  "worktree": null,
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "SECURITY.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      "LICENSE",
+      "docs/SPEC-v0.1.md",
+      "scripts/",
+      "tests/",
+      ".github/"
+    ]
+  },
+  "acceptance": [
+    "Private vulnerability reporting habilitado no repositorio, verificado pela API do GitHub",
+    "SECURITY.md remove a frase 'a future release should add...' e aponta para o canal real, sem inventar e-mail",
+    "SECURITY.md declara o que e vulneravel de fato neste projeto (escrita fora do repo, symlink, escape de caminho, lock) e o que nao e (adapters, docs)",
+    "SECURITY.md diz quais versoes recebem correcao (hoje so main)"
+  ],
+  "handoffs": [],
+  "notes": "Pedido do coordenador em 21/09. A parte da API exige o token do Lukas (gh auth): so o coordenador, ou o agente sob ordem explicita."
+}

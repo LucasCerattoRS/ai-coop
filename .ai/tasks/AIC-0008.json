@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0008",
+  "title": "CI: rodar as suites de teste a cada push e pull request no GitHub Actions",
+  "state": "NEW",
+  "owner": null,
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:11:01Z",
+  "updated_at": "2026-09-21T23:11:01Z",
+  "branch": null,
+  "worktree": null,
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      ".github/workflows/",
+      "README.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      "LICENSE",
+      "docs/SPEC-v0.1.md",
+      "scripts/",
+      "tests/"
+    ]
+  },
+  "acceptance": [
+    "Workflow roda tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh em push e pull_request",
+    "permissions: contents: read; nenhum segredo usado; acoes pinadas por versao",
+    "O CI FALHA de verdade: provado abrindo uma branch com um teste quebrado de proposito e vendo o job vermelho, depois descartando",
+    "Configura git user.name/user.email no job, porque os testes criam commits",
+    "O workflow nao executa codigo de forks com acesso a segredos (pull_request, nunca pull_request_target)"
+  ],
+  "handoffs": [],
+  "notes": "Pedido do coordenador em 21/09. Dono a definir. Custo baixo. PR de fork e possivel: repositorio publico."
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0010",
+  "title": "Primeira tarefa REAL fora do laboratorio: o protocolo aplicado a uma tarefa que nao seja o proprio tooling do ai-coop",
+  "state": "NEW",
+  "owner": null,
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T23:11:01Z",
+  "updated_at": "2026-09-21T23:11:01Z",
+  "branch": null,
+  "worktree": null,
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "a definir: outro repositorio do Lukas, ou uma tarefa externa pequena"
+    ],
+    "forbidden_paths": [
+      "repo/.ai/tasks/ do proprio ai-coop",
+      "scripts/",
+      "docs/SPEC-v0.1.md"
+    ]
+  },
+  "acceptance": [
+    "A tarefa e escolhida pelo coordenador e NAO e mudanca no tooling do ai-coop",
+    "Um agente implementa, o outro revisa, cada um com $ai-handoff / /ai-handoff e handoffs escritos por quem entrega",
+    "/ai-handoff verificado por execucao no Claude, coisa ainda nunca confirmada",
+    "Registro de atrito: cada passo do protocolo que travou, confundiu ou foi contornado, com evidencia",
+    "Resultado vira lista de correcoes no protocolo, nao so um aceite"
+  ],
+  "handoffs": [],
+  "notes": "E o teste que decide se o protocolo funciona fora do laboratorio. Ate aqui todas as tarefas foram o proprio tooling."
+}
