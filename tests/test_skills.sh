@@ -39,6 +39,24 @@ for w in "chamar o outro agente" "mudar \`owner\` ou \`state\`" "merge, push" "m
   t "AI-HANDOFF.md declara limite: $w" "grep -qF '$w' docs/AI-HANDOFF.md"
 done
 
+# passo Escopo: a base tem de estar definida (achado do Codex em AIC-0005), nao deixada como <base>
+t "AI-HANDOFF.md define a base do escopo com git merge-base main HEAD" "grep -qF 'git merge-base main HEAD' docs/AI-HANDOFF.md"
+t "AI-HANDOFF.md nao deixa <base> indefinida" "! grep -qF '<base>..HEAD' docs/AI-HANDOFF.md"
+t "AI-HANDOFF.md permite ao dono o canal .ai/handoffs/<TASK-ID>/ no escopo" "grep -qF 'canal de entrega' docs/AI-HANDOFF.md"
+t "AI-HANDOFF.md trata review: diff vazio" "grep -qF 'diff tem de ser vazio' docs/AI-HANDOFF.md"
+
+# cenario do Codex, executado: main avanca depois que a branch nasceu; o base_commit da tarefa e o novo main
+SB=$(mktemp -d); trap 'rm -rf "$SB"' EXIT
+( cd "$SB" && git init -q -b main . && git config user.email t@t && git config user.name t \
+  && echo a > a && git add -A >/dev/null && git commit -qm A && git checkout -qb work \
+  && git checkout -q main && mkdir tasks && echo t > tasks/T.json && git add -A >/dev/null && git commit -qm B \
+  && git checkout -q work && echo mine > mine.txt && git add -A >/dev/null && git commit -qm mine )
+TASKBASE=$(git -C "$SB" rev-parse main)
+t "cenario: base_commit da tarefa (novo main) traz arquivo alheio no diff (o defeito)" \
+  "git -C $SB diff --name-only $TASKBASE..HEAD | grep -q tasks/T.json"
+t "cenario: merge-base main HEAD mostra so o trabalho da branch" \
+  "[[ \$(git -C $SB diff --name-only \$(git -C $SB merge-base main HEAD)..HEAD) == mine.txt ]]"
+
 # fontes de estado removidas e sem referencias vivas
 for f in .ai/STATUS.json .ai/HANDOFF.md .ai/TASKS.md scripts/new-handoff.sh; do t "$f removido" "[[ ! -e $f ]]"; done
 t "nenhuma referencia viva a arquivos removidos" \

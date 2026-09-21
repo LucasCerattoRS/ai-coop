@@ -19,8 +19,13 @@ pergunte ao coordenador.
    `ACCEPTED`, `CLOSED` nem `CANCELLED`. Divergiu: pare e relate.
 2. **Worktree.** `git rev-parse --show-toplevel` é o worktree da tarefa; a branch atual é a `branch`
    da tarefa; `git status --porcelain` está vazio. O handoff aponta para um commit, não para árvore suja.
-3. **Escopo.** `git diff --name-only <base>..HEAD` só toca `scope.allowed_paths` e nada de
-   `scope.forbidden_paths`. Violou: pare e relate; não entregue.
+3. **Escopo.** A base é a do **trabalho da sua branch**: `BASE=$(git merge-base main HEAD)`, a mesma que
+   `scripts/handoff.sh` grava em `base_commit`. Não use o `base_commit` da tarefa: ele é um commit de `main`
+   que pode ser mais novo que o ponto onde sua branch nasceu, e o diff traria arquivos que vieram de `main`
+   e não são seus. `git diff --name-only $BASE..HEAD` só toca `scope.allowed_paths`, mais
+   `.ai/handoffs/<TASK-ID>/` (o canal de entrega, permitido ao dono sem constar no escopo), e nada de
+   `scope.forbidden_paths`. Em tarefa `review` o diff tem de ser vazio, exceto esse canal.
+   Violou: pare e relate; não entregue.
 4. **Testes.** Rode os exigidos pelos critérios de aceite e registre o resultado **real**. Não rodou:
    `not_run` com `note`. Alegar `pass` sem execução invalida a entrega.
 5. **Gerar.** `scripts/handoff.sh <TASK-ID> <de> <para> <kind>`. Preencha todo campo `<...>`.
