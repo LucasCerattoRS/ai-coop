@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0001",
+  "title": "Trilha A — protocolo canonico: especificacao v0.1, schema de handoff e criacao segura de handoff",
+  "state": "ASSIGNED",
+  "owner": "claude",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T00:00:00Z",
+  "updated_at": "2026-09-21T00:00:00Z",
+  "branch": "claude/AIC-0001-protocolo",
+  "worktree": "../wt-claude",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "docs/SPEC-v0.1.md",
+      ".ai/schemas/handoff.schema.json",
+      ".ai/examples/",
+      "scripts/handoff.sh",
+      "scripts/validate-handoff.py",
+      "tests/test_handoff.sh"
+    ],
+    "forbidden_paths": [
+      "scripts/ai-coop-doctor.sh",
+      "docs/DOCTOR-CONTRACT.md",
+      "docs/PARITY.md",
+      "docs/ACCEPTANCE-FIRST-CYCLE.md",
+      ".agents/",
+      ".claude/",
+      ".ai/tasks/"
+    ]
+  },
+  "acceptance": [
+    "SPEC-v0.1.md cobre autoridade, transicoes legais de estado, schema de task, schema de handoff, imutabilidade, estrategia de branch de coordenacao, invariantes de worktree e politica de Markdown derivado",
+    "handoff.schema.json recusa handoff sem base_commit, delivery_commit, sequence e previous_handoff, e recusa strings vazias",
+    "scripts/handoff.sh recusa task_id fora de ^AIC-[0-9]{4}$ e nao escreve fora de .ai/handoffs/",
+    "criacao do handoff e atomica: duas execucoes simultaneas com a mesma sequencia resultam em exatamente um arquivo criado e uma falha",
+    "o modelo suporta Claude -> Codex -> Claude com handoffs sequenciados e encadeados por previous_handoff",
+    "tests/test_handoff.sh roda sem framework e falha se qualquer criterio acima quebrar",
+    "nenhum arquivo em forbidden_paths e tocado"
+  ],
+  "handoffs": [],
+  "notes": "Resolve as issues ALTA 1, 2, 3, 4 e MEDIA 8 e 9 do relatorio do Codex de 2026-09-20."
+}

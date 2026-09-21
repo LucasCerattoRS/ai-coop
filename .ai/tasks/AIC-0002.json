@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0002",
+  "title": "Trilha B — superficie operacional: contrato do doctor, paridade publico/privado e criterios de aceite do primeiro ciclo",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-21T00:00:00Z",
+  "updated_at": "2026-09-21T00:00:00Z",
+  "branch": "codex/AIC-0002-operacional",
+  "worktree": "../wt-codex",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "scripts/ai-coop-doctor.sh",
+      "docs/DOCTOR-CONTRACT.md",
+      "docs/PARITY.md",
+      "docs/ACCEPTANCE-FIRST-CYCLE.md",
+      "tests/test_doctor.sh"
+    ],
+    "forbidden_paths": [
+      "docs/SPEC-v0.1.md",
+      ".ai/schemas/",
+      ".ai/examples/",
+      ".ai/tasks/",
+      "scripts/handoff.sh",
+      "scripts/new-handoff.sh",
+      "scripts/validate-handoff.py",
+      "tests/test_handoff.sh",
+      ".agents/",
+      ".claude/"
+    ]
+  },
+  "acceptance": [
+    "DOCTOR-CONTRACT.md declara escopo, o que o doctor NAO garante, e a tabela completa de codigos de saida",
+    "ai-coop-doctor.sh implementa esses codigos: 0 saudavel, 1 degradado, 2 uso incorreto, 3 fora de repositorio git, 4 layout .ai ausente ou invalido",
+    "o doctor nunca sai com 0 quando um requisito declarado obrigatorio esta ausente, e nao engole falha de comando git",
+    "PARITY.md define uma unica fonte de verdade operacional entre a arvore publica e a privada e como a divergencia e detectada",
+    "ACCEPTANCE-FIRST-CYCLE.md define criterios objetivos de aceite do primeiro ciclo Claude -> Codex -> Claude, limitado a uma rodada de revisao e uma de correcao",
+    "tests/test_doctor.sh roda sem framework e verifica cada codigo de saida",
+    "nenhum arquivo em forbidden_paths e tocado"
+  ],
+  "handoffs": [],
+  "notes": "Resolve as issues MEDIA 7 e 10 do relatorio do Codex de 2026-09-20. Os adapters de skill (issue MEDIA 6) ficam fora desta tarefa: dependem da SPEC da trilha A e entram em AIC-0003."
+}
