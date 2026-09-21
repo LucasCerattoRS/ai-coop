@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 # Cria um handoff novo, imutavel e sequenciado, em .ai/handoffs/<TASK_ID>/.
 #
-# uso: scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND
+# uso: scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]
 #   TASK_ID     AIC-NNNN
 #   FROM_AGENT  claude | codex
 #   TO_AGENT    claude | codex | human
 #   KIND        delivery | review | correction
+#   REVIEWED_COMMIT  obrigatorio apenas para review
 #
 # saida: 0 criado, 1 falha operacional, 2 uso incorreto.
 set -euo pipefail
 
 die() { printf '%s\n' "$*" >&2; exit "${2:-1}"; }
-usage() { die "uso: $0 TASK_ID FROM_AGENT TO_AGENT KIND" 2; }
+usage() { die "uso: $0 TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]" 2; }
 
-[[ $# -eq 4 ]] || usage
+[[ $# -ge 4 && $# -le 5 ]] || usage
 TASK_ID=$1; FROM=$2; TO=$3; KIND=$4
 
 # Allowlist. E o que impede TASK_ID de influenciar o caminho.
@@ -22,14 +23,20 @@ TASK_ID=$1; FROM=$2; TO=$3; KIND=$4
 [[ $TO == claude || $TO == codex || $TO == human ]] || die "TO_AGENT invalido: $TO" 2
 [[ $FROM != "$TO" ]] || die "FROM_AGENT e TO_AGENT nao podem ser iguais" 2
 [[ $KIND == delivery || $KIND == review || $KIND == correction ]] || die "KIND invalido: $KIND" 2
+if [[ $KIND == review ]]; then [[ $# -eq 5 ]] || usage
+else [[ $# -eq 4 ]] || usage; fi
 
 ROOT=$(git rev-parse --show-toplevel) || die "fora de um repositorio git" 1
 cd "$ROOT"
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 [[ $BRANCH != HEAD ]] || die "HEAD destacado: faca checkout da branch da tarefa antes do handoff" 1
-DELIVERY_COMMIT=$(git rev-parse HEAD)
-if ! BASE_COMMIT=$(git merge-base main HEAD 2>/dev/null); then
+if [[ $KIND == review ]]; then
+  DELIVERY_COMMIT=$(git rev-parse --verify "$5^{commit}" 2>/dev/null) || die "REVIEWED_COMMIT nao resolve para um commit: $5" 1
+else
+  DELIVERY_COMMIT=$(git rev-parse HEAD)
+fi
+if ! BASE_COMMIT=$(git merge-base main "$DELIVERY_COMMIT" 2>/dev/null); then
   die "nao foi possivel derivar base_commit: branch de coordenacao 'main' ausente" 1
 fi
 

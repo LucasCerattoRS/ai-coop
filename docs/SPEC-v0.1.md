@@ -141,8 +141,8 @@ Handoffs vivem em `.ai/handoffs/<TASK-ID>/<NNNN>-<agente>.json`.
 - O handoff só entra em `main` quando o humano faz o merge, junto com o código.
 - Revisão mira um commit exato. Nome de branch não identifica revisão nenhuma: a
   branch se move, o hash não.
-- `base_commit` é derivado de `git merge-base main HEAD`. Sem `main`, o script
-  falha em vez de inventar uma base.
+- `base_commit` é derivado de `git merge-base main HEAD` (ou do commit revisado em
+  `review`). Sem `main`, o script falha em vez de inventar uma base.
 
 Git registra conflito, não exclusão mútua. No MVP a serialização vem da atribuição
 humana e dos escopos disjuntos, não de lock.
@@ -175,8 +175,12 @@ JSON é canônico. Markdown é vista, nunca fonte.
 
 ## 9. Criação e validação de handoff
 
-`scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND` cria o esqueleto já com o
-estado Git capturado. Saídas: `0` criado, `1` falha operacional, `2` uso incorreto.
+`scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]` cria o
+esqueleto já com o estado Git capturado. O quinto argumento é obrigatório em `review`
+e proibido nos demais kinds. Deve resolver para um commit existente; o script grava
+seu SHA completo em `delivery_commit` e `git merge-base main <commit revisado>` em
+`base_commit`. Nos demais kinds, usa HEAD. Saídas: `0` criado, `1` falha operacional
+(incluindo commit inexistente), `2` uso incorreto.
 
 `scripts/validate-handoff.py ARQUIVO [ARQUIVO ...]` valida o contrato. Saídas: `0` todos
 válidos, `1` algum inválido, `2` uso incorreto ou arquivo ausente. Sem dependência externa: a validação é escrita à
@@ -185,7 +189,7 @@ mão contra este schema, e schema e validador mudam juntos.
 O esqueleto **nasce inválido** de propósito — traz placeholders `<TODO>` que o
 validador recusa. Não dá para entregar um handoff em branco.
 
-`tests/test_handoff.sh` cobre os dois, sem framework: 55 casos, incluindo escape de
+`tests/test_handoff.sh` cobre os dois, sem framework: 65 casos, incluindo escape de
 caminho, symlink em `.ai` e em `.ai/handoffs`, branch com aspas, lock ocupado, 8
 criações simultâneas de **agentes diferentes** (propriedade: sequência contígua, sem
 repetição, cadeia íntegra — não "um vencedor", que depende de temporização) e cada
