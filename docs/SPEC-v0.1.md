@@ -99,7 +99,11 @@ O que a versão do seed permitia e esta proíbe:
   também recusa só-espaços e placeholders `<TODO>` deixados pelo gerador;
 - `additionalProperties: true` → agora `false`;
 - `tests` podia sumir → agora exige ao menos um item; não rodou nada é
-  `{"result": "not_run", "note": "<por quê>"}`, declarado, não omitido.
+  `{"result": "not_run", "note": "<por quê>"}`, declarado, não omitido. `not_run`
+  **sem** `note` é inválido, no schema e no validador.
+- placeholders `<...>` / `TODO` são recusados em **todo** campo de texto (`summary`,
+  `next_action`, `changes`, `tests`, `risks`, `findings`), não só em dois deles.
+- `findings` é proibido fora de `kind: "review"` também no **schema**, não só no validador.
 
 `base_commit` e `delivery_commit` são SHA-1 de 40 caracteres. `delivery_commit` é
 o commit **do código entregue**, não o commit que contém o handoff — um arquivo não
@@ -116,12 +120,17 @@ Handoffs vivem em `.ai/handoffs/<TASK-ID>/<NNNN>-<agente>.json`.
   `scripts/handoff.sh` recusa sobrescrever; o encadeamento preserva
   Claude → Codex → Claude, que o modelo de um-arquivo-por-tarefa do seed não
   representava.
-- **Criação atômica**: o arquivo aparece via `ln(2)` a partir de um temporário já
-  escrito. Duas execuções simultâneas produzem exatamente um arquivo e uma falha;
-  nunca um handoff meio escrito.
+- **Criação atômica e serializada**: o arquivo aparece via `ln(2)` a partir de um
+  temporário já escrito, nunca meio escrito. A unicidade da **sequência** vem de um
+  lock por tarefa (`mkdir .ai/handoffs/<TASK-ID>/.lock`), não do nome do arquivo:
+  `0001-claude.json` e `0001-codex.json` são nomes distintos e ambos passariam pelo
+  `ln`. Quem não consegue o lock falha (exit 1), não espera. Lock morto após
+  `kill -9` é removido à mão com `rmdir`; não há expiração automática no MVP.
 - **Sem escape de caminho**: `TASK_ID` passa por allowlist `^AIC-[0-9]{4}$` antes
-  de tocar qualquer caminho, e `.ai/handoffs` e `.ai/handoffs/<TASK-ID>` são
-  recusados se forem symlink.
+  de tocar qualquer caminho; `.ai`, `.ai/handoffs` e `.ai/handoffs/<TASK-ID>` são
+  recusados se forem symlink, e o destino resolvido tem de ficar dentro do repositório.
+- **JSON sempre válido**: o nome da branch entra escapado (`json.dumps`); uma branch
+  Git legítima com aspas não corrompe o arquivo.
 
 ## 6. Branch de coordenação e publicação
 
@@ -169,15 +178,22 @@ JSON é canônico. Markdown é vista, nunca fonte.
 `scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND` cria o esqueleto já com o
 estado Git capturado. Saídas: `0` criado, `1` falha operacional, `2` uso incorreto.
 
-`scripts/validate-handoff.py CAMINHO` valida o contrato. Saídas: `0` válido,
-`1` inválido, `2` uso incorreto. Sem dependência externa: a validação é escrita à
+`scripts/validate-handoff.py ARQUIVO [ARQUIVO ...]` valida o contrato. Saídas: `0` todos
+válidos, `1` algum inválido, `2` uso incorreto ou arquivo ausente. Sem dependência externa: a validação é escrita à
 mão contra este schema, e schema e validador mudam juntos.
 
 O esqueleto **nasce inválido** de propósito — traz placeholders `<TODO>` que o
 validador recusa. Não dá para entregar um handoff em branco.
 
-`tests/test_handoff.sh` cobre os dois, sem framework: 40 casos, incluindo escape de
-caminho, symlink no destino, 8 criações simultâneas e cada regra do schema.
+`tests/test_handoff.sh` cobre os dois, sem framework: 54 casos, incluindo escape de
+caminho, symlink em `.ai` e em `.ai/handoffs`, branch com aspas, lock ocupado, 8
+criações simultâneas de **agentes diferentes** (propriedade: sequência contígua, sem
+repetição, cadeia íntegra — não "um vencedor", que depende de temporização) e cada
+regra do schema.
+
+Limite conhecido: schema e validador são duas implementações da mesma regra; um teste
+compara só as regras que já falharam uma vez. Trocar por um validador JSON Schema real
+quando `jsonschema` puder ser dependência.
 
 ## 10. Fora do escopo desta versão
 
@@ -189,5 +205,7 @@ publicação automáticos, escolha de licença, autonomia ampla do Codex.
 
 A direção arquitetural v0.1 está especificada e implementada nos pontos 1–9.
 Sobre o veredito `NEEDS_ARCHITECTURE_REVISION` de 20/09: as cinco issues ALTA e as
-MÉDIA 8 e 9 estão endereçadas aqui. A revisão do Codex sobre o commit entregue é o
-que decide se esta v0.1 vira contrato aceito.
+MÉDIA 8 e 9 estão endereçadas. A revisão do Codex sobre `8e48bfd` retornou
+`MUDANCAS_NECESSARIAS` (1 alta, 3 médias, 1 baixa, todas reproduzidas); a rodada de
+correção as fecha, mais um defeito que a revisão apontou só de raso: a unicidade de
+sequência entre agentes diferentes. O aceite final é do coordenador humano.

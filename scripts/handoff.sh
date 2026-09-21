@@ -33,16 +33,29 @@ if ! BASE_COMMIT=$(git merge-base main HEAD 2>/dev/null); then
   die "nao foi possivel derivar base_commit: branch de coordenacao 'main' ausente" 1
 fi
 
-# .ai/handoffs e .ai/handoffs/<TASK_ID> tem de ser diretorios reais, nunca symlinks:
-# um symlink aqui reintroduziria a escrita fora da arvore que a allowlist acabou de fechar.
-for d in .ai/handoffs ".ai/handoffs/$TASK_ID"; do
+# .ai, .ai/handoffs e .ai/handoffs/<TASK_ID> tem de ser diretorios reais, nunca symlinks:
+# um symlink em qualquer nivel reintroduziria a escrita fora da arvore que a allowlist fechou.
+ROOT=$(pwd -P)
+for d in .ai .ai/handoffs ".ai/handoffs/$TASK_ID"; do
   [[ ! -L $d ]] || die "$d e um symlink; recusando" 1
   mkdir -p "$d"
   [[ -d $d && ! -L $d ]] || die "$d nao e um diretorio real" 1
 done
 DIR=".ai/handoffs/$TASK_ID"
+# ponytail: checagem-e-uso (TOCTOU) contra quem troca um diretorio por symlink entre a
+# checagem e a escrita. Fora do modelo de ameaca do MVP (exige escrita local no repo).
+[[ $(cd "$DIR" && pwd -P) == "$ROOT/$DIR" ]] || die "$DIR resolve para fora do repositorio; recusando" 1
 
-# Sequencia = maior existente + 1. Vale como sugestao; quem garante unicidade e o O_EXCL abaixo.
+# Exclusao mutua por tarefa. A unicidade da sequencia NAO pode depender do nome do arquivo:
+# claude e codex geram 0001-claude.json e 0001-codex.json, nomes distintos que o ln(2) aceita.
+# mkdir e atomico; quem nao consegue o lock falha em vez de esperar.
+LOCK="$DIR/.lock"
+mkdir "$LOCK" 2>/dev/null || die "outro processo esta criando handoff em $DIR (ou um lock morto em $LOCK; se nenhum processo estiver rodando, remova-o com rmdir)" 1
+TMP=
+cleanup() { [[ -n $TMP ]] && rm -f "$TMP"; rmdir "$LOCK" 2>/dev/null || true; }
+trap cleanup EXIT
+
+# Sequencia = maior existente + 1, calculada COM o lock: e ele que garante unicidade.
 SEQ=1
 for f in "$DIR"/[0-9][0-9][0-9][0-9]-*.json; do
   [[ -e $f ]] || continue
@@ -61,6 +74,7 @@ fi
 OUT="$DIR/$(printf '%04d' "$SEQ")-$FROM.json"
 HANDOFF_ID="$TASK_ID-$(printf '%04d' "$SEQ")"
 CREATED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+BRANCH_J=$(python3 -c 'import json,sys;print(json.dumps(sys.argv[1]))' "$BRANCH")
 
 FINDINGS=""
 [[ $KIND == review ]] && FINDINGS='
@@ -69,7 +83,6 @@ FINDINGS=""
   ],'
 
 TMP=$(mktemp "$DIR/.tmp.XXXXXXXX")
-trap 'rm -f "$TMP"' EXIT
 cat > "$TMP" <<JSON
 {
   "schema_version": 1,
@@ -80,7 +93,7 @@ cat > "$TMP" <<JSON
   "to_agent": "$TO",
   "kind": "$KIND",
   "created_at": "$CREATED_AT",
-  "branch": "$BRANCH",
+  "branch": $BRANCH_J,
   "base_commit": "$BASE_COMMIT",
   "delivery_commit": "$DELIVERY_COMMIT",
   "summary": "<TODO uma frase: o que foi entregue>",
@@ -96,12 +109,11 @@ cat > "$TMP" <<JSON
 }
 JSON
 
-# ln(2) e atomico e falha com EEXIST: duas execucoes simultaneas produzem
-# exatamente um arquivo criado e uma falha. Vence tambem contra symlink no destino.
+# ln(2) e atomico e falha com EEXIST: defesa em profundidade contra sobrescrita,
+# inclusive contra symlink no destino. O lock acima ja serializa a criacao.
 if ! ln "$TMP" "$OUT" 2>/dev/null; then
   die "ja existe um handoff em $OUT; handoffs sao imutaveis, gere a proxima sequencia" 1
 fi
-rm -f "$TMP"; trap - EXIT
 
 printf '%s\n' "$OUT"
 printf 'preencha os campos <TODO> e valide com: scripts/validate-handoff.py %s\n' "$OUT" >&2

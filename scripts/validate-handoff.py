@@ -6,7 +6,8 @@ JSON Schema generico. jsonschema nao esta instalado e o contrato e pequeno.
 Teto: mudou o schema, mude aqui tambem. Se o contrato crescer, trocar por
 `pip install jsonschema` e 5 linhas.
 
-Saida: 0 valido, 1 invalido, 2 uso incorreto.
+uso: validate-handoff.py ARQUIVO.json [ARQUIVO.json ...]
+Saida: 0 todos validos, 1 algum invalido, 2 uso incorreto.
 """
 import json
 import re
@@ -35,6 +36,11 @@ OPTIONAL = ["findings"]
 
 # Placeholders que o gerador escreve e o agente tem de substituir.
 PLACEHOLDER = re.compile(r"(?i)\bTODO\b|^<.*>$|^$")
+
+
+def real_str(value):
+    """String preenchida de verdade: nao vazia e sem placeholder do gerador."""
+    return isinstance(value, str) and value.strip() != "" and not PLACEHOLDER.search(value.strip())
 
 
 def nonempty_str(value):
@@ -101,8 +107,8 @@ def check(handoff):
         for i, item in enumerate(changes):
             if not isinstance(item, dict) or set(item) != {"path", "what"}:
                 err(f"changes[{i}] deve ter exatamente path e what")
-            elif not (nonempty_str(item["path"]) and nonempty_str(item["what"])):
-                err(f"changes[{i}] tem campo vazio")
+            elif not (real_str(item["path"]) and real_str(item["what"])):
+                err(f"changes[{i}] tem campo vazio ou placeholder")
 
     tests = handoff["tests"]
     if not isinstance(tests, list) or not tests:
@@ -115,11 +121,15 @@ def check(handoff):
                 err(f"tests[{i}] tem campo nao permitido")
             elif item["result"] not in RESULTS:
                 err(f"tests[{i}].result deve ser um de {sorted(RESULTS)}")
-            elif not nonempty_str(item["command"]):
-                err(f"tests[{i}].command vazio")
+            elif not real_str(item["command"]):
+                err(f"tests[{i}].command vazio ou placeholder")
+            elif "note" in item and not real_str(item["note"]):
+                err(f"tests[{i}].note vazia ou placeholder")
+            elif item["result"] == "not_run" and "note" not in item:
+                err(f"tests[{i}] not_run exige note explicando por que nao rodou")
 
     risks = handoff["risks"]
-    if not isinstance(risks, list) or any(not nonempty_str(r) for r in risks):
+    if not isinstance(risks, list) or any(not real_str(r) for r in risks):
         err("risks deve ser lista de strings nao vazias (lista vazia e permitida)")
 
     prev = handoff["previous_handoff"]
@@ -144,36 +154,41 @@ def check(handoff):
                     err(f"findings[{i}] tem campo nao permitido")
                 elif f["severity"] not in SEVERITIES:
                     err(f"findings[{i}].severity invalido")
+                elif not (real_str(f["path"]) and real_str(f["finding"])):
+                    err(f"findings[{i}] tem campo vazio ou placeholder")
     elif "findings" in handoff:
         err("findings so e permitido em kind=review")
 
     return errors
 
 
-def main(argv):
-    if len(argv) != 2:
-        print("uso: validate-handoff.py CAMINHO_DO_HANDOFF.json", file=sys.stderr)
-        return 2
-    path = Path(argv[1])
+def validate_file(path):
+    """0 valido, 1 invalido, 2 arquivo ausente."""
     try:
-        handoff = json.loads(path.read_text(encoding="utf-8"))
+        handoff = json.loads(Path(path).read_text(encoding="utf-8"))
     except FileNotFoundError:
         print(f"arquivo nao encontrado: {path}", file=sys.stderr)
         return 2
     except json.JSONDecodeError as exc:
-        print(f"JSON invalido: {exc}", file=sys.stderr)
+        print(f"{path}: JSON invalido: {exc}", file=sys.stderr)
         return 1
     if not isinstance(handoff, dict):
-        print("o handoff precisa ser um objeto JSON", file=sys.stderr)
+        print(f"{path}: o handoff precisa ser um objeto JSON", file=sys.stderr)
         return 1
-
     errors = check(handoff)
-    if errors:
-        for e in errors:
-            print(f"INVALIDO: {e}", file=sys.stderr)
-        return 1
-    print(f"VALIDO: {handoff['handoff_id']}")
-    return 0
+    for e in errors:
+        print(f"{path}: INVALIDO: {e}", file=sys.stderr)
+    if not errors:
+        print(f"VALIDO: {handoff['handoff_id']}")
+    return 1 if errors else 0
+
+
+def main(argv):
+    if len(argv) < 2:
+        print("uso: validate-handoff.py ARQUIVO.json [ARQUIVO.json ...]", file=sys.stderr)
+        return 2
+    codes = [validate_file(p) for p in argv[1:]]
+    return 2 if 2 in codes else max(codes)
 
 
 if __name__ == "__main__":

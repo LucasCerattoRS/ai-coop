@@ -60,8 +60,10 @@
         "properties": {
           "command": {"type": "string", "minLength": 1},
           "result": {"enum": ["pass", "fail", "not_run"]},
-          "note": {"type": "string"}
-        }
+          "note": {"type": "string", "minLength": 1}
+        },
+        "if": {"properties": {"result": {"const": "not_run"}}, "required": ["result"]},
+        "then": {"required": ["note"]}
       }
     },
     "risks": {"type": "array", "items": {"type": "string", "minLength": 1}},
@@ -95,6 +97,10 @@
     {
       "if": {"properties": {"kind": {"const": "review"}}, "required": ["kind"]},
       "then": {"required": ["findings"]}
+    },
+    {
+      "if": {"properties": {"kind": {"enum": ["delivery", "correction"]}}, "required": ["kind"]},
+      "then": {"not": {"required": ["findings"]}}
     }
   ]
 }
