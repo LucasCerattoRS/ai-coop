@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0016",
   "title": "Revisao somente leitura da entrega da AIC-0008 (commit 5cc5f2b) pelo Claude",
-  "state": "HANDED_OFF",
+  "state": "ACCEPTED",
   "owner": "claude",
   "role": "review",
   "assigned_by": "human",
   "created_at": "2026-09-22T20:56:27Z",
-  "updated_at": "2026-09-22T20:56:46Z",
+  "updated_at": "2026-09-22T21:30:00Z",
   "branch": "claude/AIC-0016-review",
   "worktree": "../wt-claude",
   "base_commit": null,
@@ -32,5 +32,5 @@
   "handoffs": [
     "0001-claude.json"
   ],
-  "notes": "Tarefa criada pelo Claude na propria branch (nao em main), por instrucao explicita do coordenador em 22/09 para a rodada de revisao das 6 entregas do Codex; padrao AIC-0007 (revisar tem tarefa e diretorio de handoff proprios). Veredito do handoff 0001: ACEITAR. Fica pendente de leitura e merge do coordenador."
+  "notes": "Revisao aceita e integrada pelo coordenador em 22/09. Veredito do handoff 0001: ACEITAR. A tarefa e o diretorio proprios evitam colisao de sequencia com AIC-0008."
 }

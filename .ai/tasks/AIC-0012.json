@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0012",
   "title": "Documentar as licoes do protocolo na SPEC e no guia: sequencia por branch, review com tarefa propria, merge so do humano",
-  "state": "ASSIGNED",
+  "state": "ACCEPTED",
   "owner": "codex",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T23:18:46Z",
-  "updated_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-22T21:30:00Z",
   "branch": "codex/AIC-0012-spec-licoes",
   "worktree": "../wt-codex",
   "base_commit": null,
@@ -41,6 +41,8 @@
     "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
     "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
   ],
-  "handoffs": [],
-  "notes": "Documenta o que aprendemos nas rodadas 1 e 2. Nao muda comportamento de script. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+  "handoffs": [
+    "0001-codex.json"
+  ],
+  "notes": "Entrega 1c55400, handoff 0001-codex. Revisao independente AIC-0020: ACEITAR. Aceita e integrada pelo coordenador em 22/09."
 }

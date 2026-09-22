@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0013",
   "title": "Trava mecanica de merge e push por agente (hooks versionados)",
-  "state": "ASSIGNED",
+  "state": "ACCEPTED",
   "owner": "codex",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T23:18:46Z",
-  "updated_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-22T21:30:00Z",
   "branch": "codex/AIC-0013-merge-guard",
   "worktree": "../wt-codex",
   "base_commit": null,
@@ -45,6 +45,8 @@
     "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
     "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
   ],
-  "handoffs": [],
-  "notes": "Hook local e por clone e pode ser burlado com --no-verify: e barreira contra erro, nao contra um agente hostil. Isso tem de estar dito no doc. Revisao independente do Claude adiada ate o reset de creditos; sem ela o coordenador le o handoff e decide o merge."
+  "handoffs": [
+    "0001-codex.json"
+  ],
+  "notes": "Entrega ea4db6f, handoff 0001-codex. Revisao independente AIC-0017: ACEITAR. Aceita e integrada pelo coordenador em 22/09; hooks instalados neste clone."
 }
