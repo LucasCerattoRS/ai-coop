@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0014-0001",
+  "task_id": "AIC-0014",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-22T00:01:31Z",
+  "branch": "codex/AIC-0014-task-validator",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "1d8da9bb177fa2bbca47b20ed5d90a04500ce4aa",
+  "summary": "Validador de tarefas confere schema, transicoes e escopos ativos por prefixo.",
+  "changes": [
+    {"path": "scripts/validate-task.py", "what": "Valida o contrato de task sem dependencia externa, transicoes antes/depois e sobreposicao de escopos ativos."},
+    {"path": "tests/test_task.sh", "what": "Cobre todas as transicoes legais, rejeicao, schema, prefixo de escopo e os JSONs reais."}
+  ],
+  "tests": [
+    {"command": "bash tests/test_task.sh", "result": "pass"},
+    {"command": "bash tests/test_handoff.sh", "result": "pass"},
+    {"command": "bash tests/test_skills.sh", "result": "pass"},
+    {"command": "bash tests/test_doctor.sh", "result": "pass"}
+  ],
+  "risks": [
+    "Escopos sao comparados apenas entre tarefas ainda operacionais; ACCEPTED, CLOSED e CANCELLED nao tem agente ativo e nao bloqueiam trabalho novo.",
+    "O validador reporta dados invalidos, mas nao altera .ai/tasks/, cuja autoridade permanece humana."
+  ],
+  "next_action": "O coordenador deve revisar o handoff e decidir o merge; não houve revisão independente do Claude.",
+  "previous_handoff": null
+}
