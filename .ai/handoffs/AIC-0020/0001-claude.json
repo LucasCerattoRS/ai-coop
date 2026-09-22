@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0020-0001",
+  "task_id": "AIC-0020",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-22T20:58:29Z",
+  "branch": "claude/AIC-0020-review",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "1c55400075f15780e3c3c80605eef16af2974299",
+  "summary": "Revisao de 1c55400 (AIC-0012): ACEITAR. Edicao apenas de documentacao (SPEC-v0.1.md, AI-HANDOFF.md), precisa e minima, confere com o estado real do repositorio; sem achados.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em worktree isolado (git worktree add --detach no commit revisado), sem tocar wt-codex nem wt-claude alem desta branch"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo: git diff --name-only 4827f47..1c55400 so toca docs/SPEC-v0.1.md e docs/AI-HANDOFF.md; handoff (1c55400..c3f44e0) so toca .ai/handoffs/AIC-0012/0001-codex.json",
+      "result": "pass",
+      "note": "nenhum forbidden_path tocado"
+    },
+    {
+      "command": "git log 4827f47..c3f44e0 --format='%an <%ae>' e checagem de trailers de coautoria",
+      "result": "pass",
+      "note": "autoria LuKas <Lukelucanolightknowledge@gmail.com> nos 2 commits; 0 trailers de coautoria"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/handoffs/AIC-0012/0001-codex.json",
+      "result": "pass",
+      "note": "VALIDO, exit 0"
+    },
+    {
+      "command": "leitura do diff de docs/SPEC-v0.1.md contra os 4 criterios de aceite: sequencia por branch + review com tarefa/diretorio proprios citando AIC-0003/0005/0007; so coordenador mergeia + registro do incidente de 21/09 sem culpar ninguem; lock morto exige rmdir manual e quando isso e aceitavel",
+      "result": "pass",
+      "note": "os 3 pontos aparecem no texto, conferidos linha a linha"
+    },
+    {
+      "command": "leitura do diff de docs/AI-HANDOFF.md: passo de review diz que REVIEWED_COMMIT deve ser o delivery_commit do handoff recebido, que nada impoe isso hoje, e registra a conclusao do Codex sobre o validador checar",
+      "result": "pass",
+      "note": "presente e coerente com o achado medio da AIC-0007"
+    },
+    {
+      "command": "bash tests/test_skills.sh em 1c55400",
+      "result": "pass",
+      "note": "44/44 (confere frases de AI-HANDOFF.md, como a tarefa exigia continuar verde)"
+    },
+    {
+      "command": "bash tests/test_handoff.sh e tests/test_doctor.sh em 1c55400",
+      "result": "pass",
+      "note": "69/69 e codigos 0-4 verificados"
+    }
+  ],
+  "risks": [
+    "Mesmo risco que o proprio Codex ja declarou: nada amarra mecanicamente o REVIEWED_COMMIT de uma revisao ao delivery_commit real do handoff recebido; permanece procedural, deliberadamente adiado.",
+    "A nota do incidente de 21/09 na SPEC nao nomeia o agente, o que e correto, mas vale o coordenador reler antes disso virar o registro publico canonico do incidente."
+  ],
+  "findings": [],
+  "next_action": "Nenhuma correcao necessaria. Coordenador pode mergear codex/AIC-0012-spec-licoes a qualquer momento; e independente das outras 5 entregas.",
+  "previous_handoff": null
+}
