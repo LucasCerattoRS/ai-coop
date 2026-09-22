@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0013-0001",
+  "task_id": "AIC-0013",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-21T23:33:47Z",
+  "branch": "codex/AIC-0013-merge-guard",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "ea4db6ff354312dc73aef1e68efecc6efe7e7e63",
+  "summary": "Hooks versionados bloqueiam merge em main e push sem liberacao humana explicita.",
+  "changes": [
+    {"path": ".githooks/", "what": "Adiciona guardas para merge com commit, push e atualizacao de main por transacao de refs."},
+    {"path": "scripts/install-hooks.sh", "what": "Configura core.hooksPath localmente para os hooks versionados."},
+    {"path": "tests/test_merge_guard.sh", "what": "Testa recusa e liberacao de merge, fast-forward em main e push em repositorio temporario."},
+    {"path": "docs/MERGE-GUARD.md", "what": "Registra o incidente de 21/09, cobertura, instalacao e limites da barreira local."},
+    {"path": "AGENTS.md", "what": "Aponta agentes para o guard e sua documentacao."}
+  ],
+  "tests": [
+    {"command": "bash tests/test_merge_guard.sh", "result": "pass"},
+    {"command": "bash tests/test_handoff.sh", "result": "pass"},
+    {"command": "bash tests/test_skills.sh", "result": "pass"},
+    {"command": "bash tests/test_doctor.sh", "result": "pass"}
+  ],
+  "risks": [
+    "Hooks sao locais e podem ser burlados por --no-verify, core.hooksPath alterado ou comandos fora do clone; nao defendem contra agente hostil.",
+    "reference-transaction cobre fast-forward em main, mas fast-forward em branch de trabalho nao e distinguivel de commit comum e nao e bloqueado."
+  ],
+  "next_action": "O coordenador deve revisar a documentacao e o handoff, instalar os hooks em seus clones antes de uso e decidir o merge; não houve revisão independente do Claude.",
+  "previous_handoff": null
+}
