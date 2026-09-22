@@ -1,5 +1,7 @@
 # ai-coop
 
+![CI](https://github.com/LucasCerattoRS/ai-coop/actions/workflows/ci.yml/badge.svg)
+
 A repository-native cooperation protocol for running multiple coding agents safely on the same projects.
 
 The project separates three concerns:
