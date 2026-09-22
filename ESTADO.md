@@ -72,12 +72,9 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Próximo passo exato
 
-1. Autorizar o escopo OAuth `workflow`, publicar `main` e confirmar no GitHub o
-   workflow da AIC-0008. O token atual tem `repo`, mas o GitHub recusou criar
-   `.github/workflows/ci.yml` sem `workflow`.
-2. Escolher uma tarefa real para AIC-0010; não inventar uma tarefa só para
+1. Escolher uma tarefa real para AIC-0010; não inventar uma tarefa só para
    exercitar o protocolo.
-3. Fazer a revisão jurídica de `LICENSE` e `CONTRIBUTING.md`.
+2. Fazer a revisão jurídica de `LICENSE` e `CONTRIBUTING.md`.
 
 ## Pontos abertos conhecidos
 
@@ -87,9 +84,9 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Publicação e cópia privada
 
-Publicado em 21/09 antes de fechar CI e ciclo real. Em 22/09, o canal privado
-de vulnerabilidades foi habilitado e confirmado; a publicação da integração
-aguarda um token com escopo OAuth `workflow`.
+Publicado em 21/09 antes de fechar CI e ciclo real. Em 22/09, a integração da
+rodada 3 foi publicada, o canal privado de vulnerabilidades foi habilitado e o
+CI passou no GitHub (run 35786334427, commit 3647f93).
 
 - **Público:** https://github.com/LucasCerattoRS/ai-coop — só `repo/`, só a branch `main`.
 - **Privado:** https://github.com/LucasCerattoRS/ai-coop-private — a pasta `~/Projetos/ai-coop/` **sem** `repo/` nem `wt-*/`

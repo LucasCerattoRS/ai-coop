@@ -44,9 +44,9 @@ revisão proporcional ao risco.
 
 **Execution:**
 
-O canal privado de vulnerabilidades foi habilitado e confirmado no GitHub. A
-publicação de `main` ficou bloqueada porque o token OAuth atual não tem o escopo
-`workflow`, necessário para criar `.github/workflows/ci.yml`.
+O canal privado de vulnerabilidades foi habilitado e confirmado no GitHub. Após
+conceder o escopo OAuth `workflow`, `main` foi publicado e o CI concluiu com
+sucesso no run 35786334427 para o commit 3647f93.
 
 **Reversal conditions:**
 

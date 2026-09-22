@@ -46,5 +46,5 @@
   "handoffs": [
     "0001-codex.json"
   ],
-  "notes": "Entrega 5cc5f2b, handoff 0001-codex. Revisao independente AIC-0016: ACEITAR. Aceita e integrada pelo coordenador em 22/09; a observacao do job no GitHub fica registrada pela publicacao."
+  "notes": "Entrega 5cc5f2b, handoff 0001-codex. Revisao independente AIC-0016: ACEITAR. Aceita e integrada pelo coordenador em 22/09; GitHub Actions CI confirmou sucesso no commit publicado 3647f93 (run 35786334427)."
 }
