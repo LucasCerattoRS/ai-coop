@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0018",
+  "title": "Revisao somente leitura da entrega da AIC-0009 (commit 9686744) pelo Claude",
+  "state": "HANDED_OFF",
+  "owner": "claude",
+  "role": "review",
+  "assigned_by": "human",
+  "created_at": "2026-09-22T21:01:00Z",
+  "updated_at": "2026-09-22T21:01:00Z",
+  "branch": "claude/AIC-0018-review",
+  "worktree": "../wt-claude",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "-nenhuma escrita: revisao somente leitura"
+    ],
+    "forbidden_paths": [
+      "docs/",
+      "scripts/",
+      "tests/",
+      ".claude/",
+      ".agents/",
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "Mira o commit exato 9686744 (delivery da AIC-0009), em copia isolada, sem editar wt-codex",
+    "Cada criterio de aceite da AIC-0009 conferido por execucao real",
+    "Veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS"
+  ],
+  "handoffs": [
+    "0001-claude.json"
+  ],
+  "notes": "Tarefa criada pelo Claude na propria branch (nao em main), por instrucao explicita do coordenador em 22/09. Veredito do handoff 0001: ACEITAR_COM_RESSALVAS (1 achado medio: SECURITY.md descreve o risco do lock de handoff como corrupcao/sobrescrita por race; o mecanismo real e mkdir atomico, o risco real e travamento morto apos crash, exigindo rmdir manual). Fica pendente de leitura e decisao do coordenador."
+}
