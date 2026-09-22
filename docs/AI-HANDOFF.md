@@ -30,8 +30,11 @@ pergunte ao coordenador.
 4. **Testes.** Rode os exigidos pelos critérios de aceite e registre o resultado **real**. Não rodou:
    `not_run` com `note`. Alegar `pass` sem execução invalida a entrega.
 5. **Gerar.** `scripts/handoff.sh <TASK-ID> <de> <para> <kind> [REVIEWED_COMMIT]`. Preencha todo campo `<...>`.
-   - `review`: passe obrigatoriamente o hash revisado (`delivery_commit` do handoff recebido) como quinto
-     argumento. O script grava esse commit e sua base; revise contra o hash, nunca contra o nome da branch.
+   - `review`: passe obrigatoriamente o `delivery_commit` do handoff recebido como quinto argumento.
+     O script grava esse commit e sua base; revise contra o hash, nunca contra o nome da branch. Hoje nada
+     impõe que o hash informado seja o do handoff recebido: o script só consegue validar que ele resolve
+     para um commit. O validador também não pode conferir esse vínculo sem receber o handoff de origem;
+     adicionar esse dado mudaria o contrato e fica fora deste ciclo.
 6. **Validar.** `scripts/validate-handoff.py <arquivo>` tem de sair `0`.
 7. **Publicar.** Commit do handoff na sua branch, **separado** do código entregue: `delivery_commit`
    identifica o código, e um arquivo não contém o próprio hash.
