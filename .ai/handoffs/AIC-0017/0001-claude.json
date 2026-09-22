@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0017-0001",
+  "task_id": "AIC-0017",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-22T21:01:33Z",
+  "branch": "claude/AIC-0017-review",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "ea4db6ff354312dc73aef1e68efecc6efe7e7e63",
+  "summary": "Revisao de ea4db6f (AIC-0013): ACEITAR. Hooks versionados bloqueiam merge e push sem AI_COOP_HUMAN=1, cobrindo inclusive o caso de fast-forward em main que a propria tarefa temia ficar descoberto; documentacao honesta sobre os limites.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em worktree isolado (git worktree add --detach no commit revisado e no commit do handoff), sem tocar wt-codex nem wt-claude alem desta branch"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo: git diff --name-only 4827f47..ea4db6f toca exatamente .githooks/pre-merge-commit, .githooks/pre-push, .githooks/reference-transaction, AGENTS.md, docs/MERGE-GUARD.md, scripts/install-hooks.sh, tests/test_merge_guard.sh",
+      "result": "pass",
+      "note": "nenhum forbidden_path tocado (.ai/tasks/, .ai/schemas/, scripts/handoff.sh, scripts/validate-handoff.py, scripts/ai-coop-doctor.sh, docs/SPEC-v0.1.md, docs/AI-HANDOFF.md, .github/, LICENSE, CONTRIBUTING.md, .claude/, .agents/ intactos)"
+    },
+    {
+      "command": "git log 4827f47..5b6f213 --format='%an <%ae>' e checagem de trailers de coautoria",
+      "result": "pass",
+      "note": "autoria LuKas <Lukelucanolightknowledge@gmail.com> nos 2 commits (ea4db6f, 5b6f213); 0 trailers de coautoria"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/handoffs/AIC-0013/0001-codex.json",
+      "result": "pass",
+      "note": "VALIDO, exit 0"
+    },
+    {
+      "command": "bash tests/test_merge_guard.sh em worktree isolado",
+      "result": "pass",
+      "note": "11/11: hooks existem, hooksPath instalado, merge com commit recusado/liberado com AI_COOP_HUMAN=1, fast-forward em main recusado/liberado, push recusado/liberado"
+    },
+    {
+      "command": "bash tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh em ea4db6f",
+      "result": "pass",
+      "note": "69/69, 44/44, codigos 0-4 verificados; nenhum caminho proibido tocado quebrou as outras suites"
+    },
+    {
+      "command": "leitura de docs/MERGE-GUARD.md contra o risco que a propria tarefa levantou (fast-forward pode nao disparar pre-merge-commit)",
+      "result": "pass",
+      "note": "o Codex investigou e resolveu via hook reference-transaction, que trava fast-forward em main; o doc declara honestamente o limite remanescente (fast-forward numa branch de trabalho que nao seja main nao e coberto), sem alegar cobertura que nao tem"
+    }
+  ],
+  "risks": [
+    "Hook local, por clone: pode ser contornado por quem tem controle total da maquina (--no-verify ou editar/desinstalar os hooks); e barreira contra erro acidental, nao fronteira de seguranca do GitHub. Ja declarado no proprio doc e na nota da tarefa.",
+    "Cobertura de fast-forward fora de main (numa branch de trabalho) e um limite reconhecido, nao escondido, pelo proprio docs/MERGE-GUARD.md."
+  ],
+  "findings": [],
+  "next_action": "Nenhuma correcao necessaria. Coordenador pode mergear codex/AIC-0013-merge-guard quando quiser; nota lateral (nao bloqueante): a primeira tentativa de revisao desta tarefa (um fork em background) se confundiu de identidade ao ser retomada apos ficar ociosa e recusou devolver o relatorio, tratando minha propria mensagem de acompanhamento como injecao — resolvido refazendo a revisao diretamente, sem impacto no veredito.",
+  "previous_handoff": null
+}
