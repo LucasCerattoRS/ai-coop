@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0018-0001",
+  "task_id": "AIC-0018",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-22T20:59:04Z",
+  "branch": "claude/AIC-0018-review",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "96867447d3d2fe376fd3ffdf0673f78d20c9d192",
+  "summary": "Revisao de 9686744 (AIC-0009): ACEITAR_COM_RESSALVAS. SECURITY.md cumpre os criterios de aceite (fluxo correto de relato privado no GitHub, sem inventar e-mail/link, so main recebe correcao), mas um item descreve mal o mecanismo real de lock do handoff.sh.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em worktree isolado, sem tocar wt-codex nem wt-claude alem desta branch"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo: git diff --name-only 4827f47..9686744 so toca SECURITY.md; handoff (9686744..863a3c3) so toca .ai/handoffs/AIC-0009/0001-codex.json",
+      "result": "pass",
+      "note": "nenhum forbidden_path tocado"
+    },
+    {
+      "command": "git log 4827f47..863a3c3 --format='%an <%ae>' e checagem de trailers de coautoria",
+      "result": "pass",
+      "note": "autoria LuKas <Lukelucanolightknowledge@gmail.com> nos 2 commits; 0 trailers de coautoria"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/handoffs/AIC-0009/0001-codex.json",
+      "result": "pass",
+      "note": "VALIDO, exit 0"
+    },
+    {
+      "command": "leitura de SECURITY.md contra os criterios: remove o placeholder 'A future release should add...'; manda relatar via GitHub Security > Report a vulnerability sem inventar e-mail/link; declara que so main recebe correcao; handoff registra em risks que o canal so existe apos o coordenador rodar o gh api",
+      "result": "pass",
+      "note": "os 4 pontos conferem, exceto a precisao de um item da lista de vetores (ver achado)"
+    },
+    {
+      "command": "confronto do bullet sobre 'race no lock do handoff' contra scripts/handoff.sh (mecanismo real: mkdir atomico, linhas do lock)",
+      "result": "fail",
+      "note": "o texto descreve o risco como corrupcao/sobrescrita por race; o codigo usa mkdir atomico (quem perde falha na hora, sem corrupcao possivel); o risco real e travamento morto apos crash (kill -9), exigindo rmdir manual, ja documentado em ESTADO.md como disponibilidade, nao corrupcao"
+    },
+    {
+      "command": "bash tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh em 9686744",
+      "result": "pass",
+      "note": "69/69, 44/44, codigos 0-4 verificados (tarefa nao mexe em codigo, checagem de sanidade)"
+    }
+  ],
+  "risks": [
+    "O canal privado de vulnerabilidade so existe depois que o coordenador rodar gh api -X PUT repos/LucasCerattoRS/ai-coop/private-vulnerability-reporting; esta entrega nao habilita nem verifica essa configuracao remota (ja declarado corretamente pelo proprio Codex em risks do handoff dele)."
+  ],
+  "findings": [
+    {
+      "severity": "medium",
+      "path": "SECURITY.md",
+      "line": null,
+      "finding": "O item da lista de vulnerabilidades reais descreve 'race no lock do handoff que corrompe ou sobrescreve dados de coordenacao'. scripts/handoff.sh usa mkdir atomico para o lock: quem perde a corrida falha na hora com erro, sem caminho de corrupcao. O risco real e um lock morto apos crash (kill -9), que exige rmdir manual — um problema de disponibilidade/DoS, nao de corrupcao de dados. O texto deveria ser corrigido antes do merge para nao induzir o leitor a um modelo de ameaca errado."
+    }
+  ],
+  "next_action": "Pequena correcao de texto em SECURITY.md: trocar a descricao do risco do lock de 'race que corrompe/sobrescreve' para 'trava morta apos crash, exige rmdir manual' (disponibilidade, nao corrupcao). Depois disso, pronto para aceitar. Coordenador ainda precisa, separadamente, habilitar o canal de vulnerabilidade no GitHub.",
+  "previous_handoff": null
+}
