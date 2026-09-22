@@ -18,7 +18,7 @@ fi
 
 missing=0
 for path in .ai .ai/tasks .ai/schemas; do
-  if [[ ! -d "$root/$path" ]]; then
+  if [[ -L "$root/$path" || ! -d "$root/$path" ]]; then
     printf 'MISS %s\n' "$path"
     missing=1
   fi
