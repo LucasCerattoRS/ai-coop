@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0019-0001",
+  "task_id": "AIC-0019",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-22T20:59:35Z",
+  "branch": "claude/AIC-0019-review",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "b1132bad4255a1d62ac48391feb9d67acda29013",
+  "summary": "Revisao de b1132ba (AIC-0011): ACEITAR_COM_RESSALVAS. As 3 ressalvas baixas da AIC-0002 estao fechadas e confirmadas por mutante (ramo git-ausente e ramo symlink falham de verdade se removidos); falta so uma referencia cruzada no texto do contrato.",
+  "changes": [
+    {
+      "path": "-",
+      "what": "nenhuma alteracao: revisao somente leitura em worktree isolado, sem tocar wt-codex nem wt-claude alem desta branch"
+    }
+  ],
+  "tests": [
+    {
+      "command": "verificacao de escopo: git diff --name-only 4827f47..b1132ba toca exatamente scripts/ai-coop-doctor.sh, tests/test_doctor.sh, docs/DOCTOR-CONTRACT.md, docs/ACCEPTANCE-FIRST-CYCLE.md; handoff (b1132ba..aa8ae43) so toca .ai/handoffs/AIC-0011/0001-codex.json",
+      "result": "pass",
+      "note": "nenhum forbidden_path tocado"
+    },
+    {
+      "command": "git log 4827f47..aa8ae43 --format='%an <%ae>' e checagem de trailers de coautoria",
+      "result": "pass",
+      "note": "autoria LuKas <Lukelucanolightknowledge@gmail.com> nos 2 commits; 0 trailers de coautoria"
+    },
+    {
+      "command": "python3 scripts/validate-handoff.py .ai/handoffs/AIC-0011/0001-codex.json",
+      "result": "pass",
+      "note": "VALIDO, exit 0"
+    },
+    {
+      "command": "bash tests/test_doctor.sh (limpo)",
+      "result": "pass",
+      "note": "codigos de saida 0,1,2,3,4 verificados"
+    },
+    {
+      "command": "mutante: remover o ramo de checagem git-ausente do doctor.sh e rerodar tests/test_doctor.sh",
+      "result": "pass",
+      "note": "o teste falhou como esperado (esperava exit 1, recebeu 3): o ramo esta genuinamente protegido por teste"
+    },
+    {
+      "command": "mutante: remover a checagem -L (symlink) do doctor.sh e rerodar tests/test_doctor.sh",
+      "result": "pass",
+      "note": "o teste falhou como esperado (esperava exit 4, recebeu 0): o ramo esta genuinamente protegido por teste"
+    },
+    {
+      "command": "diff da tabela de codigos de saida em DOCTOR-CONTRACT.md (base vs. entrega)",
+      "result": "pass",
+      "note": "so uma adicao (paragrafo de symlink); significados 0-4 nao mudaram, sem renumeracao"
+    },
+    {
+      "command": "bash tests/test_handoff.sh e tests/test_skills.sh em b1132ba",
+      "result": "pass",
+      "note": "69/69 e 44/44"
+    }
+  ],
+  "risks": [
+    "Mesmo risco que o proprio Codex ja declarou: o doctor valida so estrutura, nao conteudo dos JSON, nem seguranca do handoff, nem corretude de estado de tarefa — inalterado por esta entrega."
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "path": "docs/DOCTOR-CONTRACT.md",
+      "line": null,
+      "finding": "O paragrafo novo sobre rejeicao de symlink explica a motivacao propria do doctor mas nao faz referencia cruzada a rejeicao de symlink que scripts/handoff.sh ja faz (SPEC secao 5), como o achado original da AIC-0002 pedia ('deveria estar declarado' o contraste/consistencia com handoff.sh). Lacuna cosmetica de completude, nao bug funcional."
+    }
+  ],
+  "next_action": "Aceitavel como esta (a lacuna e um polimento de uma frase, nao defeito funcional) ou, se preferir, uma correcao de uma linha em DOCTOR-CONTRACT.md acrescentando a referencia a handoff.sh/SPEC secao 5 antes do merge. Qualquer uma das duas e razoavel.",
+  "previous_handoff": null
+}
