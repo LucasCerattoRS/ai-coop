@@ -42,6 +42,12 @@ Os commits de entrega e review entram em `main`; o coordenador ainda escolhe a
 tarefa real AIC-0010. Terra não substitui testes, validação de handoff ou a
 revisão proporcional ao risco.
 
+**Execution:**
+
+O canal privado de vulnerabilidades foi habilitado e confirmado no GitHub. A
+publicação de `main` ficou bloqueada porque o token OAuth atual não tem o escopo
+`workflow`, necessário para criar `.github/workflows/ci.yml`.
+
 **Reversal conditions:**
 
 Rever uma decisão via nova tarefa, novo handoff e commit corretivo; nunca

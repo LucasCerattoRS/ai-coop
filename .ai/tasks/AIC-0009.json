@@ -42,5 +42,5 @@
   "handoffs": [
     "0001-codex.json"
   ],
-  "notes": "Entrega 9686744, handoff 0001-codex. Revisao independente AIC-0018: ACEITAR_COM_RESSALVAS sobre a descricao do lock; o coordenador aceitou sem nova rodada e integrou em 22/09. A habilitacao do canal privado e configuracao remota do coordenador."
+  "notes": "Entrega 9686744, handoff 0001-codex. Revisao independente AIC-0018: ACEITAR_COM_RESSALVAS sobre a descricao do lock; o coordenador aceitou sem nova rodada e integrou em 22/09. O canal privado foi habilitado e confirmado no GitHub em 22/09."
 }
