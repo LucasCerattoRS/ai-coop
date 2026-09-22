@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0011-0001",
+  "task_id": "AIC-0011",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-22T00:03:05Z",
+  "branch": "codex/AIC-0011-doctor-ressalvas",
+  "base_commit": "4827f47db533883e7b9607832583a5dfc0e1d05e",
+  "delivery_commit": "b1132bad4255a1d62ac48391feb9d67acda29013",
+  "summary": "Doctor agora cobre Git ausente e recusa symlinks nos diretorios autoritativos.",
+  "changes": [
+    {"path": "scripts/ai-coop-doctor.sh", "what": "Recusa symlinks em .ai, .ai/tasks e .ai/schemas sem mudar os codigos de saida."},
+    {"path": "tests/test_doctor.sh", "what": "Cobre PATH sem git e os tres symlinks, alem dos codigos existentes."},
+    {"path": "docs/DOCTOR-CONTRACT.md", "what": "Documenta a recusa de symlinks e sua motivacao."},
+    {"path": "docs/ACCEPTANCE-FIRST-CYCLE.md", "what": "Explica re-revisao opcional da correcao e verificacao pelo coordenador quando ela nao ocorre."}
+  ],
+  "tests": [
+    {"command": "bash tests/test_doctor.sh", "result": "pass"},
+    {"command": "bash tests/test_handoff.sh", "result": "pass"},
+    {"command": "bash tests/test_skills.sh", "result": "pass"}
+  ],
+  "risks": ["O doctor continua validar apenas a estrutura, nao o conteudo dos JSONs ou a seguranca dos handoffs."],
+  "next_action": "O coordenador deve revisar o handoff e decidir o merge; não houve revisão independente do Claude.",
+  "previous_handoff": null
+}
