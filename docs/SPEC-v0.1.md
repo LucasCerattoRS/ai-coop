@@ -113,7 +113,11 @@ pode conter o próprio hash.
 
 Handoffs vivem em `.ai/handoffs/<TASK-ID>/<NNNN>-<agente>.json`.
 
-- **Sequenciados**: `0001`, `0002`, `0003`… por tarefa.
+- **Sequenciados por branch**: `0001`, `0002`, `0003`… dentro da mesma branch
+  de trabalho. Duas branches não compartilham lock nem diretório de trabalho,
+  portanto não devem publicar no mesmo `.ai/handoffs/<TASK-ID>/` concorrente.
+  Uma revisão ganha tarefa e diretório próprios (como AIC-0003, AIC-0005 e
+  AIC-0007), evitando números iguais e preservando sua própria cadeia.
 - **Encadeados**: `previous_handoff` é o nome do arquivo imediatamente anterior;
   `null` só na sequência 1. Pular uma sequência é inválido.
 - **Imutáveis**: publicado, nunca editado nem removido. Correção é um handoff novo.
@@ -125,7 +129,9 @@ Handoffs vivem em `.ai/handoffs/<TASK-ID>/<NNNN>-<agente>.json`.
   lock por tarefa (`mkdir .ai/handoffs/<TASK-ID>/.lock`), não do nome do arquivo:
   `0001-claude.json` e `0001-codex.json` são nomes distintos e ambos passariam pelo
   `ln`. Quem não consegue o lock falha (exit 1), não espera. Lock morto após
-  `kill -9` é removido à mão com `rmdir`; não há expiração automática no MVP.
+  `kill -9` é removido à mão com `rmdir`; isso é aceitável no MVP enquanto a
+  criação é uma operação manual, curta e por branch. Execução compartilhada ou
+  automática exige recuperação identificável, não expiração cega.
 - **Sem escape de caminho**: `TASK_ID` passa por allowlist `^AIC-[0-9]{4}$` antes
   de tocar qualquer caminho; `.ai`, `.ai/handoffs` e `.ai/handoffs/<TASK-ID>` são
   recusados se forem symlink, e o destino resolvido tem de ficar dentro do repositório.
@@ -136,6 +142,9 @@ Handoffs vivem em `.ai/handoffs/<TASK-ID>/<NNNN>-<agente>.json`.
 
 - `main` é a branch de coordenação. Carrega `.ai/tasks/`, `.ai/schemas/` e a
   documentação do protocolo. **Só o humano escreve em `main`.**
+- Em 21/09, uma instrução ambígua resultou em merge de agente em `main`; por
+  isso o merge é decisão e ação exclusiva do coordenador humano, não só uma
+  convenção de redação.
 - Cada tarefa tem uma branch `<agente>/<TASK-ID>-<slug>`.
 - O agente publica entregando um commit na própria branch mais um handoff nela.
 - O handoff só entra em `main` quando o humano faz o merge, junto com o código.
