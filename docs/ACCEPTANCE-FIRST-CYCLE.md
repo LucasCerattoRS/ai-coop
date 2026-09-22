@@ -16,8 +16,11 @@ O ciclo passa somente quando há evidência verificável de todos os itens:
    aplicável, comandos realmente executados e próximo passo.
 4. Se houver mudanças necessárias, o humano devolve os achados e Claude faz no
    máximo **uma** rodada de correção, com novo commit, novo SHA e evidência dos
-   testes relevantes. Se a primeira revisão aceitar a entrega, essa rodada é
-   dispensada. Não há segunda rodada de revisão automática.
+   testes relevantes. O coordenador pode abrir uma re-revisão contra o SHA da
+   correção; se não a pedir, ele verifica o handoff de correção, o SHA e os
+   testes registrados antes de decidir o aceite. Se a primeira revisão aceitar
+   a entrega, essa rodada é dispensada. Não há segunda rodada de revisão
+   automática.
 5. Handoffs preservam a sequência e o vínculo com o anterior. Durante o bootstrap,
    quando o gerador ainda não está integrado à branch de coordenação, o parecer
    textual nos campos do protocolo é a evidência provisória; o humano registra a

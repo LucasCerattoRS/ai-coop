@@ -10,6 +10,11 @@ de layout abaixo existem na raiz:
 - diretórios `.ai/`, `.ai/tasks/` e `.ai/schemas/`;
 - arquivo não vazio `.ai/schemas/task.schema.json`.
 
+Os três diretórios precisam ser diretórios reais, nunca symlinks. Um symlink em
+`.ai`, `.ai/tasks` ou `.ai/schemas` produz `4`: o doctor não segue uma árvore
+externa ao verificar o estado local autoritativo. Essa recusa evita que um
+layout aparentemente saudável dependa de arquivos fora do worktree.
+
 Essa é a parte do layout já fixada para esta rodada. `handoffs/`, `decisions/`,
 `knowledge/` e `handoff.schema.json` não são requisitos do doctor nesta versão:
 parte deles ainda depende da trilha A ou só passa a existir quando houver dados.
