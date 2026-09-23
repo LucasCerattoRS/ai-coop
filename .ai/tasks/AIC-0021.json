@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0021",
   "title": "SECURITY.md: corrigir o item do lock (ressalva da AIC-0018)",
-  "state": "IN_PROGRESS",
+  "state": "HANDED_OFF",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-23T15:00:00Z",
-  "updated_at": "2026-09-23T15:05:00Z",
+  "updated_at": "2026-09-23T16:00:00Z",
   "branch": "claude/AIC-0021-security-lock",
   "worktree": "../wt-claude",
   "base_commit": "cd347a26215079220ff21f16de28a9422d6e46be",
@@ -39,6 +39,8 @@
     "Suites tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh, tests/test_task.sh e tests/test_merge_guard.sh continuam verdes",
     "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
   ],
-  "handoffs": [],
-  "notes": "Aberta a pedido do coordenador em 23/09 para fechar a ressalva nao bloqueante do parecer AIC-0018 (0001-claude.json). Revisao independente da entrega fica para outra tarefa; o dono nao revisa o proprio trabalho."
+  "handoffs": [
+    "0001-claude.json"
+  ],
+  "notes": "Aberta a pedido do coordenador em 23/09 para fechar a ressalva nao bloqueante do parecer AIC-0018 (0001-claude.json). Revisao independente da entrega fica para outra tarefa; o dono nao revisa o proprio trabalho. Entrega 763957f, handoff 0001-claude, integrada em main (27e49ca) em 23/09 a pedido do coordenador. Revisao independente: AIC-0022 (Codex), ainda nao iniciada."
 }
