@@ -45,7 +45,7 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0007 | claude | **ACCEPTED** | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS`. Correção verificada pelo Claude: aprovada |
 | AIC-0008 | codex | **ACCEPTED**, mergeada | CI: GitHub Actions + validador JSON Schema independente (`jsonschema`); AIC-0016: ACEITAR |
 | AIC-0009 | codex | **ACCEPTED**, mergeada | `SECURITY.md`; AIC-0018: ACEITAR_COM_RESSALVAS não bloqueante |
-| AIC-0010 | — | NEW, **sem dono** | tarefa REAL fora do laboratório + `/ai-handoff` verificado no Claude. Só o coordenador escolhe a tarefa |
+| AIC-0010 | claude | **ASSIGNED** | tarefa REAL: documentação de Xilog/Parsifal no repo privado `~/Projetos/xilog-parsifal` (execução = AIC-0001 de lá, **bloqueada até o Lukas colocar o material em `fontes/`**). Atritos em `.ai/knowledge/AIC-0010-atrito.md` |
 | AIC-0011 | codex | **ACCEPTED**, mergeada | ressalvas *low* do doctor; AIC-0019: ACEITAR_COM_RESSALVAS não bloqueante |
 | AIC-0012 | codex | **ACCEPTED**, mergeada | lições da SPEC/guia; AIC-0020: ACEITAR |
 | AIC-0013 | codex | **ACCEPTED**, mergeada | trava mecânica de merge/push; AIC-0017: ACEITAR |
@@ -69,13 +69,12 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Próximo passo exato
 
-1. Escolher uma tarefa real para AIC-0010; não inventar uma tarefa só para
-   exercitar o protocolo.
+1. Colocar o material (manuais, exemplos `.xxl`/`.pgm`, saída do Alphacam) em `~/Projetos/xilog-parsifal/fontes/`; depois abrir sessão nova do Claude em `~/Projetos/xilog-parsifal-claude` e rodar `/ai-handoff` (verificação pendente da AIC-0010);
 2. Fazer a revisão jurídica de `LICENSE` e `CONTRIBUTING.md`.
 
 ## Pontos abertos conhecidos
 
-- AIC-0010 continua NEW: depende de uma demanda real escolhida pelo coordenador.
+- AIC-0010 está ASSIGNED, mas parada: depende do material de fontes do Lukas e da verificação de `/ai-handoff` em sessão nova.
 - A guarda de merge/push é local e protege contra erro, não contra agente hostil.
 - Lock morto após `kill -9` exige `rmdir` manual (SPEC §5).
 
