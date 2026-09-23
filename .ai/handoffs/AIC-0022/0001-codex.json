@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0022-0001",
+  "task_id": "AIC-0022",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "human",
+  "kind": "review",
+  "created_at": "2026-09-23T14:54:54Z",
+  "branch": "codex/AIC-0022-review",
+  "base_commit": "763957fa8299cf0a524b537b9f0b61cd5ea893be",
+  "delivery_commit": "763957fa8299cf0a524b537b9f0b61cd5ea893be",
+  "summary": "Revisao do commit 763957fa8299cf0a524b537b9f0b61cd5ea893be (AIC-0021): ACEITAR_COM_RESSALVAS. A correcao do lock e fiel ao script e a SPEC; resta uma ressalva editorial sobre a cobertura da lista de vulnerabilidades.",
+  "changes": [
+    {"path": "-", "what": "Revisao somente leitura do codigo; nenhum arquivo da entrega foi alterado. Este handoff registra o parecer."}
+  ],
+  "tests": [
+    {"command": "git show --format= --name-only 763957fa8299cf0a524b537b9f0b61cd5ea893be; git diff --name-status cd347a26215079220ff21f16de28a9422d6e46be..763957fa8299cf0a524b537b9f0b61cd5ea893be; git diff --name-status 763957fa8299cf0a524b537b9f0b61cd5ea893be..99cdc87", "result": "pass", "note": "O commit revisado altera apenas SECURITY.md; desde a base ha tambem a abertura de .ai/tasks/AIC-0021.json, e o commit seguinte adiciona somente .ai/handoffs/AIC-0021/0001-claude.json."},
+    {"command": "git archive 763957fa8299cf0a524b537b9f0b61cd5ea893be | tar -x -C /tmp/aic-0022-review.xq5z6L; confronto de SECURITY.md com scripts/handoff.sh e docs/SPEC-v0.1.md", "result": "pass", "note": "SECURITY.md:18-22 corresponde ao mkdir atomico em scripts/handoff.sh:59-63 e ao rmdir manual apos kill -9 em docs/SPEC-v0.1.md:128-133; canal privado em SECURITY.md:5-6 e regra de main em :24 intactos. Nenhum e-mail ou link foi acrescentado."},
+    {"command": "bash tests/test_handoff.sh na copia temporaria do commit revisado", "result": "pass", "note": "69 passaram, 0 falharam; inclui corrida e lock ocupado."},
+    {"command": "bash tests/test_skills.sh na copia git archive sem .git", "result": "fail", "note": "43 passaram, 1 falhou: doctor sai 0 depende de um worktree Git, ausente em git archive; nao e falha da entrega."},
+    {"command": "git init e commit locais na copia temporaria; bash tests/test_skills.sh", "result": "pass", "note": "44 passaram, 0 falharam; doctor encontrou o worktree Git temporario."},
+    {"command": "bash tests/test_doctor.sh na copia temporaria", "result": "pass", "note": "Codigos de saida 0, 1, 2, 3 e 4 verificados."},
+    {"command": "bash tests/test_task.sh na copia temporaria", "result": "pass", "note": "23 passaram, 0 falharam."},
+    {"command": "bash tests/test_merge_guard.sh na copia temporaria", "result": "pass", "note": "11 passaram, 0 falharam; push apenas a repositorio bare descartavel em /tmp."},
+    {"command": "probe de lock ocupado com subprocess em copia temporaria; rmdir e nova chamada de scripts/handoff.sh", "result": "pass", "note": "Lock ocupado: exit 1 em 0,012 s, nenhum JSON e lock intacto. Apos rmdir: exit 0, um JSON e sem lock residual."}
+  ],
+  "risks": [],
+  "findings": [
+    {"severity": "low", "path": "SECURITY.md", "line": 13, "finding": "A remocao do item do lock reduz de cinco para quatro os exemplos de vulnerabilidade sem substituto na lista. O risco de indisponibilidade por lock morto ficou no paragrafo de nao-vulnerabilidades (linhas 18-22). A lista permanece coerente com o criterio expresso nas linhas 8-9, violacao de fronteira, mas fica incompleta caso se pretenda enumerar tambem indisponibilidade ou DoS de handoffs. O coordenador deve decidir explicitamente esse alcance editorial; nao ha evidencia de corrupcao por corrida."}
+  ],
+  "next_action": "Coordenador humano: ler a ressalva sobre a cobertura da lista, decidir se aceita a entrega AIC-0021 ou abre ajuste documental separado; decidir integracao e estado das tarefas. Nenhum merge ou push foi feito nesta revisao.",
+  "previous_handoff": null
+}
