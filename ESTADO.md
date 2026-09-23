@@ -1,6 +1,6 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-23 (AIC-0021 integrada; AIC-0022 em andamento com o Codex). **Leia primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-23 (AIC-0021 e AIC-0022 aceitas e publicadas). **Leia primeiro em qualquer sessão nova.**
 O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está certo.
 
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
@@ -17,7 +17,7 @@ Antes de qualquer aperfeiçoamento, leia `~/Downloads/GUIA-REVISAO-AI-COOP.md` e
 |---|---|
 | `~/Projetos/ai-coop/repo` | `main` = coordenação. Só o coordenador humano escreve aqui |
 | `~/Projetos/ai-coop/wt-claude` | worktree do Claude, hoje em `claude/AIC-0021-security-lock` |
-| `~/Projetos/ai-coop/wt-codex` | worktree do Codex, hoje em `codex/AIC-0012-spec-licoes` (já mergeada); a AIC-0022 usa uma branch nova a partir de `main` |
+| `~/Projetos/ai-coop/wt-codex` | worktree do Codex, hoje em `codex/AIC-0022-review` (já mergeada) |
 | `checkpoint/`, `relatorios/`, `extraidos/` | material congelado de 2026-09-20 |
 
 **Publicado em 21/09/2026:** https://github.com/LucasCerattoRS/ai-coop (público, só a branch `main`; as branches de trabalho ficam locais). Licença: **PolyForm Noncommercial 1.0.0** (`LICENSE`): uso livre não comercial; uso comercial exige licença paga com o autor.
@@ -56,8 +56,8 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0013 | codex | **ACCEPTED**, mergeada | trava mecânica de merge/push; AIC-0017: ACEITAR |
 | AIC-0014 | codex | **ACCEPTED**, mergeada | validador de tarefas; AIC-0015: ACEITAR |
 | AIC-0015–0020 | claude | **ACCEPTED**, mergeadas | revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
-| AIC-0021 | claude | **UNDER_REVIEW**, integrada em `27e49ca` | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Entrega `763957f`, handoff `0001-claude`. **Não publicada** (sem push) |
-| AIC-0022 | codex | **IN_PROGRESS** | revisão independente da AIC-0021 (`763957f`), somente leitura, em `codex/AIC-0022-review` |
+| AIC-0021 | claude | **ACCEPTED**, mergeada (`27e49ca`) | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Revisão AIC-0022: ACEITAR_COM_RESSALVAS, ressalva baixa (lista com 4 itens, sem indisponibilidade) aceita como não bloqueante |
+| AIC-0022 | codex | **ACCEPTED**, mergeada (`03c0505`) | revisão independente da AIC-0021 sobre `763957f`; verificou lock por execução (saída 1 em 0,012 s) e os 5 scripts de teste |
 
 ## Issues da revisão de 2026-09-20
 
@@ -74,7 +74,7 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Próximo passo exato
 
-1. Rodar a revisão AIC-0022 no Codex, decidir sobre o resultado e publicar (`git push`, ainda pendente) — depois AIC-0010: escolher uma tarefa real; não inventar uma tarefa só para
+1. Escolher uma tarefa real para AIC-0010; não inventar uma tarefa só para
    exercitar o protocolo.
 2. Fazer a revisão jurídica de `LICENSE` e `CONTRIBUTING.md`.
 
