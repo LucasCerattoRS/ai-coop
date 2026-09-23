@@ -1,6 +1,6 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-23 (AIC-0021 integrada; AIC-0022 aguarda o Codex). **Leia primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-23 (AIC-0021 integrada; AIC-0022 em andamento com o Codex). **Leia primeiro em qualquer sessão nova.**
 O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está certo.
 
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
@@ -57,7 +57,7 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0014 | codex | **ACCEPTED**, mergeada | validador de tarefas; AIC-0015: ACEITAR |
 | AIC-0015–0020 | claude | **ACCEPTED**, mergeadas | revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
 | AIC-0021 | claude | **HANDED_OFF**, integrada em `27e49ca` | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Entrega `763957f`, handoff `0001-claude`. **Não publicada** (sem push) |
-| AIC-0022 | codex | **ASSIGNED** | revisão independente da AIC-0021 (`763957f`), somente leitura. Aguarda o Codex iniciar em `codex/AIC-0022-review` |
+| AIC-0022 | codex | **IN_PROGRESS** | revisão independente da AIC-0021 (`763957f`), somente leitura, em `codex/AIC-0022-review` |
 
 ## Issues da revisão de 2026-09-20
 
