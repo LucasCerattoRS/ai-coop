@@ -1,33 +1,35 @@
 {
   "schema_version": 1,
   "task_id": "AIC-0010",
-  "title": "Primeira tarefa REAL fora do laboratorio: o protocolo aplicado a uma tarefa que nao seja o proprio tooling do ai-coop",
-  "state": "NEW",
-  "owner": null,
+  "title": "Primeira tarefa REAL fora do laboratorio: documentacao de Xilog e Parsifal (repo privado xilog-parsifal)",
+  "state": "ASSIGNED",
+  "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
   "created_at": "2026-09-21T23:11:01Z",
-  "updated_at": "2026-09-21T23:18:46Z",
+  "updated_at": "2026-09-23T18:10:00Z",
   "branch": null,
   "worktree": null,
   "base_commit": null,
   "scope": {
     "allowed_paths": [
-      "a definir: outro repositorio do Lukas, ou uma tarefa externa pequena"
+      ".ai/knowledge/AIC-0010-atrito.md",
+      "(outro repo) ~/Projetos/xilog-parsifal: tarefa AIC-0001 dele, com escopo e branches proprios"
     ],
     "forbidden_paths": [
-      "repo/.ai/tasks/ do proprio ai-coop",
+      "repo/.ai/tasks/ do proprio ai-coop, exceto o estado desta tarefa pelo coordenador",
       "scripts/",
-      "docs/SPEC-v0.1.md"
+      "docs/SPEC-v0.1.md",
+      "hardlock, validacao de licenca ou qualquer circunvencao (fora de escopo em todo o projeto)"
     ]
   },
   "acceptance": [
-    "A tarefa e escolhida pelo coordenador e NAO e mudanca no tooling do ai-coop",
-    "Um agente implementa, o outro revisa, cada um com $ai-handoff / /ai-handoff e handoffs escritos por quem entrega",
-    "/ai-handoff verificado por execucao no Claude, coisa ainda nunca confirmada",
-    "Registro de atrito: cada passo do protocolo que travou, confundiu ou foi contornado, com evidencia",
-    "Resultado vira lista de correcoes no protocolo, nao so um aceite"
+    "A tarefa real e escolhida pelo coordenador (Xilog/Parsifal, 23/09) e NAO e mudanca no tooling do ai-coop",
+    "Claude implementa e Codex revisa no repo xilog-parsifal, cada um com /ai-handoff ou $ai-handoff e handoffs escritos por quem entrega",
+    "/ai-handoff verificado por execucao no Claude numa sessao nova dentro de ~/Projetos/xilog-parsifal-claude, coisa ainda nunca confirmada",
+    "Registro de atrito em .ai/knowledge/AIC-0010-atrito.md: cada passo do protocolo que travou, confundiu ou foi contornado, com evidencia",
+    "Resultado vira lista de correcoes no protocolo (issues ou tarefas), nao so um aceite"
   ],
   "handoffs": [],
-  "notes": "E o teste que decide se o protocolo funciona fora do laboratorio. Ate aqui todas as tarefas foram o proprio tooling. NAO delegada ao Codex: exige o coordenador escolher a tarefa e /ai-handoff verificado no Claude, que so o Claude pode fazer numa sessao nova."
+  "notes": "Tarefa escolhida em 23/09: projeto Xilog/Parsifal, primeira fatia = base de documentacao (so docs, fontes fornecidas pelo Lukas, zero circunvencao). Repo privado ~/Projetos/xilog-parsifal criado com protocolo copiado do commit 6c5a028; execucao = AIC-0001 naquele repo, BLOQUEADA ate o Lukas colocar o material em fontes/. NAO delegada ao Codex como dono: ele revisa. Atritos ja registrados em .ai/knowledge/AIC-0010-atrito.md."
 }
