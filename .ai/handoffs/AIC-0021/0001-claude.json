@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0021-0001",
+  "task_id": "AIC-0021",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "human",
+  "kind": "delivery",
+  "created_at": "2026-09-23T14:46:41Z",
+  "branch": "claude/AIC-0021-security-lock",
+  "base_commit": "cd347a26215079220ff21f16de28a9422d6e46be",
+  "delivery_commit": "763957fa8299cf0a524b537b9f0b61cd5ea893be",
+  "summary": "SECURITY.md deixa de tratar o lock do handoff como corrupcao por corrida e passa a descreve-lo como risco de disponibilidade (lock morto apos crash).",
+  "changes": [
+    {
+      "path": "SECURITY.md",
+      "what": "Remove o item 'race no lock que corrompe ou sobrescreve dados' da lista de vulnerabilidades; acrescenta ao trecho de nao-vulnerabilidades que lock morto apos kill -9 so bloqueia novas entregas ate rmdir manual (mkdir atomico, sem corrupcao), com referencia a docs/SPEC-v0.1.md."
+    }
+  ],
+  "tests": [
+    {
+      "command": "git diff --check main..763957f -- SECURITY.md",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_handoff.sh (69 casos)",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_skills.sh (44 casos)",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_doctor.sh",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_task.sh (23 casos)",
+      "result": "pass"
+    },
+    {
+      "command": "bash tests/test_merge_guard.sh (11 casos)",
+      "result": "pass"
+    },
+    {
+      "command": "python3 scripts/validate-task.py .ai/tasks/AIC-0021.json",
+      "result": "pass"
+    }
+  ],
+  "risks": [
+    "A lista de vulnerabilidades ficou com quatro itens; o item do lock foi removido, nao substituido. Se o coordenador quiser tratar sobrescrita de handoff publicado como vulnerabilidade, e uma decisao a parte.",
+    "Entrega sem revisao independente: o dono nao revisa o proprio trabalho; falta tarefa de revisao (Codex).",
+    "O texto novo cita docs/SPEC-v0.1.md; a SPEC descreve o rmdir manual na secao de publicacao dos handoffs."
+  ],
+  "next_action": "Coordenador: rever o diff de 763957f, decidir sobre revisao independente pelo Codex e sobre o merge; a tarefa AIC-0021 segue ASSIGNED ate voce atualizar o estado.",
+  "previous_handoff": null
+}

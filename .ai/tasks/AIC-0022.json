@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0022",
+  "title": "Revisao somente leitura da entrega da AIC-0021 (commit 763957f, SECURITY.md) pelo Codex",
+  "state": "ASSIGNED",
+  "owner": "codex",
+  "role": "review",
+  "assigned_by": "human",
+  "created_at": "2026-09-23T15:30:00Z",
+  "updated_at": "2026-09-23T15:30:00Z",
+  "branch": "codex/AIC-0022-review",
+  "worktree": "../wt-codex",
+  "base_commit": "cd347a26215079220ff21f16de28a9422d6e46be",
+  "scope": {
+    "allowed_paths": [
+      "-nenhuma escrita: revisao somente leitura"
+    ],
+    "forbidden_paths": [
+      "SECURITY.md",
+      "docs/",
+      "scripts/",
+      "tests/",
+      ".ai/tasks/",
+      ".claude/",
+      ".agents/",
+      "AGENTS.md"
+    ]
+  },
+  "acceptance": [
+    "Mira o commit exato 763957fa8299cf0a524b537b9f0b61cd5ea893be (delivery da AIC-0021), lido por git show/git archive em copia isolada, sem editar wt-claude nem a branch do Claude",
+    "Confere por execucao, nao pelo handoff, que scripts/handoff.sh usa mkdir atomico para o lock e que quem perde a corrida falha na hora sem corromper nada",
+    "Confere que o diff da entrega toca somente SECURITY.md (mais .ai/handoffs/AIC-0021/ e a tarefa) e que os demais itens, o canal privado e a linha 'so main recebe correcao' ficaram intactos",
+    "Confere que o texto novo e verdadeiro contra docs/SPEC-v0.1.md (rmdir manual apos kill -9) e nao promete nem inventa e-mail, link ou comportamento",
+    "Avalia se remover o item do lock, sem substitui-lo, deixa a lista de vulnerabilidades incompleta; registra como achado, nao como edicao",
+    "Reproduz tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh, tests/test_task.sh e tests/test_merge_guard.sh em copia temporaria e registra o resultado real",
+    "Cada achado cita caminho e, quando aplicavel, linha; veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS; o handoff e escrito com $ai-handoff em .ai/handoffs/AIC-0022/, com o delivery_commit da AIC-0021 como commit revisado"
+  ],
+  "handoffs": [],
+  "notes": "Aberta pelo Claude a pedido do coordenador em 23/09. O dono da AIC-0021 nao revisa o proprio trabalho. So entra em vigor quando o coordenador integrar este arquivo em main e atribuir a tarefa ao Codex; o Codex nao deve ler memoria privada do Claude nem chamar o Claude."
+}
