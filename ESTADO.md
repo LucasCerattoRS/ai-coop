@@ -56,7 +56,7 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0013 | codex | **ACCEPTED**, mergeada | trava mecânica de merge/push; AIC-0017: ACEITAR |
 | AIC-0014 | codex | **ACCEPTED**, mergeada | validador de tarefas; AIC-0015: ACEITAR |
 | AIC-0015–0020 | claude | **ACCEPTED**, mergeadas | revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
-| AIC-0021 | claude | **HANDED_OFF**, integrada em `27e49ca` | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Entrega `763957f`, handoff `0001-claude`. **Não publicada** (sem push) |
+| AIC-0021 | claude | **UNDER_REVIEW**, integrada em `27e49ca` | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Entrega `763957f`, handoff `0001-claude`. **Não publicada** (sem push) |
 | AIC-0022 | codex | **IN_PROGRESS** | revisão independente da AIC-0021 (`763957f`), somente leitura, em `codex/AIC-0022-review` |
 
 ## Issues da revisão de 2026-09-20
