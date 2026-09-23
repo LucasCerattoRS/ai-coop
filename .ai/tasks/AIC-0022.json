@@ -2,12 +2,12 @@
   "schema_version": 1,
   "task_id": "AIC-0022",
   "title": "Revisao somente leitura da entrega da AIC-0021 (commit 763957f, SECURITY.md) pelo Codex",
-  "state": "IN_PROGRESS",
+  "state": "HANDED_OFF",
   "owner": "codex",
   "role": "review",
   "assigned_by": "human",
   "created_at": "2026-09-23T15:30:00Z",
-  "updated_at": "2026-09-23T16:30:00Z",
+  "updated_at": "2026-09-23T17:00:00Z",
   "branch": "codex/AIC-0022-review",
   "worktree": "../wt-codex",
   "base_commit": "cd347a26215079220ff21f16de28a9422d6e46be",
@@ -35,6 +35,8 @@
     "Reproduz tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh, tests/test_task.sh e tests/test_merge_guard.sh em copia temporaria e registra o resultado real",
     "Cada achado cita caminho e, quando aplicavel, linha; veredito: ACEITAR, ACEITAR_COM_RESSALVAS ou MUDANCAS_NECESSARIAS; o handoff e escrito com $ai-handoff em .ai/handoffs/AIC-0022/, com o delivery_commit da AIC-0021 como commit revisado"
   ],
-  "handoffs": [],
-  "notes": "Aberta pelo Claude a pedido do coordenador em 23/09. O dono da AIC-0021 nao revisa o proprio trabalho. So entra em vigor quando o coordenador integrar este arquivo em main e atribuir a tarefa ao Codex; o Codex nao deve ler memoria privada do Claude nem chamar o Claude."
+  "handoffs": [
+    "0001-codex.json"
+  ],
+  "notes": "Aberta pelo Claude a pedido do coordenador em 23/09. O dono da AIC-0021 nao revisa o proprio trabalho. So entra em vigor quando o coordenador integrar este arquivo em main e atribuir a tarefa ao Codex; o Codex nao deve ler memoria privada do Claude nem chamar o Claude. Revisao do Codex sobre 763957f entregue: handoff 0001-codex (e586b35), veredito ACEITAR_COM_RESSALVAS; integrado em main em 23/09."
 }
