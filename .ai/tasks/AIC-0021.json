@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0021",
+  "title": "SECURITY.md: corrigir o item do lock (ressalva da AIC-0018)",
+  "state": "ASSIGNED",
+  "owner": "claude",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-23T15:00:00Z",
+  "updated_at": "2026-09-23T15:00:00Z",
+  "branch": "claude/AIC-0021-security-lock",
+  "worktree": "../wt-claude",
+  "base_commit": "cd347a26215079220ff21f16de28a9422d6e46be",
+  "scope": {
+    "allowed_paths": [
+      "SECURITY.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/schemas/",
+      ".ai/examples/",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      ".claude/",
+      ".agents/",
+      "scripts/",
+      "tests/",
+      ".github/",
+      "docs/",
+      "README.md"
+    ]
+  },
+  "acceptance": [
+    "SECURITY.md deixa de dizer que ha corrupcao ou sobrescrita por corrida no lock do handoff: scripts/handoff.sh usa mkdir atomico, quem perde a corrida falha na hora",
+    "O item passa a descrever o risco real: lock morto apos crash (kill -9) bloqueia novas entregas ate rmdir manual (SPEC-v0.1 secao 5); e disponibilidade, nao violacao de fronteira",
+    "Demais itens, o canal privado e a linha 'so main recebe correcao' ficam intactos; sem e-mail ou link inventado",
+    "Diff contra a base toca somente SECURITY.md, mais .ai/handoffs/AIC-0021/",
+    "Entrega com handoff escrito com /ai-handoff / scripts/handoff.sh, validado por scripts/validate-handoff.py, em commit separado do codigo",
+    "Suites tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh, tests/test_task.sh e tests/test_merge_guard.sh continuam verdes",
+    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+  ],
+  "handoffs": [],
+  "notes": "Aberta a pedido do coordenador em 23/09 para fechar a ressalva nao bloqueante do parecer AIC-0018 (0001-claude.json). Revisao independente da entrega fica para outra tarefa; o dono nao revisa o proprio trabalho."
+}
