@@ -6,11 +6,6 @@ O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está cert
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
 Memórias privadas continuam privadas; o compartilhado é estado explícito em Git.
 
-## Marcador para a próxima abertura do Claude
-
-Antes de qualquer aperfeiçoamento, leia `~/Downloads/GUIA-REVISAO-AI-COOP.md` e `PROXIMA-SESSAO-CLAUDE.md`.
-É um guia humano e um lembrete de revisão; não é autoridade de tarefa. Preserve o marcador até o coordenador confirmar a leitura.
-
 ## Onde as coisas estão
 
 | Caminho | O que é |
