@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "task_id": "AIC-0023",
+  "title": "Resolver os atritos de adocao (AIC-0010 #1-5 + devhub-web) e desativar a trava de merge/push",
+  "state": "ASSIGNED",
+  "owner": "claude",
+  "role": "implement",
+  "assigned_by": "human",
+  "created_at": "2026-09-28T01:20:00Z",
+  "updated_at": "2026-09-28T01:20:00Z",
+  "branch": "claude/AIC-0023-atritos",
+  "worktree": "../wt-claude",
+  "base_commit": null,
+  "scope": {
+    "allowed_paths": [
+      "scripts/",
+      ".ai/schemas/",
+      "tests/",
+      ".github/workflows/ci.yml",
+      "docs/SPEC-v0.1.md",
+      "docs/MERGE-GUARD.md",
+      "docs/AI-HANDOFF.md",
+      "AGENTS.md",
+      "README.md",
+      ".ai/knowledge/AIC-0010-atrito.md"
+    ],
+    "forbidden_paths": [
+      ".ai/tasks/",
+      ".ai/handoffs/",
+      "LICENSE",
+      "CONTRIBUTING.md"
+    ]
+  },
+  "acceptance": [
+    "#1 adocao: scripts/adopt.sh DESTINO instala ou atualiza o protocolo em outro repo e grava PROTOCOL-VERSION, sem tocar tarefas, handoffs nem DECISIONS existentes; testado de ponta a ponta num repo temporario",
+    "#2 prefixo: task_id aceita PREFIXO-NNNN (PREFIXO = letra maiuscula + 1-7 maiusculas/digitos) em schemas, handoff.sh e validadores, mantendo a recusa de path traversal",
+    "#3 validate-task.py no modo lista diz o que checou e que escopo nao foi checado",
+    "#4/#6 trava de merge/push desativada por decisao do coordenador; regra de delegacao ao agente escrita na SPEC e no AGENTS.md",
+    "#5 scripts/task-state.py move a tarefa pelo caminho legal mais curto, um commit por passo",
+    "#7 scripts/new-review-task.py gera a tarefa de revisao a partir do handoff de entrega",
+    "Todas as suites rodadas de verdade antes do handoff; CI roda tambem test_task.sh e o teste de adocao"
+  ],
+  "handoffs": [],
+  "notes": "Pedido do Lukas em 27/09: 'resolva todos os atritos antes ... tire a trava de merge/push'. Revisao do Codex em tarefa propria depois."
+}
