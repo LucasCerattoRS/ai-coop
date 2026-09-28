@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task_id": "AIC-0023",
   "title": "Resolver os atritos de adocao (AIC-0010 #1-5 + devhub-web) e desativar a trava de merge/push",
-  "state": "HANDED_OFF",
+  "state": "UNDER_REVIEW",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
