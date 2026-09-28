@@ -11,7 +11,7 @@ Memórias privadas continuam privadas; o compartilhado é estado explícito em G
 | Caminho | O que é |
 |---|---|
 | `~/Projetos/ai-coop/repo` | `main` = coordenação. Só o coordenador humano escreve aqui |
-| `~/Projetos/ai-coop/wt-claude` | worktree do Claude, hoje em `claude/AIC-0021-security-lock` |
+| `~/Projetos/ai-coop/wt-claude` | worktree do Claude, hoje em `claude/AIC-0023-atritos` (mergeada) |
 | `~/Projetos/ai-coop/wt-codex` | worktree do Codex, hoje em `codex/AIC-0022-review` (já mergeada) |
 | `checkpoint/`, `relatorios/`, `extraidos/` | material congelado de 2026-09-20 |
 
