@@ -40,6 +40,8 @@
     "#7 scripts/new-review-task.py gera a tarefa de revisao a partir do handoff de entrega",
     "Todas as suites rodadas de verdade antes do handoff; CI roda tambem test_task.sh e o teste de adocao"
   ],
-  "handoffs": [],
+  "handoffs": [
+    "AIC-0023-0001"
+  ],
   "notes": "Pedido do Lukas em 27/09: 'resolva todos os atritos antes ... tire a trava de merge/push'. Revisao do Codex em tarefa propria depois."
 }
