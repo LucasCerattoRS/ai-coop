@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0023-0001",
+  "task_id": "AIC-0023",
+  "sequence": 1,
+  "from_agent": "claude",
+  "to_agent": "codex",
+  "kind": "delivery",
+  "created_at": "2026-09-28T01:01:27Z",
+  "branch": "claude/AIC-0023-atritos",
+  "base_commit": "7297959b21bf1753956b7dc86fad7aa6f1f6c2ef",
+  "delivery_commit": "9e37a8ddff7a76dae712e2ce2b14460dc5bbea7f",
+  "summary": "Resolve os 8 atritos de adocao (AIC-0010 #1-5 + 3 do devhub-web): adopt.sh, prefixo de tarefa por repo, validador explicito no modo lista, task-state.py (um commit por passo), new-review-task.py, delegacao escrita na SPEC e trava de merge/push desativada por padrao.",
+  "changes": [
+    {
+      "path": "scripts/adopt.sh",
+      "what": "novo: instala/atualiza o protocolo em outro repo a partir do HEAD; --check compara arquivo a arquivo; nao toca tarefas/handoffs/DECISIONS; recusa AGENTS.md alheio"
+    },
+    {
+      "path": "scripts/task-state.py",
+      "what": "novo: caminho legal mais curto (BFS sobre TRANSITIONS do validate-task.py); sem --commit so um passo; com --commit um commit por passo"
+    },
+    {
+      "path": "scripts/new-review-task.py",
+      "what": "novo: gera tarefa de revisao do handoff de delivery/correction; dono = to_agent; mira delivery_commit; nao sobrescreve"
+    },
+    {
+      "path": "scripts/handoff.sh, scripts/validate-handoff.py, scripts/validate-task.py, .ai/schemas/*.json",
+      "what": "task_id aceita ^[A-Z][A-Z0-9]{1,7}-[0-9]{4}$; allowlist continua sem / nem ."
+    },
+    {
+      "path": "scripts/validate-task.py",
+      "what": "modo lista imprime que so checou formato e nao escopo"
+    },
+    {
+      "path": "docs/SPEC-v0.1.md, AGENTS.md, docs/MERGE-GUARD.md, README.md",
+      "what": "delegacao ao agente por ordem explicita (coord:), um commit por transicao, prefixo por repo, trava desativada por padrao, adocao"
+    },
+    {
+      "path": "tests/test_adopt.sh, tests/test_handoff.sh, .github/workflows/ci.yml",
+      "what": "25 casos novos de adocao/estado/revisao; 5 de prefixo; CI passa a rodar test_task.sh e test_adopt.sh"
+    },
+    {
+      "path": ".ai/knowledge/AIC-0010-atrito.md",
+      "what": "atritos 6-8 registrados e tabela de correcoes"
+    }
+  ],
+  "tests": [
+    {
+      "command": "bash tests/test_handoff.sh",
+      "result": "pass",
+      "note": "74 ok"
+    },
+    {
+      "command": "bash tests/test_task.sh",
+      "result": "pass",
+      "note": "23 ok"
+    },
+    {
+      "command": "bash tests/test_skills.sh",
+      "result": "pass",
+      "note": "44 ok"
+    },
+    {
+      "command": "bash tests/test_doctor.sh",
+      "result": "pass",
+      "note": "exit 0"
+    },
+    {
+      "command": "bash tests/test_merge_guard.sh",
+      "result": "pass",
+      "note": "11 ok; a guarda continua funcionando quando instalada"
+    },
+    {
+      "command": "bash tests/test_adopt.sh",
+      "result": "pass",
+      "note": "25 ok; 2 falhas iniciais eram do proprio teste (pipefail mascarando grep), corrigidas"
+    },
+    {
+      "command": "python3 tests/test_schema_conformance.py && python3 scripts/validate-task.py",
+      "result": "pass",
+      "note": "exit 0 e 0"
+    }
+  ],
+  "risks": [
+    "Trava desativada: a protecao contra merge/push acidental passa a ser so texto (AGENTS.md 12, SPEC §1), como antes da AIC-0013. Decisao do coordenador em 27/09",
+    "adopt.sh sobrescreve os arquivos do protocolo no destino sem backup; mudanca local do destino nesses arquivos se perde (o --check mostra antes)",
+    "Prefixo mais largo nao muda a defesa de caminho, mas nao ha checagem de que um repo use um prefixo so"
+  ],
+  "next_action": "Codex: revisar o commit de entrega contra os 7 criterios de aceite da AIC-0023, rodar as 6 suites e o schema, e tentar quebrar adopt.sh (destino com symlink, AGENTS.md alheio, --check) e task-state.py (caminhos ilegais). Parecer em handoff kind=review.",
+  "previous_handoff": null
+}
