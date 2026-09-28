@@ -1,6 +1,6 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-23 (AIC-0021 e AIC-0022 aceitas e publicadas). **Leia primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-28 (AIC-0023 atritos mergeada, revisao AIC-0024 do Codex aberta; trava desativada). **Leia primeiro em qualquer sessão nova.**
 O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está certo.
 
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
@@ -53,6 +53,8 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0015–0020 | claude | **ACCEPTED**, mergeadas | revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
 | AIC-0021 | claude | **ACCEPTED**, mergeada (`27e49ca`) | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Revisão AIC-0022: ACEITAR_COM_RESSALVAS, ressalva baixa (lista com 4 itens, sem indisponibilidade) aceita como não bloqueante |
 | AIC-0022 | codex | **ACCEPTED**, mergeada (`03c0505`) | revisão independente da AIC-0021 sobre `763957f`; verificou lock por execução (saída 1 em 0,012 s) e os 5 scripts de teste |
+| AIC-0023 | claude | **UNDER_REVIEW**, mergeada (`4e37731`) antes da revisao por ordem do coordenador | 8 atritos: `adopt.sh`, prefixo por repo, `task-state.py`, `new-review-task.py`, delegacao na SPEC, trava desativada |
+| AIC-0024 | codex | **ASSIGNED** | revisao da AIC-0023 sobre `9e37a8d` (gerada por `new-review-task.py`) |
 
 ## Issues da revisão de 2026-09-20
 
@@ -69,13 +71,15 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Próximo passo exato
 
-1. Colocar o material (manuais, exemplos `.xxl`/`.pgm`, saída do Alphacam) em `~/Projetos/xilog-parsifal/fontes/`; depois abrir sessão nova do Claude em `~/Projetos/xilog-parsifal-claude` e rodar `/ai-handoff` (verificação pendente da AIC-0010);
-2. Fazer a revisão jurídica de `LICENSE` e `CONTRIBUTING.md`.
+1. Codex revisa a AIC-0023 (AIC-0024): recado pronto no chat de 27/09 e em `~/Projetos/devhub-web/PROXIMA-SESSAO.md`.
+2. Verificar `/ai-handoff` em sessao nova do Claude (pendencia da AIC-0010): roteiro no mesmo arquivo.
+3. AIC-0010 (Xilog/Parsifal) segue bloqueada ate o material em `fontes/`.
+4. Revisao juridica de `LICENSE` e `CONTRIBUTING.md`.
 
 ## Pontos abertos conhecidos
 
 - AIC-0010 está ASSIGNED, mas parada: depende do material de fontes do Lukas e da verificação de `/ai-handoff` em sessão nova.
-- A guarda de merge/push é local e protege contra erro, não contra agente hostil.
+- A guarda de merge/push está DESATIVADA desde 27/09 (decisão do coordenador); a regra vale como texto (SPEC §1, AGENTS.md 12).
 - Lock morto após `kill -9` exige `rmdir` manual (SPEC §5).
 
 ## Publicação e cópia privada

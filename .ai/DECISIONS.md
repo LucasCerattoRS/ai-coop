@@ -52,3 +52,16 @@ sucesso no run 35786334427 para o commit 3647f93.
 
 Rever uma decisão via nova tarefa, novo handoff e commit corretivo; nunca
 editar handoff publicado.
+
+## 2026-09-27 — Trava de merge/push desativada; delegacao ao agente; AIC-0023 mergeada antes da revisao
+
+**Decision:** A guarda local (AIC-0013) fica desativada por padrao (`core.hooksPath` removido
+dos clones). O coordenador delega acoes de coordenacao ao agente por ordem explicita na conversa
+(SPEC §1, "Delegacao"). A AIC-0023 (atritos) entrou em `main` antes da revisao do Codex (AIC-0024)
+porque o devhub-web e o xilog-parsifal precisam do `adopt.sh` e do prefixo por repo agora.
+
+**Context:** Pedido do Lukas em 27/09: "resolva todos os atritos antes ... tire a trava de
+merge/push, desative-a". Atritos em `.ai/knowledge/AIC-0010-atrito.md`.
+
+**Reversal conditions:** Achado bloqueante da AIC-0024 vira correcao por nova tarefa. Religar a
+guarda: `bash scripts/install-hooks.sh`.
