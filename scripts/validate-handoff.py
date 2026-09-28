@@ -14,8 +14,8 @@ import re
 import sys
 from pathlib import Path
 
-HANDOFF_ID = re.compile(r"^AIC-\d{4}-\d{4}$")
-TASK_ID = re.compile(r"^AIC-\d{4}$")
+HANDOFF_ID = re.compile(r"^[A-Z][A-Z0-9]{1,7}-\d{4}-\d{4}$")
+TASK_ID = re.compile(r"^[A-Z][A-Z0-9]{1,7}-\d{4}$")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 PREV = re.compile(r"^\d{4}-(claude|codex)\.json$")
 ISO = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
@@ -66,9 +66,9 @@ def check(handoff):
     if handoff["schema_version"] != 1:
         err("schema_version deve ser 1")
     if not HANDOFF_ID.match(str(handoff["handoff_id"])):
-        err("handoff_id fora do formato AIC-NNNN-NNNN")
+        err("handoff_id fora do formato PREFIXO-NNNN-NNNN")
     if not TASK_ID.match(str(handoff["task_id"])):
-        err("task_id fora do formato AIC-NNNN")
+        err("task_id fora do formato PREFIXO-NNNN")
     if not str(handoff["handoff_id"]).startswith(str(handoff["task_id"]) + "-"):
         err("handoff_id nao pertence a task_id")
 

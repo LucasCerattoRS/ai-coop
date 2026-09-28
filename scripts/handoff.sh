@@ -2,7 +2,7 @@
 # Cria um handoff novo, imutavel e sequenciado, em .ai/handoffs/<TASK_ID>/.
 #
 # uso: scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]
-#   TASK_ID     AIC-NNNN
+#   TASK_ID     PREFIXO-NNNN (ex. AIC-0001, DW-0001)
 #   FROM_AGENT  claude | codex
 #   TO_AGENT    claude | codex | human
 #   KIND        delivery | review | correction
@@ -18,7 +18,7 @@ usage() { die "uso: $0 TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]" 2; }
 TASK_ID=$1; FROM=$2; TO=$3; KIND=$4
 
 # Allowlist. E o que impede TASK_ID de influenciar o caminho.
-[[ $TASK_ID =~ ^AIC-[0-9]{4}$ ]] || die "TASK_ID invalido: $TASK_ID (esperado AIC-NNNN)" 2
+[[ $TASK_ID =~ ^[A-Z][A-Z0-9]{1,7}-[0-9]{4}$ ]] || die "TASK_ID invalido: $TASK_ID (esperado PREFIXO-NNNN, ex. AIC-0001)" 2
 [[ $FROM == claude || $FROM == codex ]] || die "FROM_AGENT invalido: $FROM" 2
 [[ $TO == claude || $TO == codex || $TO == human ]] || die "TO_AGENT invalido: $TO" 2
 [[ $FROM != "$TO" ]] || die "FROM_AGENT e TO_AGENT nao podem ser iguais" 2

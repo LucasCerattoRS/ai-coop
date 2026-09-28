@@ -45,6 +45,13 @@ bash $H "" claude codex delivery >/dev/null 2>&1; check $? 2 "TASK_ID vazio -> 2
 bash $H "../../../tmp/evil" claude codex delivery >/dev/null 2>&1; check $? 2 "TASK_ID com ../ -> 2"
 bash $H "AIC-0001/../../etc" claude codex delivery >/dev/null 2>&1; check $? 2 "TASK_ID com barra -> 2"
 bash $H "AIC-1" claude codex delivery >/dev/null 2>&1; check $? 2 "TASK_ID curto demais -> 2"
+bash $H "dw-0001" claude codex delivery >/dev/null 2>&1; check $? 2 "prefixo minusculo -> 2"
+bash $H "ABCDEFGHI-0001" claude codex delivery >/dev/null 2>&1; check $? 2 "prefixo com 9 caracteres -> 2"
+bash $H "1DW-0001" claude codex delivery >/dev/null 2>&1; check $? 2 "prefixo comecando por digito -> 2"
+OUTP=$(bash $H DW-0001 claude codex delivery 2>/dev/null); RC=$?
+check $RC 0 "prefixo proprio do repo (DW-0001) aceito"
+python3 $V "$OUTP" 2>&1 | grep -q "fora do formato"; check $? 1 "validador aceita o formato DW-0001-0001"
+rm -rf .ai/handoffs/DW-0001
 bash $H AIC-0001 claude claude delivery >/dev/null 2>&1; check $? 2 "from == to -> 2"
 bash $H AIC-0001 claude gemini delivery >/dev/null 2>&1; check $? 2 "agente desconhecido -> 2"
 bash $H AIC-0001 claude codex merge >/dev/null 2>&1; check $? 2 "kind desconhecido -> 2"

@@ -22,7 +22,7 @@ TRANSITIONS = {
 }
 REQUIRED = {"schema_version", "task_id", "title", "state", "assigned_by", "created_at", "updated_at", "scope", "acceptance"}
 OPTIONAL = {"owner", "role", "branch", "worktree", "base_commit", "handoffs", "notes"}
-TASK_ID = re.compile(r"^AIC-\d{4}$")
+TASK_ID = re.compile(r"^[A-Z][A-Z0-9]{1,7}-\d{4}$")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 
 
@@ -59,7 +59,7 @@ def check(task):
     if task["schema_version"] != 1:
         errors.append("schema_version deve ser 1")
     if not TASK_ID.match(str(task["task_id"])):
-        errors.append("task_id fora do formato AIC-NNNN")
+        errors.append("task_id fora do formato PREFIXO-NNNN")
     if not text(task["title"]):
         errors.append("title vazio")
     if task["state"] not in STATES:
@@ -154,6 +154,10 @@ def main(argv):
         errors.extend(scopes(tasks))
     elif len(argv) >= 2:
         tasks, errors = validate_files(argv[1:])
+        if not errors:
+            # Saida 0 aqui prova so o formato: dizer isso evita ler "escopos disjuntos" onde nao foi checado.
+            print(f"ok: formato de {len(tasks)} tarefa(s); sobreposicao de escopo NAO checada "
+                  "(rode sem argumento ou com --scopes)")
     else:
         print("uso: validate-task.py [ARQUIVO.json ... | --transition ANTES.json DEPOIS.json | --scopes ARQUIVO.json ...]", file=sys.stderr)
         return 2

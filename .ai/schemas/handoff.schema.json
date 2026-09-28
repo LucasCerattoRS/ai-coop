@@ -26,8 +26,8 @@
   ],
   "properties": {
     "schema_version": {"const": 1},
-    "handoff_id": {"type": "string", "pattern": "^AIC-[0-9]{4}-[0-9]{4}$"},
-    "task_id": {"type": "string", "pattern": "^AIC-[0-9]{4}$"},
+    "handoff_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]{1,7}-[0-9]{4}-[0-9]{4}$"},
+    "task_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]{1,7}-[0-9]{4}$"},
     "sequence": {"type": "integer", "minimum": 1},
     "from_agent": {"enum": ["claude", "codex"]},
     "to_agent": {"enum": ["claude", "codex", "human"]},
