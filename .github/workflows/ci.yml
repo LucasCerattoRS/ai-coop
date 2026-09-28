@@ -23,4 +23,6 @@ jobs:
           bash tests/test_handoff.sh
           bash tests/test_skills.sh
           bash tests/test_doctor.sh
+          bash tests/test_task.sh
+          bash tests/test_adopt.sh
           python tests/test_schema_conformance.py

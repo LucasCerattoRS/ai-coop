@@ -22,6 +22,16 @@ The goal is not to make agents recursively talk to each other. The goal is to ma
 - Shared skills should be thin adapters over common protocols and scripts.
 - Every automated mutation should have a verification and rollback path.
 
+## Use it in another repository
+
+```bash
+scripts/adopt.sh ~/path/to/your-repo          # install or update the protocol files
+scripts/adopt.sh --check ~/path/to/your-repo  # exit 1 if that repo is behind this one
+```
+
+Pick a task prefix of your own there (e.g. `DW-0001`). Coordinator tools: `scripts/task-state.py`
+and `scripts/new-review-task.py` (see `docs/SPEC-v0.1.md` §1–2).
+
 ## Status
 
 Early architecture / reference implementation seed.

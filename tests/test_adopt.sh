@@ -19,7 +19,7 @@ check "$(cat "$D/PROTOCOL-VERSION")" "ai-coop $(git -C "$SRC" rev-parse HEAD)" "
 (cd "$D" && bash scripts/ai-coop-doctor.sh >/dev/null); check $? 0 "doctor OK no destino"
 
 echo '# minhas decisoes' > "$D/.ai/DECISIONS.md"; echo mexido >> "$D/scripts/handoff.sh"
-bash "$SRC/scripts/adopt.sh" --check "$D" 2>/dev/null | grep -q 'DESATUALIZADO scripts/handoff.sh'; check $? 0 "--check aponta o arquivo divergente"
+OUT=$(bash "$SRC/scripts/adopt.sh" --check "$D" 2>/dev/null); grep -q 'DESATUALIZADO scripts/handoff.sh' <<<"$OUT"; check $? 0 "--check aponta o arquivo divergente"
 bash "$SRC/scripts/adopt.sh" --check "$D" >/dev/null; check $? 1 "--check sai 1 quando desatualizado"
 bash "$SRC/scripts/adopt.sh" "$D" >/dev/null
 bash "$SRC/scripts/adopt.sh" --check "$D" >/dev/null; check $? 0 "readocao corrige o divergente"
@@ -41,7 +41,7 @@ EOF
 (cd "$D" && python3 scripts/validate-task.py >/dev/null); check $? 0 "tarefa com prefixo DW valida no destino"
 TS="python3 $D/scripts/task-state.py"
 $TS DW-0001 HANDED_OFF >/dev/null 2>&1; check $? 1 "dois passos sem --commit: recusa"
-$TS DW-0001 HANDED_OFF 2>&1 | grep -q 'ASSIGNED -> IN_PROGRESS -> HANDED_OFF'; check $? 0 "recusa mostra o caminho legal"
+OUT=$($TS DW-0001 HANDED_OFF 2>&1); grep -q 'ASSIGNED -> IN_PROGRESS -> HANDED_OFF' <<<"$OUT"; check $? 0 "recusa mostra o caminho legal"
 N0=$(git -C "$D" rev-list --count HEAD)
 $TS DW-0001 HANDED_OFF --commit >/dev/null; check $? 0 "caminho legal com --commit"
 check $(( $(git -C "$D" rev-list --count HEAD) - N0 )) 2 "um commit por passo"

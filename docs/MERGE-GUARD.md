@@ -1,5 +1,11 @@
 # Guarda local de merge e push
 
+> **Estado: desativada por padrão desde 27/09/2026, por decisão do coordenador.** Na prática ela
+> exigia `AI_COOP_HUMAN=1` até para commit de coordenação em `main` (atrito #4 da AIC-0010) e o
+> coordenador passou a delegar essas ações ao agente por ordem explícita (SPEC §1, "Delegação").
+> A regra continua valendo como texto; os hooks e o teste ficam no repo para quem quiser religar
+> com `bash scripts/install-hooks.sh`. Desligar num clone: `git config --unset core.hooksPath`.
+
 Em 21/09, o Codex fez merge em `main` após receber uma instrução ambígua. A
 regra “só o humano faz merge” existia apenas como texto. Estes hooks adicionam
 uma barreira mecânica contra essa classe de erro.
