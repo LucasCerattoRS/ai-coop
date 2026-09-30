@@ -1,6 +1,6 @@
 # Estado do ai-coop — ponto de retorno
 
-Atualizado em 2026-09-28 (AIC-0023 atritos mergeada, revisao AIC-0024 do Codex aberta; trava desativada). **Leia primeiro em qualquer sessão nova.**
+Atualizado em 2026-09-30 (AIC-0023/0024 ACCEPTED pelo Lukas; achado high do adopt.sh corrigido em 85bb256). **Leia primeiro em qualquer sessão nova.**
 O JSON em `.ai/tasks/` manda; este arquivo é vista. Divergiu? O JSON está certo.
 
 O que é: protocolo para Claude Code e Codex trabalharem no mesmo repositório sem pisar um no outro.
@@ -53,8 +53,8 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 | AIC-0015–0020 | claude | **ACCEPTED**, mergeadas | revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
 | AIC-0021 | claude | **ACCEPTED**, mergeada (`27e49ca`) | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Revisão AIC-0022: ACEITAR_COM_RESSALVAS, ressalva baixa (lista com 4 itens, sem indisponibilidade) aceita como não bloqueante |
 | AIC-0022 | codex | **ACCEPTED**, mergeada (`03c0505`) | revisão independente da AIC-0021 sobre `763957f`; verificou lock por execução (saída 1 em 0,012 s) e os 5 scripts de teste |
-| AIC-0023 | claude | **UNDER_REVIEW**, mergeada (`4e37731`) antes da revisao por ordem do coordenador | 8 atritos: `adopt.sh`, prefixo por repo, `task-state.py`, `new-review-task.py`, delegacao na SPEC, trava desativada |
-| AIC-0024 | codex | **ASSIGNED** | revisao da AIC-0023 sobre `9e37a8d` (gerada por `new-review-task.py`) |
+| AIC-0023 | claude | **ACCEPTED**, mergeada (`4e37731`); achado high da AIC-0024 corrigido em `85bb256` (AIC-0025 informal) | 8 atritos: `adopt.sh`, prefixo por repo, `task-state.py`, `new-review-task.py`, delegacao na SPEC, trava desativada |
+| AIC-0024 | codex | **ACCEPTED** (parecer: 1 achado high, corrigido) | revisao da AIC-0023 sobre `9e37a8d` (gerada por `new-review-task.py`) |
 
 ## Issues da revisão de 2026-09-20
 
