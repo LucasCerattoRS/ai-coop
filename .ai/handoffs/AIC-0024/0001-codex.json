@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "handoff_id": "AIC-0024-0001",
+  "task_id": "AIC-0024",
+  "sequence": 1,
+  "from_agent": "codex",
+  "to_agent": "claude",
+  "kind": "review",
+  "created_at": "2026-09-30T01:40:45Z",
+  "branch": "codex/AIC-0024-review",
+  "base_commit": "9e37a8ddff7a76dae712e2ce2b14460dc5bbea7f",
+  "delivery_commit": "9e37a8ddff7a76dae712e2ce2b14460dc5bbea7f",
+  "summary": "Revisao independente do commit 9e37a8d: suites pedidas passaram, mas adopt.sh permite overwrite fora do destino quando arquivo do protocolo no repo destino e symlink.",
+  "changes": [
+    {"path": ".ai/handoffs/AIC-0024/0001-codex.json", "what": "Parecer de revisao da AIC-0023 sobre o commit 9e37a8ddff7a76dae712e2ce2b14460dc5bbea7f."}
+  ],
+  "tests": [
+    {"command": "bash tests/test_handoff.sh", "result": "pass", "note": "74 passaram, 0 falharam"},
+    {"command": "bash tests/test_task.sh", "result": "pass", "note": "23 passaram, 0 falharam"},
+    {"command": "bash tests/test_skills.sh", "result": "pass", "note": "44 passaram, 0 falharam"},
+    {"command": "bash tests/test_doctor.sh", "result": "pass", "note": "doctor exit codes: 0, 1, 2, 3, 4 verified"},
+    {"command": "bash tests/test_merge_guard.sh", "result": "pass", "note": "11 passaram, 0 falharam"},
+    {"command": "bash tests/test_adopt.sh", "result": "pass", "note": "25 ok, 0 falha(s)"},
+    {"command": "python3 tests/test_schema_conformance.py", "result": "pass", "note": "exit 0"},
+    {"command": "adversarial: scripts/adopt.sh DESTINO with DESTINO/scripts/handoff.sh as symlink to /tmp/outside.txt", "result": "fail", "note": "adopt.sh saiu 0 e sobrescreveu o alvo externo com o conteudo de scripts/handoff.sh; o symlink permaneceu."},
+    {"command": "adversarial: scripts/adopt.sh and scripts/adopt.sh --check against repo with non-ai-coop AGENTS.md", "result": "pass", "note": "ambos recusaram com rc=1 antes de copiar arquivos."},
+    {"command": "adversarial: python3 scripts/task-state.py with ../, slash, lowercase, overlong prefix, bad state, and missing valid task id", "result": "pass", "note": "caminhos ilegais/bad state sairam 2; id valido inexistente saiu 1 sem path traversal."}
+  ],
+  "risks": [],
+  "findings": [
+    {"severity": "high", "path": "scripts/adopt.sh", "line": 69, "finding": "adopt.sh escreve com redirecionamento direto em $DEST/$f. Se um repositorio destino ja contiver, por exemplo, scripts/handoff.sh como symlink para um arquivo fora do repo, a adocao segue o symlink, sai 0 e sobrescreve o alvo externo. Isso contradiz a expectativa de adotar somente dentro do destino e cria risco de perda de dados em repos existentes. Repro: criar repo temporario, ln -s /tmp/outside.txt DEST/scripts/handoff.sh, rodar scripts/adopt.sh DEST; /tmp/outside.txt passa a conter o handoff.sh do ai-coop."}
+  ],
+  "next_action": "Claude: corrigir adopt.sh para recusar ou substituir com seguranca arquivos/diretorios symlink no destino antes de escrever arquivos do protocolo; adicionar teste adversarial para symlink em arquivo do protocolo. Achado bloqueia aceite da AIC-0023 ate correcao.",
+  "previous_handoff": null
+}
