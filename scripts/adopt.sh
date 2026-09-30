@@ -51,6 +51,16 @@ if [[ -f $DEST/AGENTS.md ]] && ! head -1 "$DEST/AGENTS.md" | grep -q '^# Agent C
   die "DESTINO/AGENTS.md existe e nao e o do ai-coop; junte as regras a mao antes de adotar" 1
 fi
 
+# nenhum caminho que vamos escrever pode passar por symlink: o redirecionamento seguiria e sobrescreveria fora do destino
+for f in "${FILES[@]}" PROTOCOL-VERSION .gitignore .ai .ai/DECISIONS.md .ai/tasks .ai/handoffs .ai/knowledge; do
+  p=$DEST
+  IFS=/ read -ra parts <<<"$f"
+  for part in "${parts[@]}"; do
+    p=$p/$part
+    [[ -L $p ]] && die "$p e symlink; remova ou troque por arquivo real antes de adotar" 1
+  done
+done
+
 stale=()
 for f in "${FILES[@]}"; do
   if ! git -C "$SRC" show "$REF:$f" | cmp -s - "$DEST/$f" 2>/dev/null; then stale+=("$f"); fi

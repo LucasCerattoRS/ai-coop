@@ -51,6 +51,13 @@ python3 "$D/scripts/validate-task.py" --transition "$SB/a.json" "$SB/b.json"; ch
 $TS DW-0001 NEW >/dev/null 2>&1; check $? 1 "sem caminho legal: recusa"
 $TS DW-0001 HANDED_OFF >/dev/null; check $? 0 "ja no estado: no-op"
 
+L="$SB/link"; new_repo "$L"; mkdir -p "$L/scripts"; echo fora > "$SB/fora.txt"; ln -s "$SB/fora.txt" "$L/scripts/handoff.sh"
+bash "$SRC/scripts/adopt.sh" "$L" >/dev/null 2>&1; check $? 1 "recusa arquivo do protocolo que e symlink"
+check "$(cat "$SB/fora.txt")" fora "alvo do symlink fora do destino intacto"
+L2="$SB/link2"; new_repo "$L2"; mkdir -p "$SB/foradir"; ln -s "$SB/foradir" "$L2/scripts"
+bash "$SRC/scripts/adopt.sh" "$L2" >/dev/null 2>&1; check $? 1 "recusa diretorio do protocolo que e symlink"
+check "$(ls "$SB/foradir" | wc -l)" 0 "diretorio alvo fora do destino intacto"
+
 H="$SB/h.json"
 python3 - "$H" "$(git -C "$D" rev-parse HEAD)" <<'EOF'
 import json, sys
