@@ -41,6 +41,7 @@ FILES=(
   scripts/handoff.sh
   scripts/install-hooks.sh
   scripts/new-review-task.py
+  scripts/rodar-codex.sh
   scripts/task-state.py
   scripts/validate-handoff.py
   scripts/validate-task.py

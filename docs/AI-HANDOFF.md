@@ -65,3 +65,14 @@ pergunte ao coordenador.
 
 - O carregamento do adapter do Codex só o Codex pode confirmar. Os testes deste repositório checam
   o formato do arquivo, não o carregamento.
+
+## Rodar o Codex e saber quando ele termina
+
+`scripts/rodar-codex.sh TASK_ID PROMPT_FILE [WORKTREE]` roda `codex exec` em primeiro plano
+e, ao sair, relata: codigo de saida, commits novos, arvore suja (commit que falhou) e o ultimo
+handoff de `.ai/handoffs/TASK_ID/`, validado. Saida 0 = handoff valido e arvore limpa;
+3 = terminou sem handoff valido; 4 = arvore suja.
+
+Chame-o como comando em segundo plano do agente coordenador: o aviso de termino passa a ser o
+do Codex. `nohup codex exec ... &` avisa cedo demais (termina o shell lancador, nao o Codex).
+Se o Chrome ou o Git do worktree travarem no sandbox, `CODEX_SANDBOX=danger-full-access`.

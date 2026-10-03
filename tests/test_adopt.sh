@@ -51,6 +51,7 @@ python3 "$D/scripts/validate-task.py" --transition "$SB/a.json" "$SB/b.json"; ch
 $TS DW-0001 NEW >/dev/null 2>&1; check $? 1 "sem caminho legal: recusa"
 $TS DW-0001 HANDED_OFF >/dev/null; check $? 0 "ja no estado: no-op"
 
+[[ -x $D/scripts/rodar-codex.sh ]]; check $? 0 "rodar-codex.sh adotado e executavel"
 L="$SB/link"; new_repo "$L"; mkdir -p "$L/scripts"; echo fora > "$SB/fora.txt"; ln -s "$SB/fora.txt" "$L/scripts/handoff.sh"
 bash "$SRC/scripts/adopt.sh" "$L" >/dev/null 2>&1; check $? 1 "recusa arquivo do protocolo que e symlink"
 check "$(cat "$SB/fora.txt")" fora "alvo do symlink fora do destino intacto"
