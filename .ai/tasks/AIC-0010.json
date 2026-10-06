@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task_id": "AIC-0010",
   "title": "Primeira tarefa REAL fora do laboratorio: documentacao de Xilog e Parsifal (repo privado xilog-parsifal)",
-  "state": "IN_PROGRESS",
+  "state": "HANDED_OFF",
   "owner": "claude",
   "role": "implement",
   "assigned_by": "human",
