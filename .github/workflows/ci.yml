@@ -25,4 +25,5 @@ jobs:
           bash tests/test_doctor.sh
           bash tests/test_task.sh
           bash tests/test_adopt.sh
+          bash tests/test_merge_guard.sh
           python tests/test_schema_conformance.py
