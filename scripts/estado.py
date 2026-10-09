@@ -24,8 +24,10 @@ def notes_by_id(block):
     notes = {}
     for line in block.split("\n"):
         cells = [c.strip() for c in re.split(r"(?<!\\)\|", line.strip())[1:-1]]
-        if len(cells) == 5 and re.fullmatch(r"AIC-\d+", cells[0]) and cells[4]:
-            notes[cells[0]] = cells[4]
+        # "|" cru digitado na nota gera colunas extras: junta de volta, escapado.
+        note = " \\| ".join(cells[4:]).strip()
+        if len(cells) >= 5 and re.fullmatch(r"AIC-\d+", cells[0]) and note:
+            notes[cells[0]] = note
     return notes
 
 
