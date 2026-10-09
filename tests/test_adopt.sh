@@ -59,6 +59,10 @@ L2="$SB/link2"; new_repo "$L2"; mkdir -p "$SB/foradir"; ln -s "$SB/foradir" "$L2
 bash "$SRC/scripts/adopt.sh" "$L2" >/dev/null 2>&1; check $? 1 "recusa diretorio do protocolo que e symlink"
 check "$(ls "$SB/foradir" | wc -l)" 0 "diretorio alvo fora do destino intacto"
 
+G="$SB/gi"; new_repo "$G"; printf 'node_modules' > "$G/.gitignore"   # sem quebra de linha no fim
+bash "$SRC/scripts/adopt.sh" "$G" >/dev/null; grep -qx 'node_modules' "$G/.gitignore" && grep -qx '.ai/private/' "$G/.gitignore"
+check $? 0 ".gitignore sem newline final: regras nao grudam"
+
 H="$SB/h.json"
 python3 - "$H" "$(git -C "$D" rev-parse HEAD)" <<'EOF'
 import json, sys

@@ -83,6 +83,8 @@ done
 mkdir -p "$DEST/.ai/tasks" "$DEST/.ai/handoffs" "$DEST/.ai/knowledge"
 [[ -e $DEST/.ai/DECISIONS.md ]] || printf '# Decisoes\n' > "$DEST/.ai/DECISIONS.md"
 printf 'ai-coop %s\n' "$REF" > "$DEST/PROTOCOL-VERSION"
+# .gitignore sem quebra de linha no fim: sem isto a primeira regra nova gruda na ultima existente
+[[ -s $DEST/.gitignore && -n $(tail -c1 "$DEST/.gitignore") ]] && printf '\n' >> "$DEST/.gitignore"
 for line in '.ai/private/' '.env' '.env.*'; do
   grep -qxF "$line" "$DEST/.gitignore" 2>/dev/null || printf '%s\n' "$line" >> "$DEST/.gitignore"
 done
