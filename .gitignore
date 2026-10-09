@@ -11,3 +11,4 @@ secrets*
 private/
 .ai/private/
 .DS_Store
+__pycache__/
