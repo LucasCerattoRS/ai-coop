@@ -34,35 +34,35 @@ Claude também foram integrados. A guarda AIC-0013 está instalada neste clone.
 
 ## Tarefas
 
-Gerada dos JSONs (`python3 scripts/estado.py`; o CI roda `--check`). Commits de merge e pareceres: `notes` de cada JSON e `git log`.
+Colunas ID/Dono/Estado/O quê vêm dos JSONs (`python3 scripts/estado.py`; o CI roda `--check`). A coluna **Notas** é humana: o gerador a preserva por ID e aborta se a tarefa sumir. Pareceres completos: `notes` de cada JSON e `git log`.
 
 <!-- tarefas:inicio (gerado por scripts/estado.py; nao edite a mao) -->
-| ID | Dono | Estado | O quê |
-|---|---|---|---|
-| AIC-0001 | claude | **ACCEPTED** | Trilha A — protocolo canonico: especificacao v0.1, schema de handoff e criacao segura de handoff |
-| AIC-0002 | codex | **ACCEPTED** | Trilha B — superficie operacional: contrato do doctor, paridade publico/privado e criterios de aceite do primeiro ciclo |
-| AIC-0003 | codex | **ACCEPTED** | Revisao somente leitura da entrega da trilha A (commit 8e48bfd) pelo Codex |
-| AIC-0004 | claude | **ACCEPTED** | Adapters minimos da skill ai-handoff (Claude e Codex) sobre um protocolo comum, e limpeza das fontes de estado do seed |
-| AIC-0005 | codex | **ACCEPTED** | Revisao somente leitura da entrega dos adapters (AIC-0004, commit 1069bff) pelo Codex, incluindo o carregamento real de $ai-handoff |
-| AIC-0006 | codex | **ACCEPTED** | handoff.sh: registrar o commit revisado em handoffs de review (fecha o ponto aberto do delivery_commit = HEAD) |
-| AIC-0007 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0006 (commit 3a0ba8c) pelo Claude |
-| AIC-0008 | codex | **ACCEPTED** | CI: GitHub Actions rodando as suites e um validador JSON Schema independente |
-| AIC-0009 | codex | **ACCEPTED** | SECURITY.md: canal privado de vulnerabilidade (texto). A habilitacao do canal e passo do coordenador |
-| AIC-0010 | claude | **CLOSED** | Primeira tarefa REAL fora do laboratorio: documentacao de Xilog e Parsifal (repo privado xilog-parsifal) |
-| AIC-0011 | codex | **ACCEPTED** | Ressalvas low da AIC-0002: teste do ramo git-ausente, doctor e symlink, ACCEPTANCE e re-revisao |
-| AIC-0012 | codex | **ACCEPTED** | Documentar as licoes do protocolo na SPEC e no guia: sequencia por branch, review com tarefa propria, merge so do humano |
-| AIC-0013 | codex | **ACCEPTED** | Trava mecanica de merge e push por agente (hooks versionados) |
-| AIC-0014 | codex | **ACCEPTED** | Validador de tarefas: schema, transicoes legais de estado e escopos disjuntos |
-| AIC-0015 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0014 (commit 1d8da9b) pelo Claude |
-| AIC-0016 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0008 (commit 5cc5f2b) pelo Claude |
-| AIC-0017 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0013 (commit ea4db6f) pelo Claude |
-| AIC-0018 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0009 (commit 9686744) pelo Claude |
-| AIC-0019 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0011 (commit b1132ba) pelo Claude |
-| AIC-0020 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0012 (commit 1c55400) pelo Claude |
-| AIC-0021 | claude | **ACCEPTED** | SECURITY.md: corrigir o item do lock (ressalva da AIC-0018) |
-| AIC-0022 | codex | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0021 (commit 763957f, SECURITY.md) pelo Codex |
-| AIC-0023 | claude | **ACCEPTED** | Resolver os atritos de adocao (AIC-0010 #1-5 + devhub-web) e desativar a trava de merge/push |
-| AIC-0024 | codex | **ACCEPTED** | Revisao independente da AIC-0023 sobre 9e37a8d |
+| ID | Dono | Estado | O quê | Notas |
+|---|---|---|---|---|
+| AIC-0001 | claude | **ACCEPTED** | Trilha A — protocolo canonico: especificacao v0.1, schema de handoff e criacao segura de handoff | protocolo canônico (SPEC, schema, `handoff.sh`, validador) |
+| AIC-0002 | codex | **ACCEPTED** | Trilha B — superficie operacional: contrato do doctor, paridade publico/privado e criterios de aceite do primeiro ciclo | doctor, paridade, aceite do 1º ciclo. Revisão do Claude: `ACEITAR_COM_RESSALVAS` |
+| AIC-0003 | codex | **ACCEPTED** | Revisao somente leitura da entrega da trilha A (commit 8e48bfd) pelo Codex | revisão da AIC-0001. Fechamento pendente do coordenador |
+| AIC-0004 | claude | **ACCEPTED** | Adapters minimos da skill ai-handoff (Claude e Codex) sobre um protocolo comum, e limpeza das fontes de estado do seed | adapters `ai-handoff` + limpeza do seed |
+| AIC-0005 | codex | **ACCEPTED** | Revisao somente leitura da entrega dos adapters (AIC-0004, commit 1069bff) pelo Codex, incluindo o carregamento real de $ai-handoff | `MUDANCAS_NECESSARIAS` (1 médio, no procedimento). **`$ai-handoff` carrega**; sem `$` não dispara |
+| AIC-0006 | codex | **ACCEPTED** | handoff.sh: registrar o commit revisado em handoffs de review (fecha o ponto aberto do delivery_commit = HEAD) | `handoff.sh` registra o commit revisado em review. Correção em `dabd325`, handoffs `0001` e `0002` **escritos por ele** |
+| AIC-0007 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0006 (commit 3a0ba8c) pelo Claude | revisão do Claude sobre `3a0ba8c`: `ACEITAR_COM_RESSALVAS`. Correção verificada pelo Claude: aprovada |
+| AIC-0008 | codex | **ACCEPTED** | CI: GitHub Actions rodando as suites e um validador JSON Schema independente | CI: GitHub Actions + validador JSON Schema independente (`jsonschema`); AIC-0016: ACEITAR |
+| AIC-0009 | codex | **ACCEPTED** | SECURITY.md: canal privado de vulnerabilidade (texto). A habilitacao do canal e passo do coordenador | `SECURITY.md`; AIC-0018: ACEITAR_COM_RESSALVAS não bloqueante |
+| AIC-0010 | claude | **CLOSED** | Primeira tarefa REAL fora do laboratorio: documentacao de Xilog e Parsifal (repo privado xilog-parsifal) | tarefa REAL: documentação de Xilog/Parsifal no repo privado `~/Projetos/xilog-parsifal` (execução = AIC-0001 de lá, **bloqueada até o Lukas colocar o material em `fontes/`**). Atritos em `.ai/knowledge/AIC-0010-atrito.md` |
+| AIC-0011 | codex | **ACCEPTED** | Ressalvas low da AIC-0002: teste do ramo git-ausente, doctor e symlink, ACCEPTANCE e re-revisao | ressalvas *low* do doctor; AIC-0019: ACEITAR_COM_RESSALVAS não bloqueante |
+| AIC-0012 | codex | **ACCEPTED** | Documentar as licoes do protocolo na SPEC e no guia: sequencia por branch, review com tarefa propria, merge so do humano | lições da SPEC/guia; AIC-0020: ACEITAR |
+| AIC-0013 | codex | **ACCEPTED** | Trava mecanica de merge e push por agente (hooks versionados) | trava mecânica de merge/push; AIC-0017: ACEITAR |
+| AIC-0014 | codex | **ACCEPTED** | Validador de tarefas: schema, transicoes legais de estado e escopos disjuntos | validador de tarefas; AIC-0015: ACEITAR |
+| AIC-0015 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0014 (commit 1d8da9b) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0016 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0008 (commit 5cc5f2b) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0017 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0013 (commit ea4db6f) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0018 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0009 (commit 9686744) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0019 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0011 (commit b1132ba) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0020 | claude | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0012 (commit 1c55400) pelo Claude | (linha agrupada AIC-0015–0020 em main) revisões independentes da rodada 3; handoffs preservados em diretórios próprios |
+| AIC-0021 | claude | **ACCEPTED** | SECURITY.md: corrigir o item do lock (ressalva da AIC-0018) | `SECURITY.md`: item do lock passa de "corrupção por corrida" a lock morto/disponibilidade (ressalva da AIC-0018). Revisão AIC-0022: ACEITAR_COM_RESSALVAS, ressalva baixa (lista com 4 itens, sem indisponibilidade) aceita como não bloqueante |
+| AIC-0022 | codex | **ACCEPTED** | Revisao somente leitura da entrega da AIC-0021 (commit 763957f, SECURITY.md) pelo Codex | revisão independente da AIC-0021 sobre `763957f`; verificou lock por execução (saída 1 em 0,012 s) e os 5 scripts de teste |
+| AIC-0023 | claude | **ACCEPTED** | Resolver os atritos de adocao (AIC-0010 #1-5 + devhub-web) e desativar a trava de merge/push | 8 atritos: `adopt.sh`, prefixo por repo, `task-state.py`, `new-review-task.py`, delegacao na SPEC, trava desativada |
+| AIC-0024 | codex | **ACCEPTED** | Revisao independente da AIC-0023 sobre 9e37a8d | revisao da AIC-0023 sobre `9e37a8d` (gerada por `new-review-task.py`) |
 <!-- tarefas:fim -->
 
 ## Issues da revisão de 2026-09-20
