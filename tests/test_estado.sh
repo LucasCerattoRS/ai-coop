@@ -12,6 +12,25 @@ python3 -c 'import json,sys;p=sys.argv[1];d=json.load(open(p));d["state"]="CANCE
 check "estado mudado no JSON -> --check falha" "! python3 $SB/scripts/estado.py --check"
 check "gerador reescreve" "python3 $SB/scripts/estado.py && grep -q '| AIC-0001 | claude | \*\*CANCELLED\*\*' $SB/ESTADO.md"
 check "depois de regerar -> --check passa" "python3 $SB/scripts/estado.py --check"
+# anotacao humana na tabela sobrevive a regeracao (regressao: o gerador apagava a coluna manual)
+python3 - "$SB/ESTADO.md" <<'PY'
+import sys
+p = sys.argv[1]
+out = []
+for line in open(p, encoding="utf-8").read().split("\n"):
+    if line.startswith("| AIC-0001 |"):
+        line = " | ".join(line.split(" | ", 4)[:4]) + " | merge 1d5abf9 \\| parecer ACEITAR |"
+    out.append(line)
+open(p, "w", encoding="utf-8").write("\n".join(out))
+PY
+python3 "$SB/scripts/estado.py"
+check "anotacao humana preservada ao regerar" "grep -qF '| merge 1d5abf9 \\| parecer ACEITAR |' $SB/ESTADO.md"
+check "anotacao nao altera JSON: --check segue passando" "python3 $SB/scripts/estado.py --check"
+python3 -c 'import json,sys;p=sys.argv[1];d=json.load(open(p));d["state"]="CLOSED";json.dump(d,open(p,"w"))' "$SB/.ai/tasks/AIC-0001.json"
+python3 "$SB/scripts/estado.py"
+check "estado vem do JSON, nota continua" "grep -qF '| AIC-0001 | claude | **CLOSED**' $SB/ESTADO.md && grep -qF 'merge 1d5abf9' $SB/ESTADO.md"
+rm -f "$SB/.ai/tasks/AIC-0001.json"
+check "nota de tarefa sem JSON nao e apagada em silencio" "! python3 $SB/scripts/estado.py"
 grep -v 'tarefas:inicio' "$SB/ESTADO.md" > "$SB/x" && mv "$SB/x" "$SB/ESTADO.md"
 check "sem marcador -> falha" "! python3 $SB/scripts/estado.py --check"
 
