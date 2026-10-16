@@ -50,6 +50,10 @@ def main(argv):
     if error:
         print(f"{file}: {error}", file=sys.stderr)
         return 1
+    errors = vt.check(task)
+    if errors:
+        print(f"{file}: tarefa invalida, nada alterado:\n" + "\n".join(errors), file=sys.stderr)
+        return 1
     steps = path_to(task["state"], goal)
     if steps is None:
         print(f"sem caminho legal de {task['state']} para {goal}", file=sys.stderr)

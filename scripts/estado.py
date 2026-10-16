@@ -31,16 +31,35 @@ def notes_by_id(block):
     return notes
 
 
+def load_task(file):
+    """Le um JSON de tarefa; erro claro (sem traceback) se ilegivel, malformado ou sem campos."""
+    try:
+        t = json.loads(file.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"{file.name}: JSON invalido ou ilegivel: {exc}")
+    if not isinstance(t, dict):
+        raise SystemExit(f"{file.name}: esperado objeto JSON, veio {type(t).__name__}")
+    for key in ("task_id", "title", "state"):
+        if not isinstance(t.get(key), str) or not t[key]:
+            raise SystemExit(f"{file.name}: campo '{key}' ausente ou nao e texto")
+    return t
+
+
 def table(notes):
     rows = ["| ID | Dono | Estado | O quê | Notas |", "|---|---|---|---|---|"]
-    ids = set()
-    for file in sorted((ROOT / ".ai/tasks").glob("*.json")):
-        t = json.loads(file.read_text(encoding="utf-8"))
-        ids.add(t["task_id"])
-        title = t["title"].replace("|", "\\|")
+    ids = {}
+    tasks_dir = ROOT / ".ai/tasks"
+    if not tasks_dir.is_dir():
+        raise SystemExit(f"{tasks_dir}: diretorio de tarefas ausente")
+    for file in sorted(tasks_dir.glob("*.json")):
+        t = load_task(file)
+        if t["task_id"] in ids:
+            raise SystemExit(f"{file.name}: task_id {t['task_id']} repetido (ja em {ids[t['task_id']]})")
+        ids[t["task_id"]] = file.name
+        title = " ".join(t["title"].split()).replace("|", "\\|")
         note = notes.get(t["task_id"], "")
         rows.append(f"| {t['task_id']} | {t.get('owner') or '-'} | **{t['state']}** | {title} | {note} |")
-    orphans = sorted(set(notes) - ids)
+    orphans = sorted(set(notes) - set(ids))
     if orphans:
         raise SystemExit(f"{ESTADO.name}: notas de tarefa sem JSON ({', '.join(orphans)}); mova-as antes de regerar")
     return "\n".join(rows)
@@ -55,7 +74,10 @@ def render(text):
 
 
 def main(argv):
-    current = ESTADO.read_text(encoding="utf-8").replace("\r\n", "\n")
+    try:
+        current = ESTADO.read_text(encoding="utf-8").replace("\r\n", "\n")
+    except (OSError, UnicodeDecodeError) as exc:
+        raise SystemExit(f"{ESTADO}: nao consegui ler: {exc}")
     wanted = render(current)
     if "--check" in argv:
         if current != wanted:
