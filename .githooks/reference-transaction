@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 # pre-merge-commit nao roda em fast-forward; a transacao de refs cobre main.
 [[ $1 == prepared && ${AI_COOP_HUMAN:-} != 1 ]] || exit 0
 while read -r _old _new ref; do

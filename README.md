@@ -38,12 +38,17 @@ Early architecture / reference implementation seed.
 
 ## License
 
+Copyright © 2026 Lukas Ceratti Agnese. All rights not expressly granted by the license are reserved.
+
 Source-available under the **PolyForm Noncommercial License 1.0.0** (see `LICENSE`). You may use, copy, modify and
 redistribute it for any noncommercial purpose (personal, hobby, research, education, charities).
 **Commercial (paid) use requires a separate paid license from the author**: open an issue titled "Commercial license"
 in this repository. This is *not* an OSI-approved open-source license, and this is not legal advice.
 
 *Pt-BR:* uso livre para fins não comerciais; uso comercial (remunerado) exige licença paga, à parte, com o autor.
+
+Every script and hook carries an `SPDX-License-Identifier` and the `Required Notice` line, so copies installed
+by `scripts/adopt.sh` (which does not copy `LICENSE`) keep the license and copyright with them.
 
 ## Em português
 

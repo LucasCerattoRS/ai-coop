@@ -101,6 +101,9 @@ CI passou no GitHub (run 35786334427, commit 3647f93).
 - Regra: **nada da cópia privada vai para o público sem sanitização**; o ZIP do checkpoint tem a camada privada.
 - Licença/contribuição: qualquer contribuinte cede ao mantenedor o direito de relicenciar (`CONTRIBUTING.md`), senão o
   autor não conseguiria vender licença comercial do conjunto.
+- Copyright (14/11/2026): decidido **manter** PolyForm Noncommercial e o repositório público. Scripts e hooks
+  ganharam `SPDX-License-Identifier` + `Required Notice`, porque `adopt.sh` os copia para outros repos sem o `LICENSE`.
+  Pendência: a revisão jurídica de `LICENSE`/`CONTRIBUTING.md` continua aberta.
 
 ## Invariantes
 
