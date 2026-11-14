@@ -39,7 +39,7 @@
     "tests/test_task.sh cobre cada regra e passa nos .ai/tasks/ reais deste repositorio. Se um deles for invalido, isso e achado do handoff, nao motivo para editar o JSON",
     "A entrega e um handoff ESCRITO PELO CODEX com $ai-handoff / scripts/handoff.sh, validado com scripts/validate-handoff.py, em commit separado do codigo",
     "Suites tests/test_handoff.sh, tests/test_skills.sh e tests/test_doctor.sh continuam verdes; nenhum caminho de forbidden_paths tocado",
-    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+    "Autoria LuKas <e-mail do autor>, sem trailers de coautoria; sem merge, sem push"
   ],
   "handoffs": [
     "0001-codex.json"

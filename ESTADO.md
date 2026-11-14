@@ -104,6 +104,9 @@ CI passou no GitHub (run 35786334427, commit 3647f93).
 - Copyright (14/11/2026): decidido **manter** PolyForm Noncommercial e o repositório público. Scripts e hooks
   ganharam `SPDX-License-Identifier` + `Required Notice`, porque `adopt.sh` os copia para outros repos sem o `LICENSE`.
   Pendência: a revisão jurídica de `LICENSE`/`CONTRIBUTING.md` continua aberta.
+- E-mail (14/11/2026): commits novos usam o endereço noreply do GitHub; o Gmail saiu de `.ai/tasks/*.json`
+  (trocado por `<e-mail do autor>`) e de `tests/test_handoff.sh`. Continua em 7 handoffs (imutáveis, decisão do
+  coordenador pendente) e no histórico de commits, que não será reescrito.
 
 ## Invariantes
 

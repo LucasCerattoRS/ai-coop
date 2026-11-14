@@ -16,7 +16,7 @@ trap 'rm -rf "$SANDBOX"' EXIT
 # repositorio de teste com branch de coordenacao main e uma branch de tarefa
 cd "$SANDBOX"
 git init -q -b main .
-git config user.email Lukelucanolightknowledge@gmail.com; git config user.name LuKas
+git config user.email 216338325+LucasCerattoRS@users.noreply.github.com; git config user.name LuKas
 mkdir -p scripts .ai/schemas
 cp "$SRC/scripts/handoff.sh" "$SRC/scripts/validate-handoff.py" scripts/
 echo base > base.txt
@@ -161,7 +161,7 @@ git checkout -q claude/AIC-0001-x
 
 # .ai como symlink (nao so .ai/handoffs) nao pode levar a escrita para fora
 mkdir -p "$SANDBOX/outside2" "$SANDBOX/s2"
-( cd "$SANDBOX/s2" && git init -q -b main . && git config user.email Lukelucanolightknowledge@gmail.com && git config user.name LuKas \
+( cd "$SANDBOX/s2" && git init -q -b main . && git config user.email 216338325+LucasCerattoRS@users.noreply.github.com && git config user.name LuKas \
   && echo x > x && git add -A >/dev/null && git commit -qm x && git checkout -qb claude/AIC-0001-y \
   && ln -s "$SANDBOX/outside2" .ai && bash "$SANDBOX/scripts/handoff.sh" AIC-0001 claude codex delivery >/dev/null 2>&1 )
 check $? 1 ".ai como symlink -> recusa"
