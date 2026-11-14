@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 # Cria um handoff novo, imutavel e sequenciado, em .ai/handoffs/<TASK_ID>/.
 #
 # uso: scripts/handoff.sh TASK_ID FROM_AGENT TO_AGENT KIND [REVIEWED_COMMIT]

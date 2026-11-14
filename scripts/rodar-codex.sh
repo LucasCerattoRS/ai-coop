@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 # Roda o Codex numa tarefa em PRIMEIRO PLANO e, ao sair, diz o que ficou: codigo de saida,
 # commits novos, arvore suja e o ultimo handoff da tarefa (validado). Rode como comando em
 # segundo plano do Claude Code (run_in_background): o aviso de termino passa a ser o do

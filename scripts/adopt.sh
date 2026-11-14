@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 # Instala ou atualiza o protocolo ai-coop em outro repositorio Git.
 #
 # uso: scripts/adopt.sh DESTINO           instala/atualiza a partir do HEAD deste repo

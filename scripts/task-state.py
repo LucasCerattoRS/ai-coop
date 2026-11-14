@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 """Move uma tarefa ate STATE pelo caminho legal mais curto (SPEC §2).
 
 uso: task-state.py TASK_ID STATE [--commit]

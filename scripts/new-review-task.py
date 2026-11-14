@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 """Gera a tarefa de revisao a partir do handoff de entrega (ou correcao).
 
 uso: new-review-task.py HANDOFF.json NOVO_TASK_ID

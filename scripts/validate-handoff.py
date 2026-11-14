@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Required Notice: Copyright 2026 Lukas Ceratti Agnese (https://github.com/LucasCerattoRS)
 """Valida um handoff contra o contrato de .ai/schemas/handoff.schema.json.
 
 ponytail: validacao escrita a mao contra ESTE schema, nao um validador
