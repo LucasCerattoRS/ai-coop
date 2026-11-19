@@ -44,7 +44,7 @@
     "docs/SPEC-v0.1.md secao 9 e o passo 5 de docs/AI-HANDOFF.md descrevem o novo uso; o ponto aberto correspondente em AI-HANDOFF.md sai. Edicao minima: so o que mudou",
     "Nenhum arquivo em forbidden_paths tocado; tests/test_skills.sh, tests/test_doctor.sh e a suite do handoff continuam verdes",
     "A entrega e registrada por handoff ESCRITO PELO PROPRIO CODEX com scripts/handoff.sh e validado com scripts/validate-handoff.py: nao pode ser transcricao do Claude",
-    "Todo commit com autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria"
+    "Todo commit com autoria LuKas <e-mail do autor>, sem trailers de coautoria"
   ],
   "handoffs": [
     "0001-codex.json"

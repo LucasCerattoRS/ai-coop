@@ -37,7 +37,7 @@
     "Diff contra a base toca somente SECURITY.md, mais .ai/handoffs/AIC-0021/",
     "Entrega com handoff escrito com /ai-handoff / scripts/handoff.sh, validado por scripts/validate-handoff.py, em commit separado do codigo",
     "Suites tests/test_handoff.sh, tests/test_skills.sh, tests/test_doctor.sh, tests/test_task.sh e tests/test_merge_guard.sh continuam verdes",
-    "Autoria LuKas <Lukelucanolightknowledge@gmail.com>, sem trailers de coautoria; sem merge, sem push"
+    "Autoria LuKas <e-mail do autor>, sem trailers de coautoria; sem merge, sem push"
   ],
   "handoffs": [
     "0001-claude.json"
